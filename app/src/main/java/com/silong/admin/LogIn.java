@@ -6,23 +6,28 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +38,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.InputValidator;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LogIn extends AppCompatActivity {
 
@@ -96,8 +104,7 @@ public class LogIn extends AppCompatActivity {
         forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent (LogIn.this, CreateAdminAccount.class);
-                startActivity(i);
+                forgotPassDia(LogIn.this);
             }
         });
     }
@@ -259,6 +266,66 @@ public class LogIn extends AppCompatActivity {
             Toast.makeText(this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    //method for forgot password dialog
+    public void forgotPassDia(Context context){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        builder.setTitle(Html.fromHtml("<b>"+"Forgot Password"+"</b>"));
+        builder.setIcon(getDrawable(R.drawable.forgotpass_icon));
+        builder.setBackground(getDrawable(R.drawable.dialog_bg));
+        builder.setMessage("\nEnter registered email address.");
+
+        LinearLayout recov_layout = new LinearLayout(context);
+        recov_layout.setOrientation(LinearLayout.VERTICAL);
+        recov_layout.setVerticalGravity(10);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        params.setMargins(60,0,60,0);
+        EditText et_recovEmail = new EditText(context);
+        et_recovEmail.setBackground(getResources().getDrawable(R.drawable.tf_background));
+        et_recovEmail.setPadding(30,0,0,0);
+        et_recovEmail.setHint("Email Address");
+        et_recovEmail.setTextSize(14);
+        et_recovEmail.setLayoutParams(params);
+        et_recovEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        recov_layout.addView(et_recovEmail);
+        builder.setView(recov_layout);
+
+        builder.setPositiveButton(Html.fromHtml("<b>"+"SUBMIT"+"</b>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //code for submit option
+                accountRecovDia(context);
+            }
+        });
+        builder.setNegativeButton(Html.fromHtml("<b>"+"CANCEL"+"</b>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //codes here
+            }
+        });
+        builder.show();
+    }
+
+    //method for Account Recovery Dialog
+    public void accountRecovDia(Context context){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        builder.setTitle(Html.fromHtml("<b>"+"Account Recovery"+"</b>"));
+        builder.setIcon(R.drawable.accrecovery_icon);
+        builder.setBackground(getDrawable(R.drawable.dialog_bg));
+        builder.setMessage(getResources().getString(R.string.accRecovMsg));
+
+        builder.setPositiveButton(Html.fromHtml("<b>"+"OK"+"</b>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Codes here
+                //No codes here, no further action needed
+            }
+        });
+        builder.show();
     }
 
     //for transpa status bar
