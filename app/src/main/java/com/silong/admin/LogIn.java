@@ -2,6 +2,7 @@ package com.silong.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -116,25 +117,29 @@ public class LogIn extends AppCompatActivity {
                                 String uid = mAuth.getCurrentUser().getUid();
                                 //Check if admin account
                                 try {
-                                    mReference = mDatabase.getReference("Admins");
-                                    mReference.addValueEventListener(new ValueEventListener() {
+                                    mReference = mDatabase.getReference("Admins/" + uid);
+                                    mReference.child("accountStatus").addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            boolean found = false;
-                                            for (DataSnapshot snap : snapshot.getChildren()){
-                                                if (snap.getKey().equals(uid)){
+                                            boolean accountStatus = false;
+
+                                            try {
+                                                accountStatus = (Boolean) snapshot.getValue();
+
+                                                if (accountStatus){
                                                     AdminData.adminID = uid;
-                                                    found = true;
+                                                    loadingDialog.dismissLoadingDialog();
+                                                    fetchAdminData();
+                                                }
+                                                else {
+                                                    Toast.makeText(LogIn.this, "Unauthorized access.", Toast.LENGTH_SHORT).show();
+                                                    loadingDialog.dismissLoadingDialog();
                                                 }
                                             }
-
-                                            if (found){
-                                                loadingDialog.dismissLoadingDialog();
-                                                fetchAdminData();
-                                            }
-                                            else {
+                                            catch (Exception e){
                                                 Toast.makeText(LogIn.this, "Unauthorized access.", Toast.LENGTH_SHORT).show();
                                                 loadingDialog.dismissLoadingDialog();
+                                                Log.d("LogIn", e.getMessage());
                                             }
 
                                         }
@@ -182,12 +187,16 @@ public class LogIn extends AppCompatActivity {
         if (internetConnection()){
             //try to retrieve admin info
             try {
-                mReference.child(AdminData.adminID).child("firstName").addValueEventListener(new ValueEventListener() {
+                mReference.child("firstName").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         AdminData.firstName = snapshot.getValue().toString();
                         Toast.makeText(LogIn.this, "Welcome, " + AdminData.firstName + "!", Toast.LENGTH_SHORT).show();
                         new ImageProcessor().saveToLocal(getApplicationContext(), "firstName", AdminData.firstName);
+                        //send first name to next activity
+                        Intent intent = new Intent("update-first-name");
+                        intent.putExtra("message", AdminData.firstName);
+                        LocalBroadcastManager.getInstance(LogIn.this).sendBroadcast(intent);
                     }
 
                     @Override
@@ -195,7 +204,7 @@ public class LogIn extends AppCompatActivity {
 
                     }
                 });
-                mReference.child(AdminData.adminID).child("lastName").addValueEventListener(new ValueEventListener() {
+                mReference.child("lastName").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         AdminData.lastName = snapshot.getValue().toString();
@@ -207,7 +216,7 @@ public class LogIn extends AppCompatActivity {
 
                     }
                 });
-                mReference.child(AdminData.adminID).child("email").addValueEventListener(new ValueEventListener() {
+                mReference.child("email").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         AdminData.adminEmail = snapshot.getValue().toString();
@@ -219,7 +228,7 @@ public class LogIn extends AppCompatActivity {
 
                     }
                 });
-                mReference.child(AdminData.adminID).child("contact").addValueEventListener(new ValueEventListener() {
+                mReference.child("contact").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         AdminData.contact = snapshot.getValue().toString();
@@ -234,11 +243,13 @@ public class LogIn extends AppCompatActivity {
 
                 //insert  adminInteraction
 
+                loadingDialog.dismissLoadingDialog();
                 Intent intent = new Intent(LogIn.this, Dashboard.class);
                 startActivity(intent);
                 finish();
             }
             catch (Exception e){
+                loadingDialog.dismissLoadingDialog();
                 Log.d("LogIn", e.getMessage());
                 Toast.makeText(this, "Database error. Please try again.", Toast.LENGTH_SHORT).show();
             }

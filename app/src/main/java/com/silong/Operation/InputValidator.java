@@ -27,7 +27,6 @@ public class InputValidator {
     }
 
     public static boolean checkEmail(String s){
-
         //Check if s only contains allowed characters
         Pattern namePattern = Pattern.compile("^(.+)@(.+)$");
         try {
