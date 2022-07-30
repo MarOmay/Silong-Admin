@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1040726134290",
+    "firebase_url": "https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "silongdb-1",
+    "storage_bucket": "silongdb-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040726134290:android:e4c2498fc7352b73cc12cb",
+        "android_client_info": {
+          "package_name": "com.silong.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1040726134290-utu2g4iboe8ikjbhin7t1e710imjdo45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfEfK1ic5-vQxOaXTy3MngUYceshRVAZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1040726134290-utu2g4iboe8ikjbhin7t1e710imjdo45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040726134290:android:6e94c3a10a082b7acc12cb",
+        "android_client_info": {
+          "package_name": "com.silong.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1040726134290-utu2g4iboe8ikjbhin7t1e710imjdo45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfEfK1ic5-vQxOaXTy3MngUYceshRVAZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1040726134290-utu2g4iboe8ikjbhin7t1e710imjdo45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

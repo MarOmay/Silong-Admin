@@ -1,13 +1,18 @@
 package com.silong.Object;
 
-public class Admin {
+import java.io.Serializable;
+
+public class Admin implements Serializable {
 
     private String adminID;
     private String adminEmail;
     private String firstName;
     private String lastName;
+    private String contact;
     private boolean accountStatus;
-    private String [] userInteraction; //emails of users
+    private String [] userInteraction; //userid of users
+
+    public Admin(){}
 
     public Admin(String adminID, String adminEmail, String firstName, String lastName, boolean accountStatus, String[] userInteraction) {
         this.adminID = adminID;
@@ -48,6 +53,14 @@ public class Admin {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public boolean isAccountStatus() {

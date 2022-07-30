@@ -12,7 +12,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.io.File;
+
 public class Splash extends AppCompatActivity {
+    protected static File USERDATA;
+
     Handler h = new Handler();
 
     @Override
@@ -35,6 +39,9 @@ public class Splash extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
+        //Initialize Files
+        USERDATA = new File(getFilesDir(),"user.dat");
+
         //For delaying, wala naman na sigurong papakilamanan dito ano? hahahaha
         h.postDelayed(new Runnable() {
             @Override
@@ -44,14 +51,12 @@ public class Splash extends AppCompatActivity {
                     - else, require login or signup
                 */
                 Intent i;
-                /*if (UserData.isLoggedIn(getApplicationContext())){
-                    //UserData.populate();
-                    i = new Intent(Splash.this, Homepage.class);
+                if (AdminData.isLoggedIn(getApplicationContext())){
+                    i = new Intent(Splash.this, Dashboard.class);
                 }
                 else {
                     i = new Intent(Splash.this, LogIn.class);
-                }*/
-                i = new Intent(Splash.this,LogIn.class);
+                }
                 startActivity(i);
                 overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
                 finish();

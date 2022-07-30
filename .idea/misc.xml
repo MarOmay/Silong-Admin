@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_create_admin_account.xml" value="0.25" />
+        <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
+        <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_process_sign_up.xml" value="0.12158054711246201" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/drawable-v24/ic_round_arrow_back_ios_24.xml" value="0.1" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/drawable-v24/ic_round_chevron_right_24.xml" value="0.1" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/drawable-v24/ic_round_person_add_alt_1_24.xml" value="0.1" />

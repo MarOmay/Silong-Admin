@@ -17,6 +17,9 @@
             android:name=".CreateAdminAccount"
             android:exported="false" />
         <activity
+            android:name=".ProcessSignUp"
+            android:exported="false" />
+        <activity
             android:name=".Header"
             android:exported="false" />
         <activity
