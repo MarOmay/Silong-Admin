@@ -42,19 +42,19 @@
     </style>
 
     <style name="search_style">
-        <item name="android:background">@color/searchBar</item>
+        <item name="android:background">@color/lightgray</item>
         <item name="android:textSize">17sp</item>
         <item name="android:hint">Search</item>
         <item name="android:paddingStart">15dp</item>
         <item name="android:paddingEnd">15dp</item>
-        <item name="android:textColorHint">@color/whitey</item>
-        <item name="android:textColor">@color/whitey</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="search_bg_style">
         <item name="android:height">60dp</item>
         <item name="android:width">340dp</item>
-        <item name="android:backgroundTint">@color/searchBar</item>
+        <item name="android:backgroundTint">@color/lightgray</item>
     </style>
 
     <style name="pinkButton_style">
