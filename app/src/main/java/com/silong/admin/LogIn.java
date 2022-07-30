@@ -116,7 +116,7 @@ public class LogIn extends AppCompatActivity {
                                 String uid = mAuth.getCurrentUser().getUid();
                                 //Check if admin account
                                 try {
-                                    mReference = mDatabase.getReference("Admin");
+                                    mReference = mDatabase.getReference("Admins");
                                     mReference.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
