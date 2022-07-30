@@ -10,7 +10,137 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/transparent</item>
         <!-- Customize your theme here. -->
+        <item name="android:autofilledHighlight" tools:targetApi="o">@android:color/transparent</item>
+        <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/productsans_regular</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <style name="Theme.SilongAdmin.noActionbarAndStatusBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:fitsSystemWindows">false</item>
+
+    </style>
+
+    <style name="textField_style">
+        <!-- Change textfield width and height on tf_background.xml -->
+        <item name="android:layout_width">340dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textColorHint">@color/textgray</item>
+        <item name="android:background">@drawable/tf_background</item>
+        <item name="android:paddingStart">22dp</item>
+        <item name="android:paddingEnd">22dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="search_style">
+        <item name="android:background">@color/searchBar</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:hint">Search</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+        <item name="android:textColorHint">@color/whitey</item>
+        <item name="android:textColor">@color/whitey</item>
+    </style>
+
+    <style name="search_bg_style">
+        <item name="android:height">60dp</item>
+        <item name="android:width">340dp</item>
+        <item name="android:backgroundTint">@color/searchBar</item>
+    </style>
+
+    <style name="pinkButton_style">
+        <item name="android:width">340dp</item>
+        <item name="android:height">60dp</item>
+        <item name="android:backgroundTint">@color/pink</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/whitey</item>
+        <item name="cornerRadius">50dp</item>
+    </style>
+
+    <style name="orangeButton_style">
+        <item name="android:width">340dp</item>
+        <item name="android:height">60dp</item>
+        <item name="android:backgroundTint">@color/orange</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/whitey</item>
+        <item name="cornerRadius">50dp</item>
+    </style>
+
+    <style name="circleNextButton_style" parent="Widget.MaterialComponents.Button">
+        <item name="android:width">60dp</item>
+        <item name="android:height">70dp</item>
+        <item name="minWidth">0dp</item>
+        <item name="android:backgroundTint">@color/pink</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="icon">@drawable/ic_round_chevron_right_24</item>
+        <item name="iconTint">@color/whitey</item>
+        <item name="iconGravity">start</item>
+        <item name="iconSize">40dp</item>
+        <item name="android:paddingStart">11dp</item>
+    </style>
+
+    <style name="circleExitButton_style" parent="Widget.MaterialComponents.Button">
+        <item name="android:width">60dp</item>
+        <item name="android:height">70dp</item>
+        <item name="minWidth">0dp</item>
+        <item name="android:backgroundTint">@color/pink</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="icon">@drawable/ic_round_exit_to_app_24</item>
+        <item name="iconTint">@color/whitey</item>
+        <item name="iconGravity">start</item>
+        <item name="iconSize">25dp</item>
+        <item name="android:paddingStart">18dp</item>
+    </style>
+
+    <style name="spinner_style" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="android:layout_width">340dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textColorHint">@color/textgray</item>
+        <item name="android:background">@drawable/spin_background</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Theme.SilongAdmin.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="My_Widget.MaterialComponents.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <!-- Chip background color selector -->
+        <item name="chipBackgroundColor">@color/bg_chip_state</item>
+        <!-- Chip text color selector -->
+        <item name="android:textColor">@color/text_chip_state</item>
+    </style>
+
+    <style name="Shape" parent="">
+        <item name="cornerSize">5%</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@android:color/transparent</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.Dialog.Rounded</item>
+        <item name="android:width">10dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MyApp.Dialog.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">100dp</item>
     </style>
 </resources>
