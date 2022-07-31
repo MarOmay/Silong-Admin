@@ -2,6 +2,7 @@ package com.silong.admin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -42,7 +43,8 @@ public class RequestList extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent(RequestList.this, Dashboard.class);
+        startActivity(intent);
         this.finish();
     }
 }

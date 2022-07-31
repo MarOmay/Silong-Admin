@@ -121,6 +121,11 @@ public class Dashboard extends AppCompatActivity {
     };
 
     @Override
+    public void onBackPressed() {
+        this.finish();
+    }
+
+    @Override
     protected void onDestroy() {
         // Unregister since the activity is about to be closed.
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);

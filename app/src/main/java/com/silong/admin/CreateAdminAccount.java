@@ -185,7 +185,8 @@ public class CreateAdminAccount extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent(CreateAdminAccount.this, ManageAccount.class);
+        startActivity(intent);
         this.finish();
     }
 }

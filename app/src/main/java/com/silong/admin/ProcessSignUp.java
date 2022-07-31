@@ -149,10 +149,8 @@ public class ProcessSignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         mAuth.signOut();
-                        Toast.makeText(ProcessSignUp.this, "Registration successful!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(ProcessSignUp.this, LogIn.class);
-                        intent.putExtra("email", ADMIN.getAdminEmail());
-                        intent.putExtra("password", PASSWORD);
+                        Toast.makeText(ProcessSignUp.this, "New Admin account created for " + ADMIN.getAdminEmail(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(ProcessSignUp.this, ManageAccount.class);
                         startActivity(intent);
                         finish();
                     }

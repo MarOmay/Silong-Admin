@@ -52,7 +52,8 @@ public class ManageAccount extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent(ManageAccount.this, Dashboard.class);
+        startActivity(intent);
         this.finish();
     }
 }
