@@ -25,12 +25,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -297,8 +300,18 @@ public class LogIn extends AppCompatActivity {
         builder.setPositiveButton(Html.fromHtml("<b>"+"SUBMIT"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //code for submit option
-                accountRecovDia(context);
+                //Check if field is empty
+                String email = et_recovEmail.getText().toString();
+                if(email.equals("")){
+                    Toast.makeText(getApplicationContext(), "Please enter your email.", Toast.LENGTH_SHORT).show();
+                }
+                else if (!InputValidator.checkEmail(email)){
+                    Toast.makeText(getApplicationContext(), "Please check the format of your email.", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Check if email is registered
+                    emailChecker(context, email);
+
+                }
             }
         });
         builder.setNegativeButton(Html.fromHtml("<b>"+"CANCEL"+"</b>"), new DialogInterface.OnClickListener() {
@@ -308,6 +321,65 @@ public class LogIn extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    private void emailChecker(Context context, String email){
+        LoadingDialog loadingDialog = new LoadingDialog(this);
+        loadingDialog.startLoadingDialog();
+        //Check internet connection
+        if(internetConnection()){
+            //Check if email is registered
+            mAuth.fetchSignInMethodsForEmail(email)
+                    .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                            loadingDialog.dismissLoadingDialog();
+                            if (task.getResult().getSignInMethods().isEmpty()){
+                                Toast.makeText(getApplicationContext(), "Email is not registered.", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                //Trigger Firebase to send instruction email
+                                resetPassword(context, email);
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Can't check your email right now.", Toast.LENGTH_SHORT).show();
+                            Log.d("LogIn", e.getMessage());
+                        }
+                    });
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please check your internet connection.", Toast.LENGTH_SHORT).show();
+        }
+        loadingDialog.dismissLoadingDialog();
+
+    }
+
+    private void resetPassword(Context context, String email){
+        LoadingDialog loadingDialog = new LoadingDialog(this);
+        loadingDialog.startLoadingDialog();
+
+        //Send a password reset link to email
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        loadingDialog.dismissLoadingDialog();
+                        if (task.isSuccessful()) {
+                            //Show email instruction dialog
+                            accountRecovDia(context);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        loadingDialog.dismissLoadingDialog();
+                    }
+                });
     }
 
     //method for Account Recovery Dialog
