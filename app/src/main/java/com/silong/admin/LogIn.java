@@ -5,23 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +27,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,8 +36,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.silong.CustomDialog.EmailPrompt;
+import com.silong.CustomDialog.LoadingDialog;
+import com.silong.CustomDialog.ResetLinkNotice;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.InputValidator;
+import com.silong.Operation.Utility;
 
 public class LogIn extends AppCompatActivity {
 
@@ -64,6 +65,10 @@ public class LogIn extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
+        //Receive email
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mMessageReceiver, new IntentFilter("reset-password-email"));
+
         loginEmailEt = (EditText) findViewById(R.id.loginEmailEt);
         loginPasswordEt = (EditText) findViewById(R.id.loginPasswordEt);
         loginBtn = (Button) findViewById(R.id.loginBtn);
@@ -82,31 +87,28 @@ public class LogIn extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = loginEmailEt.getText().toString();
-                String password = loginPasswordEt.getText().toString();
+    }
 
-                //Validate input
-                if (email.length() < 1 || password.length() < 1){
-                    Toast.makeText(LogIn.this, "Please fill out required fields.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (!InputValidator.checkEmail(email)){
-                    Toast.makeText(LogIn.this, "Please check the format of your email.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                attemptLogin(email, password);
-            }
-        });
+    public void onPressedLogin(View view){
+        String email = loginEmailEt.getText().toString();
+        String password = loginPasswordEt.getText().toString();
 
-        forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                forgotPassDia(LogIn.this);
-            }
-        });
+        //Validate input
+        if (email.length() < 1 || password.length() < 1){
+            Toast.makeText(LogIn.this, "Please fill out required fields.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if (!InputValidator.checkEmail(email)){
+            Toast.makeText(LogIn.this, "Please check the format of your email.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        attemptLogin(email, password);
+    }
+
+    public void onPressedForgotPassword(View view){
+        //Get email
+        EmailPrompt emailPrompt = new EmailPrompt(LogIn.this);
+        emailPrompt.show();
     }
 
     private void attemptLogin(String email, String password){
@@ -114,7 +116,7 @@ public class LogIn extends AppCompatActivity {
         loadingDialog.startLoadingDialog();
 
         //Check internet connection first
-        if (internetConnection()){
+        if (Utility.internetConnection(getApplicationContext())){
             //attempt to login
             try{
                 mAuth.signInWithEmailAndPassword(email, password)
@@ -191,7 +193,7 @@ public class LogIn extends AppCompatActivity {
         loadingDialog.startLoadingDialog();
 
         //Check internet connection first
-        if (internetConnection()){
+        if (Utility.internetConnection(getApplicationContext())){
             //try to retrieve admin info
             try {
                 mReference.child("firstName").addValueEventListener(new ValueEventListener() {
@@ -268,63 +270,11 @@ public class LogIn extends AppCompatActivity {
 
     }
 
-    //method for forgot password dialog
-    public void forgotPassDia(Context context){
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        builder.setTitle(Html.fromHtml("<b>"+"Forgot Password"+"</b>"));
-        builder.setIcon(getDrawable(R.drawable.forgotpass_icon));
-        builder.setBackground(getDrawable(R.drawable.dialog_bg));
-        builder.setMessage("\nEnter registered email address.");
-
-        LinearLayout recov_layout = new LinearLayout(context);
-        recov_layout.setOrientation(LinearLayout.VERTICAL);
-        recov_layout.setVerticalGravity(10);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        params.setMargins(60,0,60,0);
-        EditText et_recovEmail = new EditText(context);
-        et_recovEmail.setBackground(getResources().getDrawable(R.drawable.tf_background));
-        et_recovEmail.setPadding(30,0,0,0);
-        et_recovEmail.setHint("Email Address");
-        et_recovEmail.setTextSize(14);
-        et_recovEmail.setLayoutParams(params);
-        et_recovEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        recov_layout.addView(et_recovEmail);
-        builder.setView(recov_layout);
-
-        builder.setPositiveButton(Html.fromHtml("<b>"+"SUBMIT"+"</b>"), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //Check if field is empty
-                String email = et_recovEmail.getText().toString();
-                if(email.equals("")){
-                    Toast.makeText(getApplicationContext(), "Please enter your email.", Toast.LENGTH_SHORT).show();
-                }
-                else if (!InputValidator.checkEmail(email)){
-                    Toast.makeText(getApplicationContext(), "Please check the format of your email.", Toast.LENGTH_SHORT).show();
-                }else{
-                    //Check if email is registered
-                    emailChecker(context, email);
-
-                }
-            }
-        });
-        builder.setNegativeButton(Html.fromHtml("<b>"+"CANCEL"+"</b>"), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //codes here
-            }
-        });
-        builder.show();
-    }
-
     private void emailChecker(Context context, String email){
         LoadingDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.startLoadingDialog();
         //Check internet connection
-        if(internetConnection()){
+        if(Utility.internetConnection(getApplicationContext())){
             //Check if email is registered
             mAuth.fetchSignInMethodsForEmail(email)
                     .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
@@ -367,7 +317,8 @@ public class LogIn extends AppCompatActivity {
                         loadingDialog.dismissLoadingDialog();
                         if (task.isSuccessful()) {
                             //Show email instruction dialog
-                            accountRecovDia(context);
+                            ResetLinkNotice resetLinkNotice = new ResetLinkNotice(LogIn.this);
+                            resetLinkNotice.show();
                         }
                     }
                 })
@@ -379,23 +330,18 @@ public class LogIn extends AppCompatActivity {
                 });
     }
 
-    //method for Account Recovery Dialog
-    public void accountRecovDia(Context context){
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        builder.setTitle(Html.fromHtml("<b>"+"Account Recovery"+"</b>"));
-        builder.setIcon(R.drawable.accrecovery_icon);
-        builder.setBackground(getDrawable(R.drawable.dialog_bg));
-        builder.setMessage(getResources().getString(R.string.accRecovMsg));
-
-        builder.setPositiveButton(Html.fromHtml("<b>"+"OK"+"</b>"), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //Codes here
-                //No codes here, no further action needed
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                String email = intent.getStringExtra("email");
+                emailChecker(getApplicationContext(), email);
             }
-        });
-        builder.show();
-    }
+            catch (Exception e){
+                Log.d("LogIn", e.getMessage());
+            }
+        }
+    };
 
     //for transpa status bar
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
@@ -410,12 +356,10 @@ public class LogIn extends AppCompatActivity {
         win.setAttributes(winParams);
     }
 
-    private boolean internetConnection(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo!=null){
-            return true;
-        }
-        return false;
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
     }
 }

@@ -74,6 +74,7 @@
 
         <TextView
             android:id="@+id/forgotPasswordTv"
+            android:onClick="onPressedForgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -97,6 +98,7 @@
         <Button
             android:id="@+id/loginBtn"
             style="@style/pinkButton_style"
+            android:onClick="onPressedLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"

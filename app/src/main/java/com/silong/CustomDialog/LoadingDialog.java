@@ -1,4 +1,4 @@
-package com.silong.admin;
+package com.silong.CustomDialog;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
@@ -9,13 +9,14 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.silong.admin.R;
 
 public class LoadingDialog {
 
     Activity activity;
     AlertDialog alertDialog;
 
-    LoadingDialog(Activity myActivity) {
+    public LoadingDialog(Activity myActivity) {
         activity = myActivity;
     }
 

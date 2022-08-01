@@ -58,50 +58,32 @@ public class Dashboard extends AppCompatActivity {
         adminFnameTv.setText(AdminData.firstName);
 
         logoutTv = findViewById(R.id.logoutTv);
-        logoutTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logout();
-            }
-        });
-
-        requestsPad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Dashboard.this, RequestList.class);
-                startActivity(i);
-            }
-        });
-
-        messagesPad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Dashboard.this, Messages.class);
-                startActivity(i);
-            }
-        });
-
-        manageAccountsPad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent (Dashboard.this, ManageAccount.class);
-                startActivity(i);
-            }
-        });
-
-        manageRecordsPad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Dashboard.this, ManageRecords.class);
-                startActivity(i);
-            }
-        });
 
         AdminData.populate(this);
 
     }
 
-    private void logout(){
+    public void onPressedRequests(View view){
+        Intent i = new Intent(Dashboard.this, RequestList.class);
+        startActivity(i);
+    }
+
+    public void onPressedMessages(View view){
+        Intent i = new Intent(Dashboard.this, Messages.class);
+        startActivity(i);
+    }
+
+    public void onPressedManageAccounts(View view){
+        Intent i = new Intent (Dashboard.this, ManageAccount.class);
+        startActivity(i);
+    }
+
+    public void onPressedManageRecords(View view){
+        Intent i = new Intent(Dashboard.this, ManageRecords.class);
+        startActivity(i);
+    }
+
+    public void onPressedLogout(View view){
         AdminData.logout();
         mAuth.signOut();
         Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();
@@ -109,7 +91,6 @@ public class Dashboard extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override

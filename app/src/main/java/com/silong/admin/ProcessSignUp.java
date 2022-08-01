@@ -24,6 +24,7 @@ import com.silong.Object.Address;
 import com.silong.Object.Admin;
 import com.silong.Object.User;
 import com.silong.Operation.ImageProcessor;
+import com.silong.Operation.Utility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -105,7 +106,7 @@ public class ProcessSignUp extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            if (!internetConnection()){
+                            if (!Utility.internetConnection(getApplicationContext())){
                                 Toast.makeText(ProcessSignUp.this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
                             }
                             else if (e instanceof FirebaseAuthInvalidCredentialsException){
@@ -124,15 +125,6 @@ public class ProcessSignUp extends AppCompatActivity {
             Toast.makeText(this, "Something went wrong. (PSU)", Toast.LENGTH_SHORT).show();
             onBackPressed();
         }
-    }
-
-    private boolean internetConnection(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo!=null){
-            return true;
-        }
-        return false;
     }
 
     private void saveAdminData(){
@@ -158,7 +150,7 @@ public class ProcessSignUp extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        if (internetConnection()){
+                        if (!Utility.internetConnection(getApplicationContext())){
                             Toast.makeText(ProcessSignUp.this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
                         }
                         else {
