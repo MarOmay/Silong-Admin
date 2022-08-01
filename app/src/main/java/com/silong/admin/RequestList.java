@@ -45,6 +45,7 @@ public class RequestList extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(RequestList.this, Dashboard.class);
         startActivity(intent);
-        this.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        finish();
     }
 }

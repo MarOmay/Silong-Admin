@@ -54,6 +54,7 @@ public class ManageAccount extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(ManageAccount.this, Dashboard.class);
         startActivity(intent);
-        this.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        finish();
     }
 }

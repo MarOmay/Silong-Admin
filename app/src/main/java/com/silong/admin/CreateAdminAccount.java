@@ -187,6 +187,7 @@ public class CreateAdminAccount extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(CreateAdminAccount.this, ManageAccount.class);
         startActivity(intent);
-        this.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        finish();
     }
 }

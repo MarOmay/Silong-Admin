@@ -42,9 +42,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.InputValidator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class LogIn extends AppCompatActivity {
 
     EditText loginEmailEt, loginPasswordEt;
