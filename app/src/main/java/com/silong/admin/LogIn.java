@@ -90,8 +90,8 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void onPressedLogin(View view){
-        String email = loginEmailEt.getText().toString();
-        String password = loginPasswordEt.getText().toString();
+        String email = loginEmailEt.getText().toString().trim();
+        String password = loginPasswordEt.getText().toString().trim();
 
         //Validate input
         if (email.length() < 1 || password.length() < 1){

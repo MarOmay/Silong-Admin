@@ -87,33 +87,33 @@ public class CreateAdminAccount extends AppCompatActivity {
                 }
 
                 //Validate name
-                else if (!InputValidator.checkName(createAdminFnameEt.getText().toString())){
+                else if (!InputValidator.checkName(createAdminFnameEt.getText().toString().trim())){
                     Toast.makeText(CreateAdminAccount.this, "Please check your first name.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if (!InputValidator.checkName(createAdminLnameEt.getText().toString())){
+                else if (!InputValidator.checkName(createAdminLnameEt.getText().toString().trim())){
                     Toast.makeText(CreateAdminAccount.this, "Please check your last name.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Validate email
-                else if (!InputValidator.checkEmail(createAdminEmailEt.getText().toString())){
+                else if (!InputValidator.checkEmail(createAdminEmailEt.getText().toString().trim())){
                     Toast.makeText(CreateAdminAccount.this, "Please check the format of your email.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Validate contact
-                else if (!InputValidator.checkContact(createAdminContactEt.getText().toString())){
+                else if (!InputValidator.checkContact(createAdminContactEt.getText().toString().trim())){
                     Toast.makeText(CreateAdminAccount.this, "Please check your contact number.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Prepare data for transfer
                 admin = new Admin();
-                admin.setFirstName(createAdminFnameEt.getText().toString());
-                admin.setLastName(createAdminLnameEt.getText().toString());
-                admin.setAdminEmail(createAdminEmailEt.getText().toString());
-                admin.setContact(createAdminContactEt.getText().toString());
+                admin.setFirstName(createAdminFnameEt.getText().toString().trim());
+                admin.setLastName(createAdminLnameEt.getText().toString().trim());
+                admin.setAdminEmail(createAdminEmailEt.getText().toString().trim());
+                admin.setContact(createAdminContactEt.getText().toString().trim());
 
                 password = createAdminPasswordEt.getText().toString();
 
