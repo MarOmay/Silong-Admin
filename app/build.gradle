@@ -43,4 +43,7 @@ dependencies {
     //for gif -jepoy
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
 
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28.0.0'
+
 }

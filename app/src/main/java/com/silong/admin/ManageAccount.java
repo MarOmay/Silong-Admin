@@ -1,6 +1,8 @@
 package com.silong.admin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ public class ManageAccount extends AppCompatActivity {
 
     EditText accountSearchEt;
     ImageView accountSearchIv, accountCreateIv, accountBackIv;
+    RecyclerView accountsRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,22 @@ public class ManageAccount extends AppCompatActivity {
         accountSearchIv = (ImageView) findViewById(R.id.accountSearchIv);
         accountCreateIv = (ImageView) findViewById(R.id.accountCreateIv);
         accountBackIv = (ImageView) findViewById(R.id.accountBackIv);
+        accountsRecycler = (RecyclerView) findViewById(R.id.accountsRecycler);
+
+        accountsRecycler.setHasFixedSize(true);
+        accountsRecycler.setLayoutManager(new LinearLayoutManager(ManageAccount.this));
+
+        //Array for accounts
+        UserAccountData[] userAccountData = new UserAccountData[]{
+                new UserAccountData("Kenjhi Maloles", "kenjhimaloles09@gmail.com", R.drawable.sample1),
+                new UserAccountData("Charl Nikki Belano", "cnbelano@gmail.com", R.drawable.sample2),
+                new UserAccountData("Jireh Trinidad", "jirehtrinidad@gmail.com", R.drawable.sample3),
+                new UserAccountData("Alexis Omay", "alexomay@gmail.com", R.drawable.sample4),
+                new UserAccountData("Joshua Dagatan", "joshuadagatan@gmail.com", R.drawable.sample5)
+        };
+
+        AccountAdapter accountAdapter = new AccountAdapter(userAccountData, ManageAccount.this);
+        accountsRecycler.setAdapter(accountAdapter);
 
         accountBackIv.setOnClickListener(new View.OnClickListener() {
             @Override
