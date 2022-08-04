@@ -11,6 +11,8 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.silong.Object.User;
+
 public class ManageAccount extends AppCompatActivity {
 
     EditText accountSearchEt;
@@ -37,16 +39,14 @@ public class ManageAccount extends AppCompatActivity {
         accountsRecycler.setHasFixedSize(true);
         accountsRecycler.setLayoutManager(new LinearLayoutManager(ManageAccount.this));
 
-        //Array for accounts
-        UserAccountData[] userAccountData = new UserAccountData[]{
-                new UserAccountData("Kenjhi Maloles", "kenjhimaloles09@gmail.com", R.drawable.sample1),
-                new UserAccountData("Charl Nikki Belano", "cnbelano@gmail.com", R.drawable.sample2),
-                new UserAccountData("Jireh Trinidad", "jirehtrinidad@gmail.com", R.drawable.sample3),
-                new UserAccountData("Alexis Omay", "alexomay@gmail.com", R.drawable.sample4),
-                new UserAccountData("Joshua Dagatan", "joshuadagatan@gmail.com", R.drawable.sample5)
-        };
+        UserAccountData[] accountData = new UserAccountData[AdminData.users.size()];
+        for (User user : AdminData.users){
+            accountData[AdminData.users.indexOf(user)] = new UserAccountData(
+              user.getFirstName() + " " + user.getLastName(),
+              user.getEmail(), user.getPhoto());
+        }
 
-        AccountAdapter accountAdapter = new AccountAdapter(userAccountData, ManageAccount.this);
+        AccountAdapter accountAdapter = new AccountAdapter(accountData, ManageAccount.this);
         accountsRecycler.setAdapter(accountAdapter);
 
         accountBackIv.setOnClickListener(new View.OnClickListener() {

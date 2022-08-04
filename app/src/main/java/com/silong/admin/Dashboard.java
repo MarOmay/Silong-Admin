@@ -1,5 +1,6 @@
 package com.silong.admin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,10 +20,19 @@ import android.widget.Toast;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.silong.CustomDialog.LoadingDialog;
+import com.silong.Object.User;
+import com.silong.Operation.ImageProcessor;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,6 +44,8 @@ public class Dashboard extends AppCompatActivity {
 
     private FirebaseAnalytics mAnalytics;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +56,14 @@ public class Dashboard extends AppCompatActivity {
         //Initialize Firebase objects
         mAnalytics = FirebaseAnalytics.getInstance(this);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         //Receive first name
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(mMessageReceiver, new IntentFilter("update-first-name"));
+
+        //Update records
+        fetchActiveAccounts();
 
         requestsPad = (LinearLayout) findViewById(R.id.requestsPad);
         requestsDot = (MaterialCardView) findViewById(R.id.requestsDot);
@@ -62,6 +79,8 @@ public class Dashboard extends AppCompatActivity {
         AdminData.populate(this);
 
     }
+
+    //onPressed Methods
 
     public void onPressedRequests(View view){
         Intent i = new Intent(Dashboard.this, RequestList.class);
@@ -92,6 +111,150 @@ public class Dashboard extends AppCompatActivity {
         finish();
     }
 
+    //Asynchronous and background activities
+
+    private void fetchActiveAccounts(){
+        LoadingDialog loadingDialog = new LoadingDialog(Dashboard.this);
+        loadingDialog.startLoadingDialog();
+        //Get all User accounts
+        mReference = mDatabase.getReference("accountSummary");
+        mReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try{
+                    //Get all User uid
+                    for (DataSnapshot snap : snapshot.getChildren()){
+
+                        File file = new File(getFilesDir(), "account-" + snap.getKey());
+                        if (file.exists()){
+                            //Check if status of local record matches
+                            User tempUser = AdminData.fetchAccountFromLocal(Dashboard.this, snap.getKey());
+                            if (tempUser.getAccountStatus() != (Boolean) snap.getValue()){
+                                //delete local record, to rewrite new record
+                                file.delete();
+                                fetchAccountFromCloud(snap.getKey());
+                            }
+                        }
+                        else {
+                            fetchAccountFromCloud(snap.getKey());
+                        }
+
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Dashboard", e.getMessage());
+                }
+                AdminData.populateAccounts(Dashboard.this);
+                loadingDialog.dismissLoadingDialog();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void fetchAccountFromCloud(String uid){
+        try{
+            //create local copy
+            AdminData.writeToLocal(getApplicationContext(), uid, "userID", uid);
+
+            DatabaseReference tempReference = mDatabase.getReference("Users/" + uid);
+            tempReference.child("accountStatus").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String status = (Boolean) snapshot.getValue() ? "true" : "false";
+                    AdminData.writeToLocal(getApplicationContext(), uid, "accountStatus", status);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("firstName").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String fname = snapshot.getValue().toString();
+                    AdminData.writeToLocal(getApplicationContext(), uid, "firstName", fname);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("lastName").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String lname = snapshot.getValue().toString();
+                    AdminData.writeToLocal(getApplicationContext(), uid, "lastName", lname);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("email").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String email = snapshot.getValue().toString();
+                    AdminData.writeToLocal(getApplicationContext(), uid, "email", email);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("contact").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String contact = snapshot.getValue().toString();
+                    AdminData.writeToLocal(getApplicationContext(), uid, "contact", contact);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("birthday").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String birthday = snapshot.getValue().toString();
+                    AdminData.writeToLocal(getApplicationContext(), uid, "birthday", birthday);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("photo").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String photo = snapshot.getValue().toString();
+                    Bitmap bitmap = new ImageProcessor().toBitmap(photo);
+                    new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "avatar-" + uid);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+        catch (Exception e){
+            Log.d("Dashboard", e.getMessage());
+        }
+    }
+
+    //Broadcast Receivers
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -100,6 +263,8 @@ public class Dashboard extends AppCompatActivity {
             adminFnameTv.setText(message);
         }
     };
+
+    //Method Overriding
 
     @Override
     public void onBackPressed() {

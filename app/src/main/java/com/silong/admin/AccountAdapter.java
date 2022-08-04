@@ -35,7 +35,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         final UserAccountData userAccountDataList = userAccountData[position];
         holder.userAccName.setText(userAccountDataList.getUserAccName());
         holder.userAccEmail.setText(userAccountDataList.getUserAccEmail());
-        holder.userAccPic.setImageResource(userAccountDataList.getUserAccPic());
+        holder.userAccPic.setImageBitmap(userAccountDataList.getUserAvatar());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
