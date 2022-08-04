@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Locale;
+
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
 
     UserAccountData[] userAccountData;
@@ -36,6 +38,20 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         holder.userAccName.setText(userAccountDataList.getUserAccName());
         holder.userAccEmail.setText(userAccountDataList.getUserAccEmail());
         holder.userAccPic.setImageBitmap(userAccountDataList.getUserAvatar());
+
+        //Filter visibility by search keyword
+        if (ManageAccount.keyword.length() < 1){
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+        else if (userAccountDataList.getUserAccName().toLowerCase().contains(ManageAccount.keyword.toLowerCase().trim())){
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+        else {
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

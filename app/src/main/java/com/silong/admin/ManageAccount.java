@@ -6,14 +6,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.silong.CustomDialog.LoadingDialog;
 import com.silong.Object.User;
 
+import java.util.ArrayList;
+
 public class ManageAccount extends AppCompatActivity {
+
+    public static String keyword = "";
 
     EditText accountSearchEt;
     ImageView accountSearchIv, accountCreateIv, accountBackIv;
@@ -39,15 +48,33 @@ public class ManageAccount extends AppCompatActivity {
         accountsRecycler.setHasFixedSize(true);
         accountsRecycler.setLayoutManager(new LinearLayoutManager(ManageAccount.this));
 
-        UserAccountData[] accountData = new UserAccountData[AdminData.users.size()];
-        for (User user : AdminData.users){
-            accountData[AdminData.users.indexOf(user)] = new UserAccountData(
-              user.getFirstName() + " " + user.getLastName(),
-              user.getEmail(), user.getPhoto());
-        }
+        loadAccountList();
 
-        AccountAdapter accountAdapter = new AccountAdapter(accountData, ManageAccount.this);
-        accountsRecycler.setAdapter(accountAdapter);
+        accountSearchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                keyword = accountSearchEt.getText().toString();
+                loadAccountList();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        accountSearchIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                keyword = accountSearchEt.getText().toString();
+                loadAccountList();
+            }
+        });
 
         accountBackIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +90,24 @@ public class ManageAccount extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+
+    public void loadAccountList(){
+        LoadingDialog loadingDialog = new LoadingDialog(ManageAccount.this);
+        loadingDialog.startLoadingDialog();
+
+        UserAccountData[] accountData = new UserAccountData[AdminData.users.size()];
+
+        for (User user : AdminData.users){
+            String name = user.getFirstName() + " " + user.getLastName();
+            accountData[AdminData.users.indexOf(user)] = new UserAccountData(name, user.getEmail(), user.getPhoto());
+        }
+
+        AccountAdapter accountAdapter = new AccountAdapter(accountData, ManageAccount.this);
+        accountsRecycler.setAdapter(accountAdapter);
+
+        loadingDialog.dismissLoadingDialog();
     }
 
     public void back(View view){
