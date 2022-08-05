@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.silong.CustomView.DeactivationDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.Object.User;
 
@@ -61,6 +62,8 @@ public class UserInformation extends AppCompatActivity {
 
     public void onToggleStatus(View view){
         if (disableSw.isChecked()){
+            DeactivationDialog deactivationDialog = new DeactivationDialog(UserInformation.this, nameTv.getText().toString());
+            deactivationDialog.show();
             Toast.makeText(this, "Checked", Toast.LENGTH_SHORT).show();
         }
         else {
