@@ -8,17 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.silong.CustomDialog.LoadingDialog;
+import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
-
-import java.util.ArrayList;
 
 public class ManageAccount extends AppCompatActivity {
 
@@ -49,7 +45,25 @@ public class ManageAccount extends AppCompatActivity {
         accountsRecycler.setLayoutManager(new LinearLayoutManager(ManageAccount.this));
 
         loadAccountList();
+        manualAddSearchListener();
 
+    }
+
+    public void onPressedBack(View view){
+        onBackPressed();
+    }
+
+    public void onPressedAdd(View view){
+        Intent i = new Intent(ManageAccount.this, CreateAdminAccount.class);
+        startActivity(i);
+    }
+
+    public void onPressedSearch(View view){
+        keyword = accountSearchEt.getText().toString();
+        loadAccountList();
+    }
+
+    private void manualAddSearchListener(){
         accountSearchEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -67,31 +81,7 @@ public class ManageAccount extends AppCompatActivity {
 
             }
         });
-
-        accountSearchIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                keyword = accountSearchEt.getText().toString();
-                loadAccountList();
-            }
-        });
-
-        accountBackIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
-        accountCreateIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(ManageAccount.this, CreateAdminAccount.class);
-                startActivity(i);
-            }
-        });
     }
-
 
     public void loadAccountList(){
         LoadingDialog loadingDialog = new LoadingDialog(ManageAccount.this);

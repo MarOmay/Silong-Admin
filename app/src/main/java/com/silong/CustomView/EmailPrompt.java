@@ -1,4 +1,4 @@
-package com.silong.CustomDialog;
+package com.silong.CustomView;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +14,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.silong.Operation.InputValidator;
-import com.silong.admin.AdminData;
-import com.silong.admin.LogIn;
 import com.silong.admin.R;
 
 public class EmailPrompt  extends MaterialAlertDialogBuilder{

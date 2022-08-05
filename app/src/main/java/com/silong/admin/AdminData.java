@@ -5,9 +5,8 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.silong.CustomDialog.LoadingDialog;
+import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
 
 import java.io.BufferedReader;

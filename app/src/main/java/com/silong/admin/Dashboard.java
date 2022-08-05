@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,16 +24,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.silong.CustomDialog.LoadingDialog;
+import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
 import com.silong.Operation.ImageProcessor;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Dashboard extends AppCompatActivity {
 

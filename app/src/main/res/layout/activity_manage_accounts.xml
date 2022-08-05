@@ -21,6 +21,7 @@
 
         <ImageView
             android:id="@+id/accountBackIv"
+            android:onClick="onPressedBack"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
@@ -39,6 +40,7 @@
 
         <ImageView
             android:id="@+id/accountCreateIv"
+            android:onClick="onPressedAdd"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
@@ -82,6 +84,7 @@
 
                 <ImageView
                     android:id="@+id/accountSearchIv"
+                    android:onClick="onPressedSearch"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
