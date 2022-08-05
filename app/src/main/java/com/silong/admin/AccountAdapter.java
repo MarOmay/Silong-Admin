@@ -11,8 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Locale;
-
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
 
     UserAccountData[] userAccountData;
@@ -35,9 +33,22 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final UserAccountData userAccountDataList = userAccountData[position];
-        holder.userAccName.setText(userAccountDataList.getUserAccName());
+
+        if (userAccountDataList.getUserAccName().equals("null null")){
+            holder.userAccName.setText("Loading profile...");
+        }
+        else {
+            holder.userAccName.setText(userAccountDataList.getUserAccName());
+        }
+
         holder.userAccEmail.setText(userAccountDataList.getUserAccEmail());
-        holder.userAccPic.setImageBitmap(userAccountDataList.getUserAvatar());
+
+        if(userAccountDataList.getUserAvatar() == null){
+            holder.userAccPic.setImageResource(R.drawable.avatar_placeholder);
+        }
+        else {
+            holder.userAccPic.setImageBitmap(userAccountDataList.getUserAvatar());
+        }
 
         //Filter visibility by search keyword
         if (ManageAccount.keyword.length() < 1){
