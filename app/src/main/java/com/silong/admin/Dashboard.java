@@ -233,6 +233,8 @@ public class Dashboard extends AppCompatActivity {
                     String photo = snapshot.getValue().toString();
                     Bitmap bitmap = new ImageProcessor().toBitmap(photo);
                     new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "avatar-" + uid);
+                    AdminData.populateAccounts(Dashboard.this);
+                    updateAccountList();
                 }
 
                 @Override
@@ -245,6 +247,11 @@ public class Dashboard extends AppCompatActivity {
         catch (Exception e){
             Log.d("Dashboard", e.getMessage());
         }
+    }
+
+    private void updateAccountList(){
+        Intent intent = new Intent("update-account-list");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     //Broadcast Receivers
