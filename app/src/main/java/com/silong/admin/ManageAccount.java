@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,11 @@ import android.widget.ImageView;
 
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ManageAccount extends AppCompatActivity {
 
@@ -93,6 +99,15 @@ public class ManageAccount extends AppCompatActivity {
     public void loadAccountList(){
         LoadingDialog loadingDialog = new LoadingDialog(ManageAccount.this);
         loadingDialog.startLoadingDialog();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            AdminData.users.sort(new Comparator<User>() {
+                @Override
+                public int compare(User user, User t1) {
+                    return user.getFirstName().toLowerCase().compareTo(t1.getFirstName().toLowerCase());
+                }
+            });
+        }
 
         UserAccountData[] accountData = new UserAccountData[AdminData.users.size()];
 
