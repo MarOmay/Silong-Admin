@@ -42,6 +42,8 @@ public class ManageAccount extends AppCompatActivity {
         setContentView(R.layout.activity_manage_accounts);
         getSupportActionBar().hide();
 
+        keyword = "";
+
         //to adopt status bar to the pink header
         Window window = this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.pink));
