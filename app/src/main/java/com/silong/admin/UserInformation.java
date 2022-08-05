@@ -62,11 +62,11 @@ public class UserInformation extends AppCompatActivity {
 
     public void onToggleStatus(View view){
         if (disableSw.isChecked()){
-            DeactivationDialog deactivationDialog = new DeactivationDialog(UserInformation.this, nameTv.getText().toString());
-            deactivationDialog.show();
             Toast.makeText(this, "Checked", Toast.LENGTH_SHORT).show();
         }
         else {
+            DeactivationDialog deactivationDialog = new DeactivationDialog(UserInformation.this, nameTv.getText().toString());
+            deactivationDialog.show();
             Toast.makeText(this, "Unchecked", Toast.LENGTH_SHORT).show();
         }
     }
