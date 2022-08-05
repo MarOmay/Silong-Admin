@@ -227,6 +227,18 @@ public class Dashboard extends AppCompatActivity {
 
                 }
             });
+            tempReference.child("gender").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String gender = snapshot.getValue().toString();
+                    AdminData.writeToLocal(getApplicationContext(), uid, "gender", gender);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             tempReference.child("photo").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

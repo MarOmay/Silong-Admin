@@ -13,10 +13,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
@@ -47,6 +49,9 @@ public class ManageAccount extends AppCompatActivity {
 
         //Receive trigger from Dashbooard to update account list
         LocalBroadcastManager.getInstance(this).registerReceiver(mTriggerUpdate, new IntentFilter("update-account-list"));
+
+        //Receive uid from AccountAdapter
+        LocalBroadcastManager.getInstance(this).registerReceiver(mShowUser, new IntentFilter("show-selected-user"));
 
         accountSearchEt = (EditText) findViewById(R.id.accountSearchEt);
         accountSearchIv = (ImageView) findViewById(R.id.accountSearchIv);
@@ -100,20 +105,26 @@ public class ManageAccount extends AppCompatActivity {
         LoadingDialog loadingDialog = new LoadingDialog(ManageAccount.this);
         loadingDialog.startLoadingDialog();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            AdminData.users.sort(new Comparator<User>() {
-                @Override
-                public int compare(User user, User t1) {
-                    return user.getFirstName().toLowerCase().compareTo(t1.getFirstName().toLowerCase());
-                }
-            });
+        try{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                AdminData.users.sort(new Comparator<User>() {
+                    @Override
+                    public int compare(User user, User t1) {
+                        return user.getFirstName().toLowerCase().compareTo(t1.getFirstName().toLowerCase());
+                    }
+                });
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(this, "Preparing resources...", Toast.LENGTH_SHORT).show();
+            Log.d("ManageAccount", e.getMessage());
         }
 
         UserAccountData[] accountData = new UserAccountData[AdminData.users.size()];
 
         for (User user : AdminData.users){
             String name = user.getFirstName() + " " + user.getLastName();
-            accountData[AdminData.users.indexOf(user)] = new UserAccountData(name, user.getEmail(), user.getPhoto());
+            accountData[AdminData.users.indexOf(user)] = new UserAccountData(user.getUserID(), name, user.getEmail(), user.getPhoto());
         }
 
         AccountAdapter accountAdapter = new AccountAdapter(accountData, ManageAccount.this);
@@ -133,6 +144,17 @@ public class ManageAccount extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver mShowUser = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String uid = intent.getStringExtra("uid");
+            Intent i = new Intent(ManageAccount.this, UserInformation.class);
+            i.putExtra("uid", uid);
+            startActivity(i);
+            finish();
+        }
+    };
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(ManageAccount.this, Dashboard.class);
@@ -145,5 +167,6 @@ public class ManageAccount extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mTriggerUpdate);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mShowUser);
     }
 }

@@ -19,6 +19,7 @@
 
         <ImageView
             android:id="@+id/accountBackIv"
+            android:onClick="onPressedBack"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
@@ -77,6 +78,7 @@
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/disableSw"
+                    android:onClick="onToggleStatus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -128,7 +130,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1.7"
-                        android:src="@drawable/gender_male"/>
+                        android:src="@drawable/gender_male" />
 
                 </LinearLayout>
 

@@ -69,7 +69,12 @@ public class AdminData {
             bufferedReader.close();
         }
         catch (Exception e){
-            Log.d("AdminData", e.getMessage());
+            try{
+                Log.d("AdminData", e.getMessage());
+            }
+            catch (Exception ex){
+                //For some reason this causes the app to crash, so I had to enclose Log in another try-catch
+            }
         }
     }
 
@@ -110,6 +115,7 @@ public class AdminData {
                         case "email": user.setEmail(temp[1]); break;
                         case "contact": user.setContact(temp[1]); break;
                         case "birthday" : user.setBirthday(temp[1]); break;
+                        case "gender" : user.setGender(Integer.parseInt(temp[1]));
                     }
 
                 }

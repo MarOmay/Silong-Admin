@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 public class UserAccountData {
 
+    private String userID;
     private String userAccName;
     private String userAccEmail;
     private Integer userAccPic;
@@ -15,10 +16,19 @@ public class UserAccountData {
         this.userAccPic = userAccPic;
     }
 
-    public UserAccountData(String userAccName, String userAccEmail, Bitmap userAvatar) {
+    public UserAccountData(String uid, String userAccName, String userAccEmail, Bitmap userAvatar) {
+        this.userID = uid;
         this.userAccName = userAccName;
         this.userAccEmail = userAccEmail;
         this.userAvatar = userAvatar;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getUserAccName() {
