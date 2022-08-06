@@ -22,13 +22,17 @@ public class DeactivationDialog extends MaterialAlertDialogBuilder {
         super.setPositiveButton(Html.fromHtml("<b>"+"YES"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //codes here
+                Intent intent = new Intent("deactivate-user");
+                intent.putExtra("deactivate", true);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
         super.setNegativeButton(Html.fromHtml("<b>"+"CANCEL"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //codes here
+                Intent intent = new Intent("deactivate-user");
+                intent.putExtra("deactivate", false);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
     }

@@ -3,6 +3,7 @@ package com.silong.CustomView;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
@@ -30,14 +31,23 @@ public class LoadingDialog {
         pBar.setIndeterminate(true);
         pBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(251,82,139)));
         builder.setView(pBar);
-
-        alertDialog = builder.show();
-        alertDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        alertDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        try{
+            alertDialog = builder.show();
+            alertDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            alertDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        }
+        catch (Exception e){
+            Log.d("LoadingDialog", e.getMessage());
+        }
     }
 
     //to dismiss the dialog
     public void dismissLoadingDialog() {
-        alertDialog.dismiss();
+        try{
+            alertDialog.dismiss();
+        }
+        catch (Exception e){
+            Log.d("LoadingDialog", e.getMessage());
+        }
     }
 }

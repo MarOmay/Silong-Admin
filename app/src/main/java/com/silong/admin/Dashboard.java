@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
 import com.silong.Operation.ImageProcessor;
+import com.silong.Operation.Utility;
 
 import java.io.File;
 
@@ -108,45 +109,52 @@ public class Dashboard extends AppCompatActivity {
     //Asynchronous and background activities
 
     private void fetchActiveAccounts(){
-        LoadingDialog loadingDialog = new LoadingDialog(Dashboard.this);
-        loadingDialog.startLoadingDialog();
-        //Get all User accounts
-        mReference = mDatabase.getReference("accountSummary");
-        mReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try{
-                    //Get all User uid
-                    for (DataSnapshot snap : snapshot.getChildren()){
+        if (Utility.internetConnection(getApplicationContext())){
+            LoadingDialog loadingDialog = new LoadingDialog(Dashboard.this);
+            loadingDialog.startLoadingDialog();
+            //Get all User accounts
+            mReference = mDatabase.getReference("accountSummary");
+            mReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    try{
+                        //Get all User uid
+                        for (DataSnapshot snap : snapshot.getChildren()){
 
-                        File file = new File(getFilesDir(), "account-" + snap.getKey());
-                        if (file.exists()){
-                            //Check if status of local record matches
-                            User tempUser = AdminData.fetchAccountFromLocal(Dashboard.this, snap.getKey());
-                            if (tempUser.getAccountStatus() != (Boolean) snap.getValue()){
-                                //delete local record, to rewrite new record
-                                file.delete();
+                            File file = new File(getFilesDir(), "account-" + snap.getKey());
+                            if (file.exists()){
+                                //Check if status of local record matches
+                                User tempUser = AdminData.fetchAccountFromLocal(Dashboard.this, snap.getKey());
+                                if (tempUser.getAccountStatus() != (Boolean) snap.getValue()){
+                                    //delete local record, to rewrite new record
+                                    file.delete();
+                                    fetchAccountFromCloud(snap.getKey());
+                                }
+                            }
+                            else {
                                 fetchAccountFromCloud(snap.getKey());
                             }
-                        }
-                        else {
-                            fetchAccountFromCloud(snap.getKey());
-                        }
 
+                        }
                     }
+                    catch (Exception e){
+                        Log.d("Dashboard", e.getMessage());
+                    }
+                    AdminData.populateAccounts(Dashboard.this);
+                    loadingDialog.dismissLoadingDialog();
                 }
-                catch (Exception e){
-                    Log.d("Dashboard", e.getMessage());
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    AdminData.populateAccounts(Dashboard.this);
+                    loadingDialog.dismissLoadingDialog();
                 }
-                AdminData.populateAccounts(Dashboard.this);
-                loadingDialog.dismissLoadingDialog();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+            });
+        }
+        else {
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+            AdminData.populateAccounts(Dashboard.this);
+        }
     }
 
     private void fetchAccountFromCloud(String uid){
