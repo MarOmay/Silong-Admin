@@ -24,8 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
+            android:onClick="back"
             android:src="@drawable/ic_round_arrow_back_ios_24"
-            app:tint="@color/whitey" />
+            app:tint="@color/whitey"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <TextView
             android:layout_width="match_parent"
@@ -67,6 +69,7 @@
             app:strokeWidth="1dp">
 
             <LinearLayout
+                android:onClick="onAddRecordPressed"
                 android:id="@+id/recordsAddTile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -136,5 +139,13 @@
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recordsRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp" />
 
 </LinearLayout>

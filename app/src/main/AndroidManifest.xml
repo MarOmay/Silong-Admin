@@ -14,43 +14,49 @@
         android:theme="@style/Theme.SilongAdmin"
         tools:targetApi="31">
         <activity
+            android:name=".EditRecord"
+            android:exported="false" />
+        <activity
+            android:name=".AddRecord"
+            android:exported="false" />
+        <activity
             android:name=".UserInformation"
-            android:launchMode="singleTask"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ManageAccount"
-            android:launchMode="singleTask"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ManageRecords"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Messages"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RequestList"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CreateAdminAccount"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ProcessSignUp"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Header"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LogIn"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Splash"
             android:exported="true"
@@ -64,11 +70,11 @@
         <activity
             android:name=".Dashboard"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
