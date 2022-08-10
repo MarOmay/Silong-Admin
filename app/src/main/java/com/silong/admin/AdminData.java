@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.silong.CustomView.LoadingDialog;
+import com.silong.Object.Pet;
 import com.silong.Object.User;
 
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ public class AdminData {
 
     public static ArrayList<User> users = new ArrayList<User>();
     public static ArrayList<String> uidList = new ArrayList<>();
+    public static ArrayList<Pet> pets = new ArrayList<>();
 
     public static void logout(){
         //Delete user-related local files
@@ -140,6 +142,62 @@ public class AdminData {
         }
     }
 
+    public static void populateRecords(Activity activity){
+        //Clear current ArrayList to avoid duplicate entries
+        pets.clear();
+
+        /* Fetch info from APP-SPECIFIC file, then populate static variables */
+
+        try{
+            ArrayList<File> petRecords = new ArrayList<File>();
+
+            for (File file : activity.getFilesDir().listFiles()){
+                if (file.getAbsolutePath().contains("pet-")){
+                    petRecords.add(file);
+                }
+            }
+
+            //read each account info
+            for (File record : petRecords){
+                Pet pet = new Pet();
+
+                //Read basic info
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(record));
+                String line;
+                while ((line = bufferedReader.readLine()) != null){
+                    line = line.replace(";","");
+
+                    String [] temp = line.split(":");
+                    switch (temp[0]){
+                        case "petID": pet.setPetID(temp[1]); break;
+                        case "status": pet.setStatus(Integer.parseInt(temp[1])); break;
+                        case "type": pet.setType(Integer.parseInt(temp[1])); break;
+                        case "gender": pet.setGender(Integer.parseInt(temp[1])); break;
+                        case "size": pet.setSize(Integer.parseInt(temp[1])); break;
+                        case "age": pet.setAge(Integer.parseInt(temp[1])); break;
+                        case "color" : pet.setColor(temp[1]); break;
+                    }
+
+                }
+                bufferedReader.close();
+
+                //Read avatar
+                try{
+                    pet.setPhoto(BitmapFactory.decodeFile(activity.getFilesDir() + "/petpic-" + pet.getPetID()));
+                }
+                catch (Exception e){
+                    Log.d("AdminData-pR", e.getMessage());
+                }
+
+                pets.add(pet);
+            }
+
+        }
+        catch (Exception e){
+            Log.d("AdminData-pR", e.getMessage());
+        }
+    }
+
     public static void writeToLocal(Context context, String filename, String desc, String content){
         //Check if file exists
         File file = new File(context.getFilesDir() + "/account-" + filename);
@@ -213,5 +271,36 @@ public class AdminData {
         }
 
         return user;
+    }
+
+    public static Pet fetchRecordFromLocal(Activity activity, String uid){
+        Pet pet = new Pet();
+
+        try{
+            File file = new File(activity.getFilesDir(), "pet-" + uid);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = bufferedReader.readLine()) != null){
+                line = line.replace(";","");
+
+                String [] temp = line.split(":");
+                switch (temp[0]){
+                    case "petID": pet.setPetID(temp[1]); break;
+                    case "status": pet.setStatus(Integer.parseInt(temp[1])); break;
+                    case "type": pet.setType(Integer.parseInt(temp[1])); break;
+                    case "gender": pet.setGender(Integer.parseInt(temp[1])); break;
+                    case "size": pet.setSize(Integer.parseInt(temp[1])); break;
+                    case "age": pet.setAge(Integer.parseInt(temp[1])); break;
+                    case "color" : pet.setColor(temp[1]); break;
+                }
+
+            }
+            bufferedReader.close();
+        }
+        catch (Exception e){
+            Log.d("AdminData-fRFL", e.getMessage());
+        }
+
+        return pet;
     }
 }

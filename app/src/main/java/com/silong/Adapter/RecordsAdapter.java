@@ -1,4 +1,4 @@
-package com.silong.admin;
+package com.silong.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.silong.admin.ManageRecords;
+import com.silong.Object.PetRecordsData;
+import com.silong.admin.R;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder>{
 
@@ -37,7 +41,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         holder.estAge.setText(petRecordsDataList.getEstAge());
         holder.estSize.setText(petRecordsDataList.getEstSize());
         holder.petColor.setText(petRecordsDataList.getPetColor());
-        holder.petPic.setImageResource(petRecordsDataList.getPetPic());
+        holder.petPic.setImageBitmap(petRecordsDataList.getPetpic());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

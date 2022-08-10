@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 public class Pet {
 
-    private int id;
+    private String petID;
     private int status;
     private int type;
     private int gender;
@@ -18,8 +18,8 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(int id, int status, int type, int gender, String color, int age, int size, int likes) {
-        this.id = id;
+    public Pet(String id, int status, int type, int gender, String color, int age, int size, int likes) {
+        this.petID = id;
         this.status = status;
         this.type = type;
         this.gender = gender;
@@ -29,12 +29,12 @@ public class Pet {
         this.likes = likes;
     }
 
-    public int getId() {
-        return id;
+    public String getPetID() {
+        return petID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPetID(String petID) {
+        this.petID = petID;
     }
 
     public int getStatus() {

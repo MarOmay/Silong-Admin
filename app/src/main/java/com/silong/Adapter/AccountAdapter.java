@@ -1,4 +1,4 @@
-package com.silong.admin;
+package com.silong.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.silong.admin.ManageAccount;
+import com.silong.admin.R;
+import com.silong.Object.UserAccountData;
 
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
 

@@ -89,6 +89,10 @@ public class AddRecord extends AppCompatActivity {
             Toast.makeText(this, "Please select a photo.", Toast.LENGTH_SHORT).show();
             return;
         }
+        else if (new ImageProcessor().checkFileSize(addRecordPicIv.getDrawable(), true) == false){
+            Toast.makeText(getApplicationContext(), "Please select a picture less than 2MB.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         else if (typeToggle.getCheckedChipIds().isEmpty()){
             Toast.makeText(this, "Please select pet type.", Toast.LENGTH_SHORT).show();
             return;
@@ -111,7 +115,7 @@ public class AddRecord extends AppCompatActivity {
             //identify selected age
             pet.setAge(PetAge.YOUNG);
             //identify selected type
-            pet.setType(genderToggle.getCheckedChipId() == R.id.addDogChip ? PetType.DOG : PetType.CAT);
+            pet.setType(typeToggle.getCheckedChipId() == R.id.addDogChip ? PetType.DOG : PetType.CAT);
             //identify selected gender
             pet.setGender(genderToggle.getCheckedChipId() == R.id.addMaleChip ? Gender.MALE : Gender.FEMALE);
             //identify selected size
@@ -162,6 +166,7 @@ public class AddRecord extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Record created successfully.", Toast.LENGTH_SHORT).show();
                                 try {
                                     //write to file
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "petID", String.valueOf(counter));
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "status", String.valueOf(PetStatus.ACTIVE));
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "type", String.valueOf(pet.getType()));
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "gender", String.valueOf(pet.getGender()));

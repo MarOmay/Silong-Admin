@@ -5,15 +5,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.material.card.MaterialCardView;
+import com.silong.Adapter.RecordsAdapter;
+import com.silong.CustomView.LoadingDialog;
+import com.silong.EnumClass.Gender;
+import com.silong.EnumClass.PetAge;
+import com.silong.EnumClass.PetColor;
+import com.silong.EnumClass.PetSize;
+import com.silong.EnumClass.PetType;
+import com.silong.Object.Pet;
+import com.silong.Object.PetRecordsData;
 import com.silong.Operation.Utility;
 
 public class ManageRecords extends AppCompatActivity {
@@ -41,22 +49,7 @@ public class ManageRecords extends AppCompatActivity {
         recordsRecycler.setHasFixedSize(true);
         recordsRecycler.setLayoutManager(new LinearLayoutManager(ManageRecords.this));
 
-        //Array for accounts
-        PetRecordsData[] petRecordsData = new PetRecordsData[]{
-                new PetRecordsData("Male Dog", "Young", "Medium", "Brown, Cream", R.drawable.sample1),
-                new PetRecordsData("Female Dog", "Old", "Small", "Pink, Cream", R.drawable.sample2),
-                new PetRecordsData("Male Dog", "Young", "Large", "Brown, Black", R.drawable.sample3),
-                new PetRecordsData("Male Cat", "Young", "Small", "Cookies, Cream", R.drawable.sample4),
-                new PetRecordsData("Female Cat", "Young", "Gigantic", "Blue, Cream", R.drawable.sample5),
-                new PetRecordsData("Male Dog", "Young", "Medium", "Brown, Cream", R.drawable.sample1),
-                new PetRecordsData("Female Dog", "Old", "Small", "Pink, Cream", R.drawable.sample2),
-                new PetRecordsData("Male Dog", "Young", "Large", "Brown, Black", R.drawable.sample3),
-                new PetRecordsData("Male Cat", "Young", "Small", "Cookies, Cream", R.drawable.sample4),
-                new PetRecordsData("Female Cat", "Young", "Gigantic", "Blue, Cream", R.drawable.sample5)
-        };
-
-        RecordsAdapter recordsAdapter = new RecordsAdapter(petRecordsData, ManageRecords.this);
-        recordsRecycler.setAdapter(recordsAdapter);
+        loadRecordList();
     }
 
     public void onPressedAddRecord(View view){
@@ -67,6 +60,64 @@ public class ManageRecords extends AppCompatActivity {
         else {
             Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void loadRecordList(){
+        LoadingDialog loadingDialog = new LoadingDialog(ManageRecords.this);
+        loadingDialog.startLoadingDialog();
+
+        PetRecordsData[] recordsData = new PetRecordsData[AdminData.pets.size()];
+
+        for (Pet pet : AdminData.pets){
+            //translate gender and type
+            String genderType = "";
+            switch (pet.getGender()){
+                case Gender.MALE: genderType = "Male"; break;
+                case Gender.FEMALE: genderType = "Female"; break;
+            }
+            switch (pet.getType()){
+                case PetType.DOG: genderType += " Dog"; break;
+                case PetType.CAT: genderType += " Cat"; break;
+            }
+
+            //translate age
+            String age = "";
+            switch (pet.getAge()){
+                case PetAge.YOUNG: age = "Young"; break;
+                case PetAge.ADULT: age = "Adult"; break;
+                case PetAge.SENIOR: age = "Senior"; break;
+            }
+
+            //translate color
+            String color = "";
+            for (char c : pet.getColor().toCharArray()){
+                switch (Integer.parseInt(c+"")){
+                    case PetColor.BLACK: color += "Black "; break;
+                    case PetColor.BROWN: color += "Brown "; break;
+                    case PetColor.CREAM: color += "Cream "; break;
+                    case PetColor.WHITE: color += "White "; break;
+                    case PetColor.ORANGE: color += "Orange "; break;
+                    case PetColor.GRAY: color += "Gray "; break;
+                }
+            }
+            color.trim();
+            color.replace(" ", " / ");
+
+            //translate size
+            String size = "";
+            switch (pet.getSize()){
+                case PetSize.SMALL: size = "Small"; break;
+                case PetSize.MEDIUM: size = "Medium"; break;
+                case PetSize.LARGE: size = "Large"; break;
+            }
+
+            recordsData[AdminData.pets.indexOf(pet)] = new PetRecordsData(pet.getPetID(), genderType, age, color, size, pet.getPhoto());
+        }
+
+        RecordsAdapter recordsAdapter = new RecordsAdapter(recordsData, ManageRecords.this);
+        recordsRecycler.setAdapter(recordsAdapter);
+
+        loadingDialog.dismissLoadingDialog();
     }
 
     public void back(View view){

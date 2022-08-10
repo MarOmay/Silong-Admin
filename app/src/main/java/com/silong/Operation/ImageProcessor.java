@@ -18,7 +18,7 @@ import java.io.UnsupportedEncodingException;
 public class ImageProcessor {
 
     //Maximum file size allowed [MB] * [KB] * [B]
-    private final int FILE_LIMIT_IN_KB = 1 * 1024 * 1024;
+    private final int FILE_LIMIT_IN_KB = 2 * 1024 * 1024;
     private final int COMPRESSION = 50;
 
     public ImageProcessor(){
@@ -131,7 +131,6 @@ public class ImageProcessor {
             String data = desc + ":" + content + ";\n";
             fileOutputStream.write(data.getBytes());
             fileOutputStream.flush();
-            Log.d("USER.DAT", content);
         }
         catch (Exception e){
             Log.d("LLS", e.getMessage());

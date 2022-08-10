@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.LoadingDialog;
+import com.silong.Object.Pet;
 import com.silong.Object.User;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
@@ -60,6 +61,11 @@ public class Dashboard extends AppCompatActivity {
 
         //Update records
         fetchActiveAccounts();
+        fetchActiveRecords();
+
+        for (File file : getFilesDir().listFiles()){
+            Log.d("FileInDir", file.getAbsolutePath());
+        }
 
         requestsPad = (LinearLayout) findViewById(R.id.requestsPad);
         requestsDot = (MaterialCardView) findViewById(R.id.requestsDot);
@@ -139,7 +145,7 @@ public class Dashboard extends AppCompatActivity {
                             list.add("account-" + snap.getKey());
                         }
                         //delete local copy of deleted accounts
-                        cleanLocalRecord(list);
+                        cleanLocalRecord(list, "account-");
                     }
                     catch (Exception e){
                         Log.d("Dashboard", e.getMessage());
@@ -279,13 +285,175 @@ public class Dashboard extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void cleanLocalRecord(ArrayList<String> list){
+    private void fetchActiveRecords(){
+        if (Utility.internetConnection(getApplicationContext())){
+            LoadingDialog loadingDialog = new LoadingDialog(Dashboard.this);
+            loadingDialog.startLoadingDialog();
+            //Get all User accounts
+            mReference = mDatabase.getReference("Pets");
+            mReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    try{
+                        //Get all User uid
+                        ArrayList<String> list = new ArrayList<>();
+                        for (DataSnapshot snap : snapshot.getChildren()){
+
+                            //skip counter to avoid error
+                            if (snap.getKey().equals("counter"))
+                                continue;
+
+                            File file = new File(getFilesDir(), "pet-" + snap.getKey());
+                            if (file.exists()){
+                                //Check if status of local record matches
+                                Pet tempPet = AdminData.fetchRecordFromLocal(Dashboard.this, snap.getKey());
+                                if (tempPet.getStatus() != Integer.valueOf(snap.getValue().toString())){
+                                    //delete local record, to rewrite new record
+                                    file.delete();
+                                    fetchRecordFromCloud(snap.getKey());
+                                }
+                            }
+                            else {
+                                fetchRecordFromCloud(snap.getKey());
+                            }
+                            list.add("pet-" + snap.getKey());
+                        }
+                        //delete local copy of deleted accounts
+                        cleanLocalRecord(list, "pet-");
+                    }
+                    catch (Exception e){
+                        Log.d("Dashboard", e.getMessage());
+                    }
+                    AdminData.populateRecords(Dashboard.this);
+                    updateRecordList();
+                    loadingDialog.dismissLoadingDialog();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    AdminData.populateRecords(Dashboard.this);
+                    loadingDialog.dismissLoadingDialog();
+                }
+            });
+        }
+        else {
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+            AdminData.populateRecords(Dashboard.this);
+        }
+    }
+
+    private void fetchRecordFromCloud(String id){
+        try{
+            //create local copy
+            AdminData.writePetToLocal(getApplicationContext(), id, "petID", id);
+
+            DatabaseReference tempReference = mDatabase.getReference("Pets/" + id);
+            tempReference.child("status").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int status = Integer.valueOf(snapshot.getValue().toString());
+                    AdminData.writePetToLocal(getApplicationContext(), id, "status", String.valueOf(status));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("type").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int type = Integer.valueOf(snapshot.getValue().toString());
+                    AdminData.writePetToLocal(getApplicationContext(), id, "type", String.valueOf(type));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("gender").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int gender = Integer.valueOf(snapshot.getValue().toString());
+                    AdminData.writePetToLocal(getApplicationContext(), id, "gender", String.valueOf(gender));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("size").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int size = Integer.valueOf(snapshot.getValue().toString());
+                    AdminData.writePetToLocal(getApplicationContext(), id, "size", String.valueOf(size));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("age").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int age = Integer.valueOf(snapshot.getValue().toString());
+                    AdminData.writePetToLocal(getApplicationContext(), id, "age", String.valueOf(age));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("color").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String color = snapshot.getValue().toString();
+                    AdminData.writePetToLocal(getApplicationContext(), id, "color", String.valueOf(color));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("photo").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String photo = snapshot.getValue().toString();
+                    Bitmap bitmap = new ImageProcessor().toBitmap(photo);
+                    new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "petpic-" + id);
+                    AdminData.populateRecords(Dashboard.this);
+                    updateRecordList();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+        catch (Exception e){
+            Log.d("Dashboard", e.getMessage());
+        }
+    }
+
+    private void updateRecordList(){
+        Intent intent = new Intent("update-record-list");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void cleanLocalRecord(ArrayList<String> list, String prefix){
         File [] files = getFilesDir().listFiles();
         ArrayList<File> accountFiles = new ArrayList<>();
 
         //filter out non-account files
         for (File file : files){
-            if (file.getAbsolutePath().contains("account-")){
+            if (file.getAbsolutePath().contains(prefix)){
                 accountFiles.add(file);
             }
         }
