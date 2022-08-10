@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,6 +53,8 @@ public class AddRecord extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
 
+    private Pet selectedPet;
+
     private int counter = 0;
 
     @Override
@@ -77,6 +80,56 @@ public class AddRecord extends AppCompatActivity {
         sizeToggle = findViewById(R.id.sizeToggle);
         colorToggle = findViewById(R.id.colorToggle);
         saveRecordBtn = (Button) findViewById(R.id.saveRecordBtn);
+
+        try {
+            String id = getIntent().getStringExtra("id");
+            selectedPet = getPet(id);
+            if (selectedPet != null) {
+                addRecordPicIv.setImageBitmap(selectedPet.getPhoto());
+
+                //set type
+                switch (selectedPet.getType()){
+                    case PetType.DOG: typeToggle.check(R.id.addDogChip); break;
+                    case PetType.CAT: typeToggle.check(R.id.addCatChip); break;
+                }
+
+                //set gender
+                switch (selectedPet.getGender()){
+                    case Gender.MALE: genderToggle.check(R.id.addMaleChip); break;
+                    case Gender.FEMALE: genderToggle.check(R.id.addFemaleChip); break;
+                }
+
+                //set size
+                switch (selectedPet.getSize()){
+                    case PetSize.SMALL: sizeToggle.check(R.id.addSmallChip); break;
+                    case PetSize.MEDIUM: sizeToggle.check(R.id.addMediumChip); break;
+                    case PetSize.LARGE: sizeToggle.check(R.id.addLargeChip); break;
+                }
+
+                //set color
+                for (char c : selectedPet.getColor().toCharArray()){
+                    switch (Integer.parseInt(c+"")){
+                        case PetColor.BLACK: colorToggle.check(R.id.addBlackChip); break;
+                        case PetColor.BROWN: colorToggle.check(R.id.addBrownChip); break;
+                        case PetColor.CREAM: colorToggle.check(R.id.addCreamChip); break;
+                        case PetColor.WHITE: colorToggle.check(R.id.addWhiteChip); break;
+                        case PetColor.ORANGE: colorToggle.check(R.id.addOrangeChip); break;
+                        case PetColor.GRAY: colorToggle.check(R.id.addGrayChip); break;
+                    }
+                }
+            }
+        }
+        catch (Exception e){
+            Log.d("AddRecord", e.getMessage());
+        }
+    }
+
+    private Pet getPet(String id) {
+        for (Pet p : AdminData.pets){
+            if (p.getPetID().equals(id))
+                return p;
+        }
+        return null;
     }
 
     public void onPressedPhoto(View view){
@@ -163,8 +216,18 @@ public class AddRecord extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
 
+                                try {
+                                    if (selectedPet != null){
+                                        counter = Integer.parseInt(selectedPet.getPetID());
+                                    }
+                                }
+                                catch (Exception e){
+                                    Log.d("AddRecord", e.getMessage());
+                                }
+
                                 Toast.makeText(getApplicationContext(), "Record created successfully.", Toast.LENGTH_SHORT).show();
                                 try {
+
                                     //write to file
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "petID", String.valueOf(counter));
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "status", String.valueOf(PetStatus.ACTIVE));
@@ -181,8 +244,10 @@ public class AddRecord extends AppCompatActivity {
                                 }
 
                                 //update counter
-                                counter ++;
-                                incrementCounter(counter);
+                                if (selectedPet == null){
+                                    counter ++;
+                                    incrementCounter(counter);
+                                }
 
                                 //go back to previous screen
                                 loadingDialog.dismissLoadingDialog();
