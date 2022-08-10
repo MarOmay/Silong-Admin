@@ -47,6 +47,7 @@ public class ManageRecords extends AppCompatActivity {
 
         //Register receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mShowPet, new IntentFilter("show-selected-pet"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mUpdateList, new IntentFilter("update-record-list"));
 
         recordsBackIv = (ImageView) findViewById(R.id.recordsBackIv);
         recordsAddTile = (LinearLayout) findViewById(R.id.recordsAddTile);
@@ -131,6 +132,13 @@ public class ManageRecords extends AppCompatActivity {
         onBackPressed();
     }
 
+    private BroadcastReceiver mUpdateList = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadRecordList();
+        }
+    };
+
     private BroadcastReceiver mShowPet = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -144,7 +152,8 @@ public class ManageRecords extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent(ManageRecords.this, Dashboard.class);
+        startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         finish();
     }
@@ -152,6 +161,7 @@ public class ManageRecords extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mUpdateList);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mShowPet);
     }
 }

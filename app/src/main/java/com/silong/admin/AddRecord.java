@@ -3,6 +3,7 @@ package com.silong.admin;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -210,7 +211,7 @@ public class AddRecord extends AppCompatActivity {
                 map.put("size", pet.getSize());
                 map.put("photo", pet.getPhotoAsString());
 
-                mReference = mDatabase.getReference("Pets").child(String.valueOf(counter));
+                mReference = mDatabase.getReference("Pets").child(String.valueOf(selectedPet.getPetID()));
                 mReference.updateChildren(map)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -225,7 +226,6 @@ public class AddRecord extends AppCompatActivity {
                                     Log.d("AddRecord", e.getMessage());
                                 }
 
-                                Toast.makeText(getApplicationContext(), "Record created successfully.", Toast.LENGTH_SHORT).show();
                                 try {
 
                                     //write to file
@@ -245,8 +245,12 @@ public class AddRecord extends AppCompatActivity {
 
                                 //update counter
                                 if (selectedPet == null){
+                                    Toast.makeText(getApplicationContext(), "Record created successfully.", Toast.LENGTH_SHORT).show();
                                     counter ++;
                                     incrementCounter(counter);
+                                }
+                                else {
+
                                 }
 
                                 //go back to previous screen
@@ -311,6 +315,11 @@ public class AddRecord extends AppCompatActivity {
         mReference.setValue(n);
     }
 
+    private void updateRecordList(){
+        Intent intent = new Intent("update-record-list");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
     public void back(View view){
         onBackPressed();
     }
@@ -333,7 +342,9 @@ public class AddRecord extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+        Intent intent = new Intent(AddRecord.this, ManageRecords.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        finish();
     }
 }
