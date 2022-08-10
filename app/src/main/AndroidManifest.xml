@@ -18,6 +18,9 @@
         android:theme="@style/Theme.SilongAdmin"
         tools:targetApi="31">
         <activity
+            android:name=".CreateReport"
+            android:exported="false" />
+        <activity
             android:name=".AddRecord"
             android:exported="false" />
         <activity
