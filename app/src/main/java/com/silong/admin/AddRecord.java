@@ -250,7 +250,7 @@ public class AddRecord extends AppCompatActivity {
                                     incrementCounter(counter);
                                 }
                                 else {
-
+                                    Toast.makeText(getApplicationContext(), "Changes may take some time to reflect.", Toast.LENGTH_SHORT).show();
                                 }
 
                                 //go back to previous screen
