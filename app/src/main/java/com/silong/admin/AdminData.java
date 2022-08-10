@@ -24,6 +24,7 @@ public class AdminData {
     public static String contact;
 
     public static ArrayList<User> users = new ArrayList<User>();
+    public static ArrayList<String> uidList = new ArrayList<>();
 
     public static void logout(){
         //Delete user-related local files

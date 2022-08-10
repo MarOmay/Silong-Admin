@@ -30,6 +30,7 @@ import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -119,6 +120,7 @@ public class Dashboard extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     try{
                         //Get all User uid
+                        ArrayList<String> list = new ArrayList<>();
                         for (DataSnapshot snap : snapshot.getChildren()){
 
                             File file = new File(getFilesDir(), "account-" + snap.getKey());
@@ -134,13 +136,16 @@ public class Dashboard extends AppCompatActivity {
                             else {
                                 fetchAccountFromCloud(snap.getKey());
                             }
-
+                            list.add("account-" + snap.getKey());
                         }
+                        //delete local copy of deleted accounts
+                        cleanLocalRecord(list);
                     }
                     catch (Exception e){
                         Log.d("Dashboard", e.getMessage());
                     }
                     AdminData.populateAccounts(Dashboard.this);
+                    updateAccountList();
                     loadingDialog.dismissLoadingDialog();
                 }
 
@@ -272,6 +277,40 @@ public class Dashboard extends AppCompatActivity {
     private void updateAccountList(){
         Intent intent = new Intent("update-account-list");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void cleanLocalRecord(ArrayList<String> list){
+        File [] files = getFilesDir().listFiles();
+        ArrayList<File> accountFiles = new ArrayList<>();
+
+        //filter out non-account files
+        for (File file : files){
+            if (file.getAbsolutePath().contains("account-")){
+                accountFiles.add(file);
+            }
+        }
+
+        //filter deleted accounts
+        ArrayList<File> deletedAccounts = new ArrayList<>();
+        for (File file : accountFiles){
+            boolean found = false;
+            for (String s : list){
+                if (file.getAbsolutePath().contains(s))
+                    found = true;
+            }
+            if (!found)
+                deletedAccounts.add(file);
+        }
+
+        for (File file : deletedAccounts){
+            try {
+                file.delete();
+            }
+            catch (Exception e){
+                Log.d("Dashboarc-cLR", e.getMessage());
+            }
+        }
+
     }
 
     //Broadcast Receivers

@@ -74,12 +74,22 @@ public class UserInformation extends AppCompatActivity {
         contactTv = (TextView) findViewById(R.id.contactTv);
 
         //Display account info
-        disableSw.setChecked(selectedUser.getAccountStatus());
-        profileIv.setImageBitmap(selectedUser.getPhoto());
-        genderIv.setImageResource(selectedUser.getGender() == Gender.MALE ? R.drawable.gender_male : R.drawable.gender_female);
-        nameTv.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
-        emailTv.setText(selectedUser.getEmail());
-        contactTv.setText(selectedUser.getContact());
+        try {
+            disableSw.setChecked(selectedUser.getAccountStatus());
+            profileIv.setImageBitmap(selectedUser.getPhoto());
+            genderIv.setImageResource(selectedUser.getGender() == Gender.MALE ? R.drawable.gender_male : R.drawable.gender_female);
+            nameTv.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
+            emailTv.setText(selectedUser.getEmail());
+            contactTv.setText(selectedUser.getContact());
+        }
+        catch (Exception e){
+            Log.d("UserInfo", e.getMessage());
+            Toast.makeText(this, "Can't display selected user.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(UserInformation.this, Dashboard.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     public void onPressedBack(View view){
