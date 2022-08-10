@@ -65,85 +65,96 @@
             android:layout_height="match_parent"
             android:layout_weight="0.85"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:backgroundTint="@color/lightgray"
-                android:foreground="@drawable/ic_round_camera_alt_24"
-                android:foregroundGravity="center"
-                android:foregroundTint="@color/textgray"
-                app:cardCornerRadius="15dp">
-
-                <ImageView
-                    android:id="@+id/addRecordPicIv"
-                    android:onClick="onPressedPhoto"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1.055"
-            android:orientation="vertical">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TYPE"
-                android:textAlignment="center"
-                android:textColor="@color/textgray"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/typeToggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:saveEnabled="true"
-                app:selectionRequired="true"
-                app:singleLine="true"
-                app:singleSelection="true">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:backgroundTint="@color/lightgray"
+                    android:foreground="@drawable/ic_round_camera_alt_24"
+                    android:foregroundGravity="center"
+                    android:foregroundTint="@color/textgray"
+                    app:cardCornerRadius="15dp">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/addDogChip"
-                    style="@style/My_Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:clickable="true"
-                    android:text="DOG"
+                    <ImageView
+                        android:id="@+id/addRecordPicIv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:onClick="onPressedPhoto"
+                        android:scaleType="centerCrop"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TYPE"
                     android:textAlignment="center"
-                    android:textSize="14sp"
+                    android:textColor="@color/textgray"
+                    android:textSize="15dp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/addCatChip"
-                    style="@style/My_Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:clickable="true"
-                    android:text="CAT"
-                    android:textAlignment="center"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/typeToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:saveEnabled="true"
+                    app:selectionRequired="true"
+                    app:singleLine="false"
+                    app:singleSelection="true">
 
-            </com.google.android.material.chip.ChipGroup>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/addDogChip"
+                        style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:clickable="true"
+                        android:text="DOG"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/addCatChip"
+                        style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:clickable="true"
+                        android:text="CAT"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1.08"
             android:gravity="center"
-            android:layout_weight="1.055"
             android:orientation="vertical">
 
             <TextView
@@ -168,7 +179,7 @@
                 <com.google.android.material.chip.Chip
                     android:id="@+id/addMaleChip"
                     style="@style/My_Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:clickable="true"
                     android:text="MALE"
@@ -179,7 +190,7 @@
                 <com.google.android.material.chip.Chip
                     android:id="@+id/addFemaleChip"
                     style="@style/My_Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:clickable="true"
                     android:text="FEMALE"
@@ -194,8 +205,70 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1.08"
             android:gravity="center"
-            android:layout_weight="1.055"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AGE"
+                android:textAlignment="center"
+                android:textColor="@color/textgray"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:saveEnabled="true"
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/addPuppyChip"
+                    style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:text="PUPPY"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/addYoungChip"
+                    style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:text="YOUNG"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/addOldChip"
+                    style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:text="OLD"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.08"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -258,8 +331,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_weight="0.95"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -361,10 +434,10 @@
 
         <Button
             android:id="@+id/saveRecordBtn"
-            android:onClick="onPressedSave"
             style="@style/pinkButton_style"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
+            android:onClick="onPressedSave"
             android:text="SAVE RECORD" />
 
     </LinearLayout>
