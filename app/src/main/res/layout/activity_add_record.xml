@@ -78,6 +78,7 @@
 
                 <ImageView
                     android:id="@+id/addRecordPicIv"
+                    android:onClick="onPressedPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
@@ -103,6 +104,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/typeToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -154,6 +156,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/genderToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -205,6 +208,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/sizeToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -268,6 +272,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/colorToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:saveEnabled="true"
@@ -356,6 +361,7 @@
 
         <Button
             android:id="@+id/saveRecordBtn"
+            android:onClick="onPressedSave"
             style="@style/pinkButton_style"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
