@@ -124,6 +124,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/addDogChip"
+                        android:onClick="onPressedDog"
                         style="@style/My_Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
@@ -135,6 +136,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/addCatChip"
+                        android:onClick="onPressedCat"
                         style="@style/My_Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
@@ -219,6 +221,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/ageToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

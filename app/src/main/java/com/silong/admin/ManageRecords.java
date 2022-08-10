@@ -91,9 +91,9 @@ public class ManageRecords extends AppCompatActivity {
             //translate age
             String age = "";
             switch (pet.getAge()){
+                case PetAge.PUPPY: age = (pet.getType() == PetType.DOG ? "Puppy" : "Kitten"); break;
                 case PetAge.YOUNG: age = "Young"; break;
-                case PetAge.ADULT: age = "Adult"; break;
-                case PetAge.SENIOR: age = "Senior"; break;
+                case PetAge.OLD: age = "Old"; break;
             }
 
             //translate color

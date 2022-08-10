@@ -49,7 +49,7 @@ public class AddRecord extends AppCompatActivity {
 
     ImageView addRecordPicIv, addRecordBackIv;
     Button saveRecordBtn;
-    ChipGroup typeToggle, genderToggle, sizeToggle, colorToggle;
+    ChipGroup typeToggle, genderToggle, ageToggle, sizeToggle, colorToggle;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
@@ -78,10 +78,15 @@ public class AddRecord extends AppCompatActivity {
         addRecordPicIv = (ImageView) findViewById(R.id.addRecordPicIv);
         typeToggle = findViewById(R.id.typeToggle);
         genderToggle = findViewById(R.id.genderToggle);
+        ageToggle = findViewById(R.id.ageToggle);
         sizeToggle = findViewById(R.id.sizeToggle);
         colorToggle = findViewById(R.id.colorToggle);
         saveRecordBtn = (Button) findViewById(R.id.saveRecordBtn);
 
+        loadForEdit();
+    }
+
+    private void loadForEdit(){
         try {
             String id = getIntent().getStringExtra("id");
             selectedPet = getPet(id);
@@ -92,6 +97,14 @@ public class AddRecord extends AppCompatActivity {
                 switch (selectedPet.getType()){
                     case PetType.DOG: typeToggle.check(R.id.addDogChip); break;
                     case PetType.CAT: typeToggle.check(R.id.addCatChip); break;
+                }
+
+                Chip chip = findViewById(R.id.addPuppyChip);
+                if (selectedPet.getType() == PetType.DOG){
+                    chip.setText("PUPPY");
+                }
+                else {
+                    chip.setText("KITTEN");
                 }
 
                 //set gender
@@ -137,6 +150,16 @@ public class AddRecord extends AppCompatActivity {
         new ImagePicker(AddRecord.this, PICK_IMAGE);
     }
 
+    public void onPressedDog(View view){
+        Chip chip = (Chip) findViewById(R.id.addPuppyChip);
+        chip.setText("PUPPY");
+    }
+
+    public void onPressedCat(View view){
+        Chip chip = (Chip) findViewById(R.id.addPuppyChip);
+        chip.setText("KITTEN");
+    }
+
     public void onPressedSave(View view){
         //validate input
         if (addRecordPicIv.getDrawable() == null){
@@ -153,6 +176,10 @@ public class AddRecord extends AppCompatActivity {
         }
         else if (genderToggle.getCheckedChipIds().isEmpty()){
             Toast.makeText(this, "Please select pet gender.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if (ageToggle.getCheckedChipIds().isEmpty()){
+            Toast.makeText(this, "Please select set age group.", Toast.LENGTH_SHORT).show();
             return;
         }
         else if (sizeToggle.getCheckedChipIds().isEmpty()){
@@ -172,6 +199,12 @@ public class AddRecord extends AppCompatActivity {
             pet.setType(typeToggle.getCheckedChipId() == R.id.addDogChip ? PetType.DOG : PetType.CAT);
             //identify selected gender
             pet.setGender(genderToggle.getCheckedChipId() == R.id.addMaleChip ? Gender.MALE : Gender.FEMALE);
+            //identify selected gender
+            switch (ageToggle.getCheckedChipId()){
+                case R.id.addPuppyChip: pet.setAge(PetAge.PUPPY); break;
+                case R.id.addYoungChip: pet.setAge(PetAge.YOUNG); break;
+                case R.id.addOldChip: pet.setAge(PetAge.OLD); break;
+            }
             //identify selected size
             switch (sizeToggle.getCheckedChipId()){
                 case R.id.addSmallChip: pet.setSize(PetSize.SMALL); break;
@@ -211,20 +244,20 @@ public class AddRecord extends AppCompatActivity {
                 map.put("size", pet.getSize());
                 map.put("photo", pet.getPhotoAsString());
 
-                mReference = mDatabase.getReference("Pets").child(String.valueOf(selectedPet.getPetID()));
+                try {
+                    if (selectedPet != null){
+                        counter = Integer.parseInt(selectedPet.getPetID());
+                    }
+                }
+                catch (Exception e){
+                    Log.d("AddRecord", e.getMessage());
+                }
+
+                mReference = mDatabase.getReference("Pets").child(String.valueOf(counter));
                 mReference.updateChildren(map)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-
-                                try {
-                                    if (selectedPet != null){
-                                        counter = Integer.parseInt(selectedPet.getPetID());
-                                    }
-                                }
-                                catch (Exception e){
-                                    Log.d("AddRecord", e.getMessage());
-                                }
 
                                 try {
 
