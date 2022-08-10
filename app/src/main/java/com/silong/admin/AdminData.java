@@ -162,6 +162,28 @@ public class AdminData {
         }
     }
 
+    public static void writePetToLocal(Context context, String filename, String desc, String content){
+        //Check if file exists
+        File file = new File(context.getFilesDir() + "/pet-" + filename);
+        if (!file.exists()){
+            try{
+                FileOutputStream fileOuputStream = context.openFileOutput("pet-" + filename, Context.MODE_PRIVATE);
+            }
+            catch (Exception e){
+                Log.d("AdminData-wPTL0", e.getMessage());
+            }
+        }
+        //Create local storage copy of pet profile
+        try (FileOutputStream fileOutputStream = context.openFileOutput( "pet-" + filename, Context.MODE_APPEND)) {
+            String data = desc + ":" + content + ";\n";
+            fileOutputStream.write(data.getBytes());
+            fileOutputStream.flush();
+        }
+        catch (Exception e){
+            Log.d("AdminData-wPTL1", e.getMessage());
+        }
+    }
+
     public static User fetchAccountFromLocal(Activity activity, String uid){
         User user = new User();
 

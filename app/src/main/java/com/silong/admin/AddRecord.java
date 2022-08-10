@@ -13,8 +13,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DataSnapshot;
@@ -22,10 +25,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.silong.CustomView.LoadingDialog;
+import com.silong.EnumClass.Gender;
+import com.silong.EnumClass.PetAge;
+import com.silong.EnumClass.PetColor;
+import com.silong.EnumClass.PetSize;
+import com.silong.EnumClass.PetStatus;
+import com.silong.EnumClass.PetType;
 import com.silong.Object.Pet;
 import com.silong.Operation.ImagePicker;
+import com.silong.Operation.ImageProcessor;
+import com.silong.Operation.Utility;
 
 import java.io.BufferedInputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddRecord extends AppCompatActivity {
 
@@ -34,7 +48,6 @@ public class AddRecord extends AppCompatActivity {
     ImageView addRecordPicIv, addRecordBackIv;
     Button saveRecordBtn;
     ChipGroup typeToggle, genderToggle, sizeToggle, colorToggle;
-    Chip addDogChip, addCatChip, addMaleChip, addFemaleChip, addSmallChip, addMediumChip, addLargeChip;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
@@ -64,14 +77,6 @@ public class AddRecord extends AppCompatActivity {
         sizeToggle = findViewById(R.id.sizeToggle);
         colorToggle = findViewById(R.id.colorToggle);
         saveRecordBtn = (Button) findViewById(R.id.saveRecordBtn);
-
-        addDogChip = findViewById(R.id.addDogChip);
-        addCatChip = findViewById(R.id.addCatChip);
-        addMaleChip = findViewById(R.id.addMaleChip);
-        addFemaleChip = findViewById(R.id.addFemaleChip);
-        addSmallChip = findViewById(R.id.addSmallChip);
-        addMediumChip = findViewById(R.id.addMediumChip);
-        addLargeChip = findViewById(R.id.addLargeChip);
     }
 
     public void onPressedPhoto(View view){
@@ -102,12 +107,102 @@ public class AddRecord extends AppCompatActivity {
         }
         else {
             Pet pet = new Pet();
+            pet.setPhotoAsString(new ImageProcessor().toUTF8(addRecordPicIv.getDrawable(), true));
+            //identify selected age
+            pet.setAge(PetAge.YOUNG);
+            //identify selected type
+            pet.setType(genderToggle.getCheckedChipId() == R.id.addDogChip ? PetType.DOG : PetType.CAT);
+            //identify selected gender
+            pet.setGender(genderToggle.getCheckedChipId() == R.id.addMaleChip ? Gender.MALE : Gender.FEMALE);
+            //identify selected size
+            switch (sizeToggle.getCheckedChipId()){
+                case R.id.addSmallChip: pet.setSize(PetSize.SMALL); break;
+                case R.id.addMediumChip: pet.setSize(PetSize.MEDIUM); break;
+                case R.id.addLargeChip: pet.setSize(PetSize.LARGE); break;
+            }
+            //identify selected color
+            String color = "";
+            for (Integer id : colorToggle.getCheckedChipIds()){
+                switch (id){
+                    case R.id.addBlackChip: color += PetColor.BLACK; break;
+                    case R.id.addBrownChip: color += PetColor.BROWN; break;
+                    case R.id.addCreamChip: color += PetColor.CREAM; break;
+                    case R.id.addWhiteChip: color += PetColor.WHITE; break;
+                    case R.id.addOrangeChip: color += PetColor.ORANGE; break;
+                    case R.id.addGrayChip: color += PetColor.GRAY; break;
+                }
+            }
+            pet.setColor(color);
+            uploadPetProfile(pet);
         }
 
     }
 
-    private void uploadPetProfile(){
+    private void uploadPetProfile(Pet pet){
+        LoadingDialog loadingDialog = new LoadingDialog(AddRecord.this);
+        loadingDialog.startLoadingDialog();
+        //check internet connection
+        if (Utility.internetConnection(getApplicationContext())){
+            try {
+                Map<String, Object> map = new HashMap();
+                map.put("status", PetStatus.ACTIVE);
+                map.put("type", pet.getType());
+                map.put("gender", pet.getGender());
+                map.put("color", pet.getColor());
+                map.put("age", pet.getAge());
+                map.put("size", pet.getSize());
+                map.put("photo", pet.getPhotoAsString());
 
+                mReference = mDatabase.getReference("Pets").child(String.valueOf(counter));
+                mReference.updateChildren(map)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+
+                                Toast.makeText(getApplicationContext(), "Record created successfully.", Toast.LENGTH_SHORT).show();
+                                try {
+                                    //write to file
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "status", String.valueOf(PetStatus.ACTIVE));
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "type", String.valueOf(pet.getType()));
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "gender", String.valueOf(pet.getGender()));
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "color", pet.getColor());
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "age", String.valueOf(pet.getAge()));
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "size", String.valueOf(pet.getSize()));
+                                    Bitmap bitmap = new ImageProcessor().toBitmap(pet.getPhotoAsString());
+                                    new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "petpic-" + counter);
+                                }
+                                catch (Exception ex){
+                                    Log.d("AddRecord-uPP", ex.getMessage());
+                                }
+
+                                //update counter
+                                counter ++;
+                                incrementCounter(counter);
+
+                                //go back to previous screen
+                                loadingDialog.dismissLoadingDialog();
+                                onBackPressed();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                loadingDialog.dismissLoadingDialog();
+                                Toast.makeText(getApplicationContext(), "Request failed.", Toast.LENGTH_SHORT).show();
+                                Log.d("AddRecord-uPP", e.getMessage());
+                            }
+                        });
+            }
+            catch (Exception e){
+                loadingDialog.dismissLoadingDialog();
+                Toast.makeText(this, "Request canceled.", Toast.LENGTH_SHORT).show();
+                Log.d("AddRecord-uPP", e.getMessage());
+            }
+        }
+        else {
+            loadingDialog.dismissLoadingDialog();
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initializeCounter(){
@@ -139,6 +234,11 @@ public class AddRecord extends AppCompatActivity {
             counter = 0;
             Log.d("AddRecord", e.getMessage());
         }
+    }
+
+    private void incrementCounter(int n){
+        mReference = mDatabase.getReference("Pets").child("counter");
+        mReference.setValue(n);
     }
 
     public void back(View view){

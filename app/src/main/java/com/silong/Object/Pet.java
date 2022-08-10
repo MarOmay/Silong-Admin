@@ -1,5 +1,7 @@
 package com.silong.Object;
 
+import android.graphics.Bitmap;
+
 public class Pet {
 
     private int id;
@@ -9,6 +11,8 @@ public class Pet {
     private String color;
     private int age;
     private int size;
+    private Bitmap photo;
+    private String photoAsString;
     private int likes;
 
     public Pet() {
@@ -79,6 +83,22 @@ public class Pet {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public Bitmap getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
+    }
+
+    public String getPhotoAsString() {
+        return photoAsString;
+    }
+
+    public void setPhotoAsString(String photoAsString) {
+        this.photoAsString = photoAsString;
     }
 
     public int getLikes() {

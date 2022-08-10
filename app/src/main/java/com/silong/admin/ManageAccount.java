@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
+import com.silong.Operation.Utility;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -74,8 +75,13 @@ public class ManageAccount extends AppCompatActivity {
     }
 
     public void onPressedAdd(View view){
-        Intent i = new Intent(ManageAccount.this, CreateAdminAccount.class);
-        startActivity(i);
+        if (Utility.internetConnection(getApplicationContext())){
+            Intent i = new Intent(ManageAccount.this, CreateAdminAccount.class);
+            startActivity(i);
+        }
+        else {
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onPressedSearch(View view){

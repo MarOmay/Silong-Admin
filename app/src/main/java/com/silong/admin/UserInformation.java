@@ -6,6 +6,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -102,6 +103,12 @@ public class UserInformation extends AppCompatActivity {
         }
         else {
             DeactivationDialog deactivationDialog = new DeactivationDialog(UserInformation.this, nameTv.getText().toString());
+            deactivationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    disableSw.setChecked(true);
+                }
+            });
             deactivationDialog.show();
         }
     }

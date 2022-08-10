@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
+import com.silong.Operation.Utility;
 
 public class ManageRecords extends AppCompatActivity {
 
@@ -57,9 +59,14 @@ public class ManageRecords extends AppCompatActivity {
         recordsRecycler.setAdapter(recordsAdapter);
     }
 
-    public void onAddRecordPressed(View view){
-        Intent i = new Intent(ManageRecords.this, AddRecord.class);
-        startActivity(i);
+    public void onPressedAddRecord(View view){
+        if (Utility.internetConnection(getApplicationContext())){
+            Intent i = new Intent(ManageRecords.this, AddRecord.class);
+            startActivity(i);
+        }
+        else {
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void back(View view){
