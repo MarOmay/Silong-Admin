@@ -97,6 +97,7 @@ public class UserInformation extends AppCompatActivity {
         onBackPressed();
     }
 
+    private boolean decisionMade = false;
     public void onToggleStatus(View view){
         if (disableSw.isChecked()){
             setAccountStatus(selectedUser.getUserID(), true);
@@ -106,7 +107,7 @@ public class UserInformation extends AppCompatActivity {
             deactivationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialogInterface) {
-                    disableSw.setChecked(true);
+                    disableSw.setChecked(!decisionMade);
                 }
             });
             deactivationDialog.show();
@@ -199,9 +200,11 @@ public class UserInformation extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             boolean decision = intent.getBooleanExtra("deactivate", false);
             if (decision){
+                decisionMade = true;
                 setAccountStatus(selectedUser.getUserID(), false);
             }
             else {
+                decisionMade = false;
                 disableSw.setChecked(true);
             }
         }

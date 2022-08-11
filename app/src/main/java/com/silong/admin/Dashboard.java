@@ -299,6 +299,8 @@ public class Dashboard extends AppCompatActivity {
                         ArrayList<String> list = new ArrayList<>();
                         for (DataSnapshot snap : snapshot.getChildren()){
 
+                            Log.d("snap", snap.getKey());
+
                             //skip counter to avoid error
                             if (snap.getKey().equals("counter"))
                                 continue;
@@ -443,8 +445,8 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void updateRecordList(){
-        Intent intent = new Intent("update-record-list");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        //Intent intent = new Intent("update-record-list");
+        //LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     private void cleanLocalRecord(ArrayList<String> list, String prefix){
