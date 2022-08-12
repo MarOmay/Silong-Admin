@@ -259,6 +259,9 @@ public class AddRecord extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
 
+                                mReference = mDatabase.getReference("recordSummary").child(String.valueOf(counter));
+                                mReference.setValue(PetStatus.ACTIVE);
+
                                 try {
 
                                     //write to file
