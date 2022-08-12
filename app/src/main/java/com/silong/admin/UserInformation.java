@@ -1,6 +1,5 @@
 package com.silong.admin;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -14,23 +13,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.DeactivationDialog;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.Object.User;
 import com.silong.Operation.Utility;
+import com.silong.Task.StatusChanger;
 
 public class UserInformation extends AppCompatActivity {
 
@@ -38,10 +30,9 @@ public class UserInformation extends AppCompatActivity {
     ImageView profileIv, genderIv, accountBackIv;
     TextView nameTv, emailTv, contactTv;
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
-
     private User selectedUser;
+
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +45,9 @@ public class UserInformation extends AppCompatActivity {
         window.setStatusBarColor(this.getResources().getColor(R.color.pink));
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-        //Initialize Firebase objects
-        mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
-
-        //Receive decision from DeactivationDialog
+        //register receivers
         LocalBroadcastManager.getInstance(this).registerReceiver(mDeactivateAccount, new IntentFilter("deactivate-user"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mStatusChanger, new IntentFilter("SC-coded"));
 
         //Get specific account info
         String uid = getIntent().getStringExtra("uid");
@@ -74,7 +63,14 @@ public class UserInformation extends AppCompatActivity {
         emailTv = (TextView) findViewById(R.id.emailTv);
         contactTv = (TextView) findViewById(R.id.contactTv);
 
+        loadingDialog = new LoadingDialog(UserInformation.this);
+
         //Display account info
+        displayAccountInfo();
+
+    }
+
+    private void displayAccountInfo(){
         try {
             disableSw.setChecked(selectedUser.getAccountStatus());
             profileIv.setImageBitmap(selectedUser.getPhoto());
@@ -90,7 +86,6 @@ public class UserInformation extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
     }
 
     public void onPressedBack(View view){
@@ -99,19 +94,30 @@ public class UserInformation extends AppCompatActivity {
 
     private boolean decisionMade = false;
     public void onToggleStatus(View view){
-        if (disableSw.isChecked()){
-            setAccountStatus(selectedUser.getUserID(), true);
+        if (Utility.internetConnection(getApplicationContext())){
+            if (disableSw.isChecked()){
+                //activate account
+                loadingDialog.startLoadingDialog();
+                StatusChanger statusChanger = new StatusChanger(selectedUser.getUserID(), true, UserInformation.this);
+                statusChanger.execute();
+            }
+            else {
+                //ask if to deactivate account
+                DeactivationDialog deactivationDialog = new DeactivationDialog(UserInformation.this, nameTv.getText().toString());
+                deactivationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        disableSw.setChecked(!decisionMade);
+                    }
+                });
+                deactivationDialog.show();
+            }
         }
         else {
-            DeactivationDialog deactivationDialog = new DeactivationDialog(UserInformation.this, nameTv.getText().toString());
-            deactivationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    disableSw.setChecked(!decisionMade);
-                }
-            });
-            deactivationDialog.show();
+            Toast.makeText(this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
+            disableSw.setChecked(!disableSw.isChecked());
         }
+
     }
 
     private User getUser(String uid){
@@ -122,90 +128,38 @@ public class UserInformation extends AppCompatActivity {
         return null;
     }
 
-    private void setAccountStatus(String uid, boolean status){
-        LoadingDialog loadingDialog = new LoadingDialog(UserInformation.this);
-        loadingDialog.startLoadingDialog();
-        //Check internet connection
-        if (Utility.internetConnection(getApplicationContext())){
-            try{
-                //Change value in specific account
-                DatabaseReference tempReference = mDatabase.getReference("Users/" + uid);
-                tempReference.child("accountStatus").setValue(status)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                loadingDialog.dismissLoadingDialog();
-                                setAccountStatusInSummary(uid, status);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                disableSw.setChecked(!status);
-                                loadingDialog.dismissLoadingDialog();
-                                Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();
-                                Log.d("UserInfo", e.getMessage());
-                            }
-                        });
-            }
-            catch (Exception e){
-                disableSw.setChecked(!status);
-                loadingDialog.dismissLoadingDialog();
-                Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();
-                Log.d("UserInfo", e.getMessage());
-            }
-
-        }
-        else {
-            Toast.makeText(this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
-            disableSw.setChecked(!status);
-            loadingDialog.dismissLoadingDialog();
-        }
-    }
-
-    private void setAccountStatusInSummary(String uid, boolean status){
-        LoadingDialog loadingDialog = new LoadingDialog(UserInformation.this);
-        loadingDialog.startLoadingDialog();
-        try{
-            //Change value in accountSummary
-            DatabaseReference tempReference = mDatabase.getReference("accountSummary/" + uid);
-            tempReference.setValue(status)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(getApplicationContext(), "Account " + (status ? "activated" : "deactivated"), Toast.LENGTH_SHORT).show();
-                            loadingDialog.dismissLoadingDialog();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            disableSw.setChecked(!status);
-                            loadingDialog.dismissLoadingDialog();
-                            Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();
-                            Log.d("UserInfo", e.getMessage());
-                        }
-                    });
-        }
-        catch (Exception e){
-            disableSw.setChecked(!status);
-            loadingDialog.dismissLoadingDialog();
-            Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();
-            Log.d("UserInfo", e.getMessage());
-        }
-    }
-
     private BroadcastReceiver mDeactivateAccount = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             boolean decision = intent.getBooleanExtra("deactivate", false);
             if (decision){
                 decisionMade = true;
-                setAccountStatus(selectedUser.getUserID(), false);
+                loadingDialog.startLoadingDialog();
+                StatusChanger statusChanger = new StatusChanger(selectedUser.getUserID(), false, UserInformation.this);
+                statusChanger.execute();
             }
             else {
                 decisionMade = false;
                 disableSw.setChecked(true);
+            }
+        }
+    };
+
+    private BroadcastReceiver mStatusChanger = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadingDialog.dismissLoadingDialog();
+
+            String code = intent.getStringExtra("code");
+            String uid = intent.getStringExtra("uid");
+            boolean status = intent.getBooleanExtra("status", true);
+
+            if (code.equals(StatusChanger.SUCCESS)){
+                Toast.makeText(UserInformation.this, "Account " + (status ? "activated" : "deactivated"), Toast.LENGTH_SHORT).show();
+            }
+            else if (code.equals(StatusChanger.FAILURE)){
+                disableSw.setChecked(!status);
+                Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -222,5 +176,6 @@ public class UserInformation extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mDeactivateAccount);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mStatusChanger);
     }
 }
