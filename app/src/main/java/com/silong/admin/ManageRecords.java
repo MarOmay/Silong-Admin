@@ -70,6 +70,11 @@ public class ManageRecords extends AppCompatActivity {
         }
     }
 
+    public void onPressedCreateReports(View view){
+        Intent intent = new Intent(ManageRecords.this, CreateReport.class);
+        startActivity(intent);
+    }
+
     public void loadRecordList(){
         LoadingDialog loadingDialog = new LoadingDialog(ManageRecords.this);
         loadingDialog.startLoadingDialog();
