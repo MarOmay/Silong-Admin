@@ -19,7 +19,7 @@ public class ImageProcessor {
 
     //Maximum file size allowed [MB] * [KB] * [B]
     private final int FILE_LIMIT_IN_KB = 2 * 1024 * 1024;
-    private final int COMPRESSION = 50;
+    private int COMPRESSION = 50;
 
     public ImageProcessor(){
         /* toUTF8 - Bitmap to Base64 to UTF* conversion
@@ -45,6 +45,9 @@ public class ImageProcessor {
         bitmap.compress(Bitmap.CompressFormat.JPEG, compress ? COMPRESSION : 100, stream);
         byte[] imageInByte = stream.toByteArray();
         long length = imageInByte.length;
+
+        if (length > 1 * 1024 * 1024) //1mb
+            COMPRESSION = 80;
 
         return length < FILE_LIMIT_IN_KB;
     }

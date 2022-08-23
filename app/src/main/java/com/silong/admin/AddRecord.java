@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -91,6 +92,10 @@ public class AddRecord extends AppCompatActivity {
             String id = getIntent().getStringExtra("id");
             selectedPet = getPet(id);
             if (selectedPet != null) {
+                //change header label
+                TextView headerTv = findViewById(R.id.headerTv);
+                headerTv.setText("Edit Record");
+
                 addRecordPicIv.setImageBitmap(selectedPet.getPhoto());
 
                 //set type
@@ -105,6 +110,13 @@ public class AddRecord extends AppCompatActivity {
                 }
                 else {
                     chip.setText("KITTEN");
+                }
+
+                //set age
+                switch (selectedPet.getAge()){
+                    case PetAge.PUPPY: ageToggle.check(R.id.addPuppyChip); break;
+                    case PetAge.YOUNG: ageToggle.check(R.id.addYoungChip); break;
+                    case PetAge.OLD: ageToggle.check(R.id.addOldChip); break;
                 }
 
                 //set gender
