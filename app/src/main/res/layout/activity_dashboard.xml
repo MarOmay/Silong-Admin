@@ -40,11 +40,11 @@
     </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/CustomCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
-        android:backgroundTint="@color/darkerNighty"
-        app:cardCornerRadius="20dp">
+        android:backgroundTint="@color/darkerNighty">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,8 +57,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.25"
                 android:orientation="horizontal"
-                android:paddingHorizontal="15dp"
-                android:paddingTop="15dp"
+                android:paddingHorizontal="10dp"
+                android:paddingTop="10dp"
                 android:weightSum="2">
 
                 <LinearLayout
@@ -92,8 +92,8 @@
                                 app:cardCornerRadius="100dp" />
 
                             <LinearLayout
-                                android:id="@+id/requestsPad"
                                 android:onClick="onPressedRequests"
+                                android:id="@+id/requestsPad"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -131,8 +131,8 @@
                         app:cardCornerRadius="20dp">
 
                         <LinearLayout
-                            android:id="@+id/manageRecordsPad"
                             android:onClick="onPressedManageRecords"
+                            android:id="@+id/manageRecordsPad"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -191,8 +191,8 @@
                                 app:cardCornerRadius="100dp" />
 
                             <LinearLayout
-                                android:id="@+id/messagesPad"
                                 android:onClick="onPressedMessages"
+                                android:id="@+id/messagesPad"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -230,8 +230,8 @@
                         app:cardCornerRadius="20dp">
 
                         <LinearLayout
-                            android:id="@+id/manageAccountsPad"
                             android:onClick="onPressedManageAccounts"
+                            android:id="@+id/manageAccountsPad"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -266,7 +266,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.75"
                 android:orientation="horizontal"
-                android:paddingHorizontal="15dp"
+                android:paddingHorizontal="10dp"
                 android:paddingBottom="15dp">
 
                 <com.google.android.material.card.MaterialCardView
@@ -302,7 +302,6 @@
 
                         <TextView
                             android:id="@+id/logoutTv"
-                            android:onClick="onPressedLogout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"

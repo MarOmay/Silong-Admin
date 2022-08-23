@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nighty"
+    android:orientation="vertical"
+    tools:context=".RequestInformation">
+
+    <LinearLayout
+        android:id="@+id/pinkHeader"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/pink"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/reqInfoBackIv"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:onClick="back"
+            android:src="@drawable/ic_round_arrow_back_ios_24"
+            app:tint="@color/whitey"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textAlignment="center"
+            android:text="Request Information"
+            android:textColor="@color/whitey"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:alpha="0"
+            android:src="@drawable/ic_round_add_24"
+            app:tint="@color/whitey" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="15dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingHorizontal="7dp"
+            android:paddingVertical="7dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="REQUESTOR"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.15"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        app:cardCornerRadius="15dp">
+
+                        <ImageView
+                            android:id="@+id/reqInfoUserPicIv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_round_person_24"
+                            android:background="@color/Graygray"/>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.85"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="5dp">
+
+                    <TextView
+                        android:id="@+id/reqInfoUserNameTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Name"
+                        android:textSize="23sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reqInfoUserEmailTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="email@mail.com"
+                        android:textColor="@color/textgray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/reqInfoUserContactTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="09XXXXXXXXX"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reqInforUserAddressTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Address"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="350dp"
+            android:layout_height="2dp"
+            android:background="@color/lightgray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingHorizontal="7dp"
+            android:paddingVertical="7dp">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="REQUESTED PET"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.15"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        app:cardCornerRadius="15dp">
+
+                        <ImageView
+                            android:id="@+id/reqInfoPetPicIv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/dog_cat"
+                            android:background="@color/Graygray"/>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.85"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="5dp">
+
+                    <TextView
+                        android:id="@+id/reqInfoGenderTypeTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Gender Type"
+                        android:textSize="23sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reqInfoAgeTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Estimated Age"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reqInfoColorTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Colors"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reqInfoSizeTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Size"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Date of Request Submission"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/textgray"/>
+
+                    <TextView
+                        android:id="@+id/reqInfoSubmitDateTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Month XX, XXXX"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="20dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            app:cardCornerRadius="100dp"
+            android:layout_marginEnd="7.5dp"
+            android:backgroundTint="@color/red">
+
+            <LinearLayout
+                android:id="@+id/declineBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DECLINE"
+                    android:textColor="@color/whitey"
+                    android:textStyle="bold"
+                    android:textSize="17dp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            app:cardCornerRadius="100dp"
+            android:layout_marginStart="7.5dp"
+            android:backgroundTint="@color/green">
+
+            <LinearLayout
+                android:id="@+id/acceptBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ACCEPT"
+                    android:textColor="@color/whitey"
+                    android:textStyle="bold"
+                    android:textSize="17dp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+
+</LinearLayout>
