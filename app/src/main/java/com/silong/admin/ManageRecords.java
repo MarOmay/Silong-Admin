@@ -79,56 +79,61 @@ public class ManageRecords extends AppCompatActivity {
         LoadingDialog loadingDialog = new LoadingDialog(ManageRecords.this);
         loadingDialog.startLoadingDialog();
 
-        PetRecordsData[] recordsData = new PetRecordsData[AdminData.pets.size()];
+        try {
+            PetRecordsData[] recordsData = new PetRecordsData[AdminData.pets.size()];
 
-        for (Pet pet : AdminData.pets){
-            //translate gender and type
-            String genderType = "";
-            switch (pet.getGender()){
-                case Gender.MALE: genderType = "Male"; break;
-                case Gender.FEMALE: genderType = "Female"; break;
-            }
-            switch (pet.getType()){
-                case PetType.DOG: genderType += " Dog"; break;
-                case PetType.CAT: genderType += " Cat"; break;
-            }
-
-            //translate age
-            String age = "";
-            switch (pet.getAge()){
-                case PetAge.PUPPY: age = (pet.getType() == PetType.DOG ? "Puppy" : "Kitten"); break;
-                case PetAge.YOUNG: age = "Young"; break;
-                case PetAge.OLD: age = "Old"; break;
-            }
-
-            //translate color
-            String color = "";
-            for (char c : pet.getColor().toCharArray()){
-                switch (Integer.parseInt(c+"")){
-                    case PetColor.BLACK: color += "Black "; break;
-                    case PetColor.BROWN: color += "Brown "; break;
-                    case PetColor.CREAM: color += "Cream "; break;
-                    case PetColor.WHITE: color += "White "; break;
-                    case PetColor.ORANGE: color += "Orange "; break;
-                    case PetColor.GRAY: color += "Gray "; break;
+            for (Pet pet : AdminData.pets){
+                //translate gender and type
+                String genderType = "";
+                switch (pet.getGender()){
+                    case Gender.MALE: genderType = "Male"; break;
+                    case Gender.FEMALE: genderType = "Female"; break;
                 }
-            }
-            color.trim();
-            color.replace(" ", " / ");
+                switch (pet.getType()){
+                    case PetType.DOG: genderType += " Dog"; break;
+                    case PetType.CAT: genderType += " Cat"; break;
+                }
 
-            //translate size
-            String size = "";
-            switch (pet.getSize()){
-                case PetSize.SMALL: size = "Small"; break;
-                case PetSize.MEDIUM: size = "Medium"; break;
-                case PetSize.LARGE: size = "Large"; break;
+                //translate age
+                String age = "";
+                switch (pet.getAge()){
+                    case PetAge.PUPPY: age = (pet.getType() == PetType.DOG ? "Puppy" : "Kitten"); break;
+                    case PetAge.YOUNG: age = "Young"; break;
+                    case PetAge.OLD: age = "Old"; break;
+                }
+
+                //translate color
+                String color = "";
+                for (char c : pet.getColor().toCharArray()){
+                    switch (Integer.parseInt(c+"")){
+                        case PetColor.BLACK: color += "Black "; break;
+                        case PetColor.BROWN: color += "Brown "; break;
+                        case PetColor.CREAM: color += "Cream "; break;
+                        case PetColor.WHITE: color += "White "; break;
+                        case PetColor.ORANGE: color += "Orange "; break;
+                        case PetColor.GRAY: color += "Gray "; break;
+                    }
+                }
+                color.trim();
+                color.replace(" ", " / ");
+
+                //translate size
+                String size = "";
+                switch (pet.getSize()){
+                    case PetSize.SMALL: size = "Small"; break;
+                    case PetSize.MEDIUM: size = "Medium"; break;
+                    case PetSize.LARGE: size = "Large"; break;
+                }
+
+                recordsData[AdminData.pets.indexOf(pet)] = new PetRecordsData(pet.getPetID(), genderType, age, color, size, pet.getPhoto());
             }
 
-            recordsData[AdminData.pets.indexOf(pet)] = new PetRecordsData(pet.getPetID(), genderType, age, color, size, pet.getPhoto());
+            RecordsAdapter recordsAdapter = new RecordsAdapter(recordsData, ManageRecords.this);
+            recordsRecycler.setAdapter(recordsAdapter);
         }
-
-        RecordsAdapter recordsAdapter = new RecordsAdapter(recordsData, ManageRecords.this);
-        recordsRecycler.setAdapter(recordsAdapter);
+        catch (Exception e){
+            Log.d("mR-lRL", e.getMessage());
+        }
 
         loadingDialog.dismissLoadingDialog();
     }

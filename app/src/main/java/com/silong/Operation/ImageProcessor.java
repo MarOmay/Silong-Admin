@@ -46,8 +46,9 @@ public class ImageProcessor {
         byte[] imageInByte = stream.toByteArray();
         long length = imageInByte.length;
 
+        Log.d("DEBUGGER>>>", "Size: " + length);
         if (length > 1 * 1024 * 1024) //1mb
-            COMPRESSION = 80;
+            COMPRESSION = 10;
 
         return length < FILE_LIMIT_IN_KB;
     }
@@ -59,6 +60,7 @@ public class ImageProcessor {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, compress ? COMPRESSION : 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
+            Log.d("DEBUGGER>>>", "Final: " + byteArray.length);
             //return Base64.encodeToString(byteArray, Base64.DEFAULT);
             String source = Base64.encodeToString(byteArray, Base64.DEFAULT);
             try {

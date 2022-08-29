@@ -203,8 +203,10 @@ public class AddRecord extends AppCompatActivity {
             return;
         }
         else {
+            ImageProcessor imageProcessor = new ImageProcessor();
+            imageProcessor.checkFileSize(addRecordPicIv.getDrawable(), true);
             Pet pet = new Pet();
-            pet.setPhotoAsString(new ImageProcessor().toUTF8(addRecordPicIv.getDrawable(), true));
+            pet.setPhotoAsString(imageProcessor.toUTF8(addRecordPicIv.getDrawable(), true));
             //identify selected age
             pet.setAge(PetAge.YOUNG);
             //identify selected type
