@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.util.Log;
@@ -47,8 +48,6 @@ public class ImageProcessor {
         long length = imageInByte.length;
 
         Log.d("DEBUGGER>>>", "Size: " + length);
-        if (length > 1 * 1024 * 1024) //1mb
-            COMPRESSION = 10;
 
         return length < FILE_LIMIT_IN_KB;
     }
@@ -75,10 +74,51 @@ public class ImageProcessor {
         return null;
     }
 
+    public Bitmap getResizedBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bitmap, 0, 0, width, height, matrix, false);
+        bitmap.recycle();
+        return resizedBitmap;
+    }
+
     public String toUTF8(Drawable drawable, boolean compress){
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.draw(canvas);
+
+        Bitmap bitmap = toBitmap(drawable);
+
+        //adjust aspect ratio
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        if (height > 1920) {
+
+            float ratio = height / 1920;
+            width = (int) (width / ratio);
+            height = 1920;
+
+            bitmap = getResizedBitmap(bitmap, width, height);
+        }
+
+        if (width > 1920){
+            float ratio = width / 1920;
+            height = (int) (height / ratio);
+            width = 1920;
+
+            bitmap = getResizedBitmap(bitmap, width, height);
+        }
+
+        Log.d("DEBUGGER>>>", "W:" + width + " H:" + height);
+
         return toUTF8(bitmap, compress);
     }
 
