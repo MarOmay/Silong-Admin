@@ -257,6 +257,8 @@ public class AddRecord extends AppCompatActivity {
                 map.put("age", pet.getAge());
                 map.put("size", pet.getSize());
                 map.put("photo", pet.getPhotoAsString());
+                map.put("modifiedBy", AdminData.adminEmail);
+                map.put("lastModified", Utility.dateToday());
 
                 try {
                     if (selectedPet != null){

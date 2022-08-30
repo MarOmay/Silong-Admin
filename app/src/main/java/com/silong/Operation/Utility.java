@@ -7,6 +7,9 @@ import android.net.NetworkInfo;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Utility {
 
     public static boolean internetConnection(Context context){
@@ -28,6 +31,12 @@ public class Utility {
             winParams.flags &= ~bits;
         }
         win.setAttributes(winParams);
+    }
+
+    public static String dateToday(){
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+        Date date = new Date();
+        return formatter.format(date);
     }
 
 }
