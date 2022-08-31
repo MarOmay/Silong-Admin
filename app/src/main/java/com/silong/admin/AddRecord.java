@@ -8,6 +8,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,7 @@ import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -375,7 +377,21 @@ public class AddRecord extends AppCompatActivity {
             try{
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(getContentResolver().openInputStream(data.getData()));
                 Bitmap bitmap = BitmapFactory.decodeStream(bufferedInputStream);
-                addRecordPicIv.setImageBitmap(bitmap);
+
+                if (!new ImageProcessor().checkFileSize(bitmap, true)) {
+                    Toast.makeText(getApplicationContext(), "Please select a picture less than 5MB.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                bitmap = new ImageProcessor().tempCompress(bitmap);
+
+                try {
+                    addRecordPicIv.setImageBitmap(bitmap);
+                }
+                catch (Exception e){
+                    Toast.makeText(getApplicationContext(), "Please select a picture less than 5MB.", Toast.LENGTH_SHORT).show();
+                }
+
             }
             catch (Exception e){
                 Toast.makeText(getApplicationContext(), "Unable to choose file", Toast.LENGTH_SHORT).show();

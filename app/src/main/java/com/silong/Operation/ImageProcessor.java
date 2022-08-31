@@ -1,10 +1,12 @@
 package com.silong.Operation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.util.Log;
@@ -181,6 +183,34 @@ public class ImageProcessor {
             Log.d("LLS", e.getMessage());
             Toast.makeText(context, "Can't write user.dat. (LLS)", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public Bitmap tempCompress(Bitmap bitmap){
+        //adjust aspect ratio
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        if (height > 1920) {
+
+            float ratio = height / 1920;
+            width = (int) (width / ratio);
+            height = 1920;
+
+            bitmap = getResizedBitmap(bitmap, width, height);
+        }
+
+        if (width > 1920){
+            float ratio = width / 1920;
+            height = (int) (height / ratio);
+            width = 1920;
+
+            bitmap = getResizedBitmap(bitmap, width, height);
+        }
+
+        Log.d("DEBUGGER>>>", "W:" + width + " H:" + height);
+
+        return toBitmap(toUTF8(bitmap, true));
     }
 
 }
