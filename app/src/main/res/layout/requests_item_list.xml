@@ -29,6 +29,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="0.5"
             android:orientation="vertical"
             android:gravity="center_vertical"
             android:paddingHorizontal="15dp">
@@ -49,6 +50,21 @@
                 android:text="January 99, 2000"
                 android:textSize="13sp"
                 android:textColor="@color/gray"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:gravity="center">
+
+            <!-- Request Icon imageview-->
+            <ImageView
+                android:id="@+id/requestIconIv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                app:tint="@color/black" />
 
         </LinearLayout>
 
