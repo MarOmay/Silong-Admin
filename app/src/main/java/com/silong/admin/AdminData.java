@@ -176,6 +176,8 @@ public class AdminData {
                         case "size": pet.setSize(Integer.parseInt(temp[1])); break;
                         case "age": pet.setAge(Integer.parseInt(temp[1])); break;
                         case "color" : pet.setColor(temp[1]); break;
+                        case "modifiedBy" : pet.setModifiedBy(temp[1]); break;
+                        case "lastModified" : pet.setLastModified(temp[1]); break;
                     }
 
                 }
@@ -196,6 +198,14 @@ public class AdminData {
         catch (Exception e){
             Log.d("AdminData-pR", e.getMessage());
         }
+    }
+
+    public static Pet getPet(String id) {
+        for (Pet p : AdminData.pets){
+            if (p.getPetID().equals(id))
+                return p;
+        }
+        return null;
     }
 
     public static void writeToLocal(Context context, String filename, String desc, String content){

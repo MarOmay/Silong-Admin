@@ -109,6 +109,30 @@ public class RecordFetcher extends AsyncTask {
 
                 }
             });
+            tempReference.child("modifiedBy").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String modifiedBy = snapshot.getValue().toString();
+                    AdminData.writePetToLocal(activity, id, "modifiedBy", String.valueOf(modifiedBy));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("lastModified").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String lastModified = snapshot.getValue().toString();
+                    AdminData.writePetToLocal(activity, id, "lastModified", String.valueOf(lastModified));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             tempReference.child("photo").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

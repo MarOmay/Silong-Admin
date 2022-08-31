@@ -8,14 +8,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,7 +88,7 @@ public class AddRecord extends AppCompatActivity {
     private void loadForEdit(){
         try {
             String id = getIntent().getStringExtra("id");
-            selectedPet = getPet(id);
+            selectedPet = AdminData.getPet(id);
             if (selectedPet != null) {
                 //change header label
                 TextView headerTv = findViewById(R.id.headerTv);
@@ -148,14 +146,6 @@ public class AddRecord extends AppCompatActivity {
         catch (Exception e){
             Log.d("AddRecord", e.getMessage());
         }
-    }
-
-    private Pet getPet(String id) {
-        for (Pet p : AdminData.pets){
-            if (p.getPetID().equals(id))
-                return p;
-        }
-        return null;
     }
 
     public void onPressedPhoto(View view){
@@ -288,6 +278,8 @@ public class AddRecord extends AppCompatActivity {
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "color", pet.getColor());
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "age", String.valueOf(pet.getAge()));
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "size", String.valueOf(pet.getSize()));
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "modifiedBy", AdminData.adminEmail);
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "lastModified", Utility.dateToday());
                                     Bitmap bitmap = new ImageProcessor().toBitmap(pet.getPhotoAsString());
                                     new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "petpic-" + counter);
                                 }

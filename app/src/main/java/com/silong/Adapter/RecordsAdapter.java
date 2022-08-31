@@ -1,30 +1,27 @@
 package com.silong.Adapter;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.silong.admin.ManageRecords;
+import com.silong.CustomView.PetInfoDialog;
 import com.silong.Object.PetRecordsData;
 import com.silong.admin.R;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder>{
 
     PetRecordsData petRecordsData[];
-    Context context;
+    Activity activity;
 
-    public RecordsAdapter(PetRecordsData[] petRecordsData, ManageRecords activity){
+    public RecordsAdapter(PetRecordsData[] petRecordsData, Activity activity){
         this.petRecordsData = petRecordsData;
-        this.context = activity;
+        this.activity = activity;
     }
 
     @NonNull
@@ -48,9 +45,8 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("show-selected-pet");
-                intent.putExtra("id", petRecordsDataList.getPetID());
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                PetInfoDialog petInfoDialog = new PetInfoDialog(activity, petRecordsDataList.getPetID());
+                petInfoDialog.show();
             }
         });
     }

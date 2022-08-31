@@ -13,6 +13,8 @@ public class Pet {
     private int size;
     private Bitmap photo;
     private String photoAsString;
+    private String modifiedBy;
+    private String lastModified;
     private int likes;
 
     public Pet() {
@@ -99,6 +101,22 @@ public class Pet {
 
     public void setPhotoAsString(String photoAsString) {
         this.photoAsString = photoAsString;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
 
     public int getLikes() {
