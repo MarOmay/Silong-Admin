@@ -248,7 +248,7 @@ public class AddRecord extends AppCompatActivity {
                 map.put("size", pet.getSize());
                 map.put("photo", pet.getPhotoAsString());
                 map.put("modifiedBy", AdminData.adminEmail);
-                map.put("lastModified", Utility.dateToday());
+                map.put("lastModified", Utility.dateToday() + " " + Utility.timeNow());
 
                 try {
                     if (selectedPet != null){
@@ -279,7 +279,7 @@ public class AddRecord extends AppCompatActivity {
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "age", String.valueOf(pet.getAge()));
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "size", String.valueOf(pet.getSize()));
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "modifiedBy", AdminData.adminEmail);
-                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "lastModified", Utility.dateToday());
+                                    AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "lastModified", Utility.dateToday() + " " + Utility.timeNow());
                                     Bitmap bitmap = new ImageProcessor().toBitmap(pet.getPhotoAsString());
                                     new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "petpic-" + counter);
                                 }

@@ -39,4 +39,10 @@ public class Utility {
         return formatter.format(date);
     }
 
+    public static String timeNow(){
+        SimpleDateFormat formatter = new SimpleDateFormat("HH*mm*ss");
+        Date date = new Date();
+        return formatter.format(date);
+    }
+
 }

@@ -69,7 +69,7 @@ public class PetInfoDialog extends MaterialAlertDialogBuilder {
         info += "Pet ID: " + pet.getPetID();
         info += "<br>Status: " + status;
         info += "<br><br>Modified by: " + pet.getModifiedBy();
-        info += "<br>Last Modified: " + pet.getLastModified();
+        info += "<br>Last Modified: " + pet.getLastModified().replace("*",":");
 
         return info;
     }
