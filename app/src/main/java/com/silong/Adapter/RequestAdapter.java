@@ -1,5 +1,6 @@
 package com.silong.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Request;
 import com.silong.Object.User;
 import com.silong.admin.AdminData;
-import com.silong.admin.ManageAccount;
 import com.silong.admin.R;
 import com.silong.admin.RequestList;
 
@@ -24,10 +25,12 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     ArrayList<Request> requests;
     Context context;
+    Activity activity;
 
     public RequestAdapter(ArrayList<Request> requests, RequestList activity){
         this.requests = requests;
         this.context = activity;
+        this.activity = activity;
     }
 
     @NonNull
@@ -48,6 +51,15 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         holder.requestUserName.setText(user.getFirstName() + " " + user.getLastName());
         holder.requestDate.setText(request.getDate());
         holder.requestUserPic.setImageBitmap(user.getPhoto());
+
+        //sort request icon
+        int icon = 0;
+        switch (request.getRequestCode()){
+            case RequestCode.ADOPTION_REQUEST: icon = R.drawable.req_adoption_icon; break;
+            case RequestCode.APPOINTMENT: icon = R.drawable.req_appointment_icon; break;
+            case RequestCode.ACCOUNT_ACTIVATION: icon = R.drawable.req_reactivation_icon; break;
+        }
+        holder.requestIconIv.setImageResource(icon);
 
         //Filter visibility by search keyword
         if (RequestList.keyword.length() < 1){
@@ -81,6 +93,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         ImageView requestUserPic;
         TextView requestUserName;
         TextView requestDate;
+        ImageView requestIconIv;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +101,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             requestUserPic = itemView.findViewById(R.id.requestUserPicIv);
             requestUserName = itemView.findViewById(R.id.requestUserNameTv);
             requestDate = itemView.findViewById(R.id.requestDateTv);
+            requestIconIv = itemView.findViewById(R.id.requestIconIv);
         }
     }
 }
