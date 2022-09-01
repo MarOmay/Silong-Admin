@@ -66,6 +66,10 @@ public class StatusChanger extends AsyncTask {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
+                            if (status){
+                                DatabaseReference activationRequest = mDatabase.getReference("accountStatusRequests").child(uid);
+                                activationRequest.setValue(null);
+                            }
                             sendBroadcast(SUCCESS, uid, status);
                         }
                     })

@@ -2,6 +2,7 @@ package com.silong.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Request;
 import com.silong.Object.User;
 import com.silong.admin.AdminData;
+import com.silong.admin.ManageAccount;
 import com.silong.admin.R;
 import com.silong.admin.RequestList;
 
@@ -78,7 +80,20 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, user.getFirstName() + " " + user.getLastName(), Toast.LENGTH_SHORT).show();
+                switch (request.getRequestCode()){
+                    case RequestCode.ADOPTION_REQUEST:
+
+                        break;
+                    case RequestCode.APPOINTMENT:
+                        break;
+                    case RequestCode.ACCOUNT_ACTIVATION:
+                        Intent intent = new Intent(activity, ManageAccount.class);
+                        intent.putExtra("goto-user-info", user.getUserID());
+                        activity.startActivity(intent);
+                        activity.finish();
+                        break;
+                }
+
             }
         });
     }

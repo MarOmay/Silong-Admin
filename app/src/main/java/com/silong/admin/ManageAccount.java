@@ -26,7 +26,10 @@ import com.silong.Object.User;
 import com.silong.Object.UserAccountData;
 import com.silong.Operation.Utility;
 
+import java.sql.Time;
 import java.util.Comparator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ManageAccount extends AppCompatActivity {
 
@@ -66,6 +69,19 @@ public class ManageAccount extends AppCompatActivity {
 
         loadAccountList();
         manualAddSearchListener();
+
+        try {
+            String gotoUser = getIntent().getStringExtra("goto-user-info");
+            if (gotoUser.length() < 1)
+                return;
+            Intent i = new Intent(ManageAccount.this, UserInformation.class);
+            i.putExtra("uid", gotoUser);
+            startActivity(i);
+            finish();
+        }
+        catch (Exception e){
+            Log.d("ManageAccount", "No account forwarded");
+        }
 
     }
 
