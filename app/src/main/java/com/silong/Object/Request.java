@@ -2,44 +2,21 @@ package com.silong.Object;
 
 public class Request {
 
-    private int id;
-    private String email;
-    private boolean status;
+    private String userID;
     private int requestCode;
     private String requestDetails;
+    private String date;
     private String adminEmail;
 
-    public Request(int id, String email, boolean status, int requestCode, String requestDetails, String adminEmail) {
-        this.id = id;
-        this.email = email;
-        this.status = status;
-        this.requestCode = requestCode;
-        this.requestDetails = requestDetails;
-        this.adminEmail = adminEmail;
+    public Request() {
     }
 
-    public int getId() {
-        return id;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public int getRequestCode() {
@@ -56,6 +33,14 @@ public class Request {
 
     public void setRequestDetails(String requestDetails) {
         this.requestDetails = requestDetails;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getAdminEmail() {

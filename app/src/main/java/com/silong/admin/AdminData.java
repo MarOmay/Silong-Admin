@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.Pet;
+import com.silong.Object.Request;
 import com.silong.Object.User;
 
 import java.io.BufferedReader;
@@ -27,6 +28,8 @@ public class AdminData {
     public static ArrayList<User> users = new ArrayList<User>();
     public static ArrayList<String> uidList = new ArrayList<>();
     public static ArrayList<Pet> pets = new ArrayList<>();
+
+    public static ArrayList<Request> requests = new ArrayList<>();
 
     public static void logout(){
         //Delete user-related local files
@@ -140,6 +143,14 @@ public class AdminData {
         catch (Exception e){
             Log.d("AdminData", e.getMessage());
         }
+    }
+
+    public static User getUser(String userID) {
+        for (User user : AdminData.users){
+            if (user.getUserID().equals(userID))
+                return user;
+        }
+        return null;
     }
 
     public static void populateRecords(Activity activity){

@@ -32,6 +32,7 @@ import com.silong.Object.User;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 import com.silong.Task.AccountsChecker;
+import com.silong.Task.ActivationRequestFetcher;
 import com.silong.Task.RecordsChecker;
 
 import java.io.File;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 public class Dashboard extends AppCompatActivity {
 
     LinearLayout requestsPad, messagesPad, manageRecordsPad, manageAccountsPad;
-    MaterialCardView requestsDot;
+    MaterialCardView requestsDot, messagesDot;
     TextView adminFnameTv, logoutTv;
 
     private FirebaseAnalytics mAnalytics;
@@ -69,6 +70,7 @@ public class Dashboard extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("update-first-name"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mAccountsChecker, new IntentFilter("AC-done"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mRecordsChecker, new IntentFilter("RC-done"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRequestsNotify, new IntentFilter("ARF-sb-notify"));
 
         loadingDialog = new LoadingDialog(Dashboard.this);
 
@@ -81,7 +83,12 @@ public class Dashboard extends AppCompatActivity {
 
         requestsPad = (LinearLayout) findViewById(R.id.requestsPad);
         requestsDot = (MaterialCardView) findViewById(R.id.requestsDot);
+        requestsDot.setVisibility(View.INVISIBLE);
+
         messagesPad = (LinearLayout) findViewById(R.id.messagesPad);
+        messagesDot = (MaterialCardView) findViewById(R.id.messagesDot);
+        messagesDot.setVisibility(View.INVISIBLE);
+
         manageAccountsPad = (LinearLayout) findViewById(R.id.manageAccountsPad);
         manageRecordsPad = (LinearLayout) findViewById(R.id.manageRecordsPad);
 
@@ -136,6 +143,11 @@ public class Dashboard extends AppCompatActivity {
 
             loadingDialog.startLoadingDialog();
 
+            //sync account activation requests
+            AdminData.requests = new ArrayList<>();
+            ActivationRequestFetcher activationRequestFetcher = new ActivationRequestFetcher(Dashboard.this);
+            activationRequestFetcher.execute();
+
             //sync account copies
             AccountsChecker accountsChecker = new AccountsChecker(Dashboard.this);
             accountsChecker.execute();
@@ -176,6 +188,19 @@ public class Dashboard extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver mRequestsNotify = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                boolean notify = intent.getBooleanExtra("notify", false);
+                requestsDot.setVisibility( notify ? View.VISIBLE : View.INVISIBLE);
+            }
+            catch (Exception e){
+                Log.d("Dashboard-mRN", e.getMessage());
+            }
+        }
+    };
+
     //Method Overriding
 
     @Override
@@ -192,6 +217,7 @@ public class Dashboard extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mAccountsChecker);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRecordsChecker);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRequestsNotify);
         super.onDestroy();
     }
 }

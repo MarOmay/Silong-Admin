@@ -5,16 +5,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.silong.Adapter.RequestAdapter;
-import com.silong.Object.RequestsData;
+import com.silong.CustomView.LoadingDialog;
+import com.silong.Object.Request;
+
+import java.util.Comparator;
 
 public class RequestList extends AppCompatActivity {
+
+    public static String keyword = "";
 
     EditText requestSearchEt;
     ImageView requestSearchIv, requestBackIv;
@@ -39,17 +49,8 @@ public class RequestList extends AppCompatActivity {
         requestsRecycler.setHasFixedSize(true);
         requestsRecycler.setLayoutManager(new LinearLayoutManager(RequestList.this));
 
-        //Array for accounts
-        RequestsData[] requestsData = new RequestsData[]{
-                new RequestsData("Kenjhi Maloles", "January 01, 2001", R.drawable.sample1),
-                new RequestsData("Charl Nikki Belano", "February 02, 2002", R.drawable.sample2),
-                new RequestsData("Jireh Trinidad", "March 03, 2003", R.drawable.sample3),
-                new RequestsData("Alexis Omay", "April 04, 2004", R.drawable.sample4),
-                new RequestsData("Joshua Dagatan", "May 05, 2005", R.drawable.sample5)
-        };
-
-        RequestAdapter requestAdapter = new RequestAdapter(requestsData, RequestList.this);
-        requestsRecycler.setAdapter(requestAdapter);
+        loadRequestList();
+        manualAddSearchListener();
 
         requestBackIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +58,51 @@ public class RequestList extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    private void manualAddSearchListener(){
+        requestSearchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                keyword = requestSearchEt.getText().toString();
+                loadRequestList();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void loadRequestList(){
+        LoadingDialog loadingDialog = new LoadingDialog(RequestList.this);
+        loadingDialog.startLoadingDialog();
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                AdminData.requests.sort(new Comparator<Request>() {
+                    @Override
+                    public int compare(Request request, Request t1) {
+                        return request.getDate().compareTo(t1.getDate());
+                    }
+                });
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(this, "Preparing resources...", Toast.LENGTH_SHORT).show();
+            Log.d("RequestList-lRL", e.getMessage());
+        }
+
+        RequestAdapter requestAdapter = new RequestAdapter(AdminData.requests, RequestList.this);
+        requestsRecycler.setAdapter(requestAdapter);
+
+        loadingDialog.dismissLoadingDialog();
     }
 
     public void back(View view){
