@@ -1,6 +1,7 @@
 package com.silong.admin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -36,6 +37,9 @@ public class AppointmentsList extends AppCompatActivity {
 
         appointmentBackIv = (ImageView) findViewById(R.id.appointmentBackIv);
         appointmentRecycler = (RecyclerView) findViewById(R.id.appointmentRecycler);
+
+        appointmentRecycler.setHasFixedSize(true);
+        appointmentRecycler.setLayoutManager(new LinearLayoutManager(AppointmentsList.this));
 
         loadAppointments();
 
