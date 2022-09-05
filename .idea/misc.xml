@@ -6,6 +6,7 @@
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/drawable/chip_selector.xml" value="0.24" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/accounts_item_list.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_add_record.xml" value="0.25" />
+        <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_appointments_list.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_create_admin_account.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_create_report.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
@@ -17,6 +18,7 @@
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_request_information.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_request_list.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/activity_user_information.xml" value="0.264" />
+        <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/appointments_item_list.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/pet_info_dialog.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/requests_item_list.xml" value="0.25" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/drawable-v24/gradient_bg.xml" value="0.1" />
@@ -27,7 +29,6 @@
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/drawable/ic_round_camera_alt_24.xml" value="0.1" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/accounts_item_list.xml" value="0.1859375" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_add_record.xml" value="0.20964912280701756" />
-        <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_appointments_list.xml" value="0.21052631578947367" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_create_admin_account.xml" value="0.21052631578947367" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_create_report.xml" value="0.21052631578947367" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_dashboard.xml" value="0.1793859649122807" />
@@ -41,7 +42,6 @@
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_request_list.xml" value="0.21052631578947367" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_user_information.xml" value="0.20964912280701756" />
-        <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/appointments_item_list.xml" value="0.21052631578947367" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/records_item_list.xml" value="0.264" />
       </map>
     </option>

@@ -9,11 +9,17 @@ public class AppointmentRecords {
     private String petId;
     private Bitmap userPic;
 
+    private String userID;
+
     public AppointmentRecords(String name, String dateTime, String petId, Bitmap userPic) {
         this.name = name;
         this.dateTime = dateTime;
         this.petId = petId;
         this.userPic = userPic;
+    }
+
+    public AppointmentRecords() {
+
     }
 
     public String getName() {
@@ -46,5 +52,13 @@ public class AppointmentRecords {
 
     public void setUserPic(Bitmap userPic) {
         this.userPic = userPic;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

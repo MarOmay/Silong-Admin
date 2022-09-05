@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.silong.Adapter.RequestAdapter;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.Request;
+import com.silong.Task.AppointmentFetcher;
 
 import java.util.Comparator;
 
@@ -52,12 +53,15 @@ public class RequestList extends AppCompatActivity {
         loadRequestList();
         manualAddSearchListener();
 
-        requestBackIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        //fetch appointments
+        AppointmentFetcher appointmentFetcher = new AppointmentFetcher(RequestList.this);
+        appointmentFetcher.execute();
+
+    }
+
+    public void onPressedCalendar(View view){
+        Intent intent = new Intent(RequestList.this, AppointmentsList.class);
+        startActivity(intent);
     }
 
     private void manualAddSearchListener(){

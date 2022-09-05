@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.Address;
+import com.silong.Object.AppointmentRecords;
 import com.silong.Object.Pet;
 import com.silong.Object.Request;
 import com.silong.Object.User;
@@ -31,6 +32,7 @@ public class AdminData {
     public static ArrayList<Pet> pets = new ArrayList<>();
 
     public static ArrayList<Request> requests = new ArrayList<>();
+    public static ArrayList<AppointmentRecords> appointments = new ArrayList<>();
 
     public static void logout(){
         //Delete user-related local files

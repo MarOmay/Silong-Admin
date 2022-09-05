@@ -21,6 +21,7 @@
 
         <ImageView
             android:id="@+id/appointmentBackIv"
+            android:onClick="onPressedBack"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
