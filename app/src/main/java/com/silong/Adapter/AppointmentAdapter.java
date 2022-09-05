@@ -1,0 +1,69 @@
+package com.silong.Adapter;
+
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import com.silong.Object.AppointmentRecords;
+import com.silong.admin.R;
+
+public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ViewHolder> {
+
+    AppointmentRecords appointmentRecords[];
+    Activity activity;
+
+    public AppointmentAdapter(AppointmentRecords[] appointmentRecords, Activity activity){
+        this.appointmentRecords = appointmentRecords;
+        this.activity = activity;
+    }
+
+    @NonNull
+    @Override
+    public AppointmentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.appointments_item_list, parent, false);
+        AppointmentAdapter.ViewHolder viewHolder = new AppointmentAdapter.ViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull AppointmentAdapter.ViewHolder holder, int position) {
+        final AppointmentRecords appointmentRecordsList = appointmentRecords[position];
+        holder.name.setText(appointmentRecordsList.getName());
+        holder.dateTime.setText(appointmentRecordsList.getDateTime());
+        holder.petId.setText(appointmentRecordsList.getPetId());
+        holder.userPic.setImageBitmap(appointmentRecordsList.getUserPic());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //codes here
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() { return appointmentRecords.length; }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+
+        TextView name;
+        TextView dateTime;
+        TextView petId;
+        ImageView userPic;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            name = itemView.findViewById(R.id.appointmentUserNameTv);
+            dateTime = itemView.findViewById(R.id.appointmentDateTimeTv);
+            petId = itemView.findViewById(R.id.appointmentPetIdTv);
+            userPic = itemView.findViewById(R.id.appointmentUserPic);
+        }
+    }
+}

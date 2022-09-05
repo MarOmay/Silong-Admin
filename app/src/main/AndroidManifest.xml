@@ -18,6 +18,9 @@
         android:theme="@style/Theme.SilongAdmin"
         tools:targetApi="31">
         <activity
+            android:name=".AppointmentsList"
+            android:exported="false" />
+        <activity
             android:name=".RequestInformation"
             android:exported="false" />
         <activity
@@ -83,10 +86,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <service android:name="com.silong.Service.RequestWatcher"
+        <service
+            android:name="com.silong.Service.RequestWatcher"
             android:exported="true"
-            android:process=".SilongAdmin"/>
-
+            android:process=".SilongAdmin" />
     </application>
 
 </manifest>
