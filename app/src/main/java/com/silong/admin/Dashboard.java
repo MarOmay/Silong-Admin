@@ -31,8 +31,11 @@ import com.silong.Object.Pet;
 import com.silong.Object.User;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
+import com.silong.Service.RequestWatcher;
 import com.silong.Task.AccountsChecker;
 import com.silong.Task.ActivationRequestFetcher;
+import com.silong.Task.AdoptionRequestFetcher;
+import com.silong.Task.AdoptionScheduleFetcher;
 import com.silong.Task.RecordsChecker;
 
 import java.io.File;
@@ -128,6 +131,7 @@ public class Dashboard extends AppCompatActivity {
     }
 
     public void onPressedLogout(View view){
+        stopService(new Intent(this, RequestWatcher.class));
         AdminData.logout();
         mAuth.signOut();
         Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();
@@ -147,6 +151,14 @@ public class Dashboard extends AppCompatActivity {
             AdminData.requests = new ArrayList<>();
             ActivationRequestFetcher activationRequestFetcher = new ActivationRequestFetcher(Dashboard.this);
             activationRequestFetcher.execute();
+
+            //sync adoption request
+            AdoptionRequestFetcher adoptionRequestFetcher = new AdoptionRequestFetcher(Dashboard.this);
+            adoptionRequestFetcher.execute();
+
+            //sync adoption appointment
+            AdoptionScheduleFetcher adoptionScheduleFetcher = new AdoptionScheduleFetcher(Dashboard.this);
+            adoptionScheduleFetcher.execute();
 
             //sync account copies
             AccountsChecker accountsChecker = new AccountsChecker(Dashboard.this);

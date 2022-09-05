@@ -40,6 +40,7 @@ import com.silong.CustomView.ResetLinkNotice;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.InputValidator;
 import com.silong.Operation.Utility;
+import com.silong.Service.RequestWatcher;
 
 public class LogIn extends AppCompatActivity {
 
@@ -250,9 +251,26 @@ public class LogIn extends AppCompatActivity {
 
                 //insert  adminInteraction
 
+
+
                 loadingDialog.dismissLoadingDialog();
                 Intent intent = new Intent(LogIn.this, Dashboard.class);
                 startActivity(intent);
+
+                //Listen to RTDB for reques
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startForegroundService(new Intent(LogIn.this, RequestWatcher.class));
+                        }
+                        else {
+                            startService(new Intent(LogIn.this, RequestWatcher.class));
+                        }
+                    }
+                });
+                thread.run();
+
                 finish();
             }
             catch (Exception e){

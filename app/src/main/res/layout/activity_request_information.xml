@@ -295,6 +295,7 @@
 
             <LinearLayout
                 android:id="@+id/declineBtn"
+                android:onClick="onPressedDecline"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -323,6 +324,7 @@
 
             <LinearLayout
                 android:id="@+id/acceptBtn"
+                android:onClick="onPressedAccept"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"

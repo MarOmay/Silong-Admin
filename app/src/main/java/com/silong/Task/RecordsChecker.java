@@ -62,7 +62,7 @@ public class RecordsChecker extends AsyncTask {
                             list.add("pet-" + snap.getKey());
                         }
                         //delete local copy of deleted accounts
-                        cleanLocalRecord(list, "pet-");
+                        //cleanLocalRecord(list, "pet-");
                     }
                     catch (Exception e){
                         Log.d("RC-dIB", e.getMessage());

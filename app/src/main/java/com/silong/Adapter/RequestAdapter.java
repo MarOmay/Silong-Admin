@@ -19,6 +19,7 @@ import com.silong.Object.User;
 import com.silong.admin.AdminData;
 import com.silong.admin.ManageAccount;
 import com.silong.admin.R;
+import com.silong.admin.RequestInformation;
 import com.silong.admin.RequestList;
 
 import java.util.ArrayList;
@@ -82,7 +83,12 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             public void onClick(View view) {
                 switch (request.getRequestCode()){
                     case RequestCode.ADOPTION_REQUEST:
-
+                        Intent gotoRI = new Intent(activity, RequestInformation.class);
+                        gotoRI.putExtra("userID", request.getUserID());
+                        gotoRI.putExtra("petID", request.getRequestDetails());
+                        gotoRI.putExtra("dateRequested", request.getDate());
+                        activity.startActivity(gotoRI);
+                        activity.finish();
                         break;
                     case RequestCode.APPOINTMENT:
                         break;

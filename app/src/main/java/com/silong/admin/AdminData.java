@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.silong.CustomView.LoadingDialog;
+import com.silong.Object.Address;
 import com.silong.Object.Pet;
 import com.silong.Object.Request;
 import com.silong.Object.User;
@@ -105,6 +106,7 @@ public class AdminData {
             //read each account info
             for (File account : accounts){
                 User user = new User();
+                Address address = new Address();
 
                 //Read basic info
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(account));
@@ -121,11 +123,15 @@ public class AdminData {
                         case "email": user.setEmail(temp[1]); break;
                         case "contact": user.setContact(temp[1]); break;
                         case "birthday" : user.setBirthday(temp[1]); break;
-                        case "gender" : user.setGender(Integer.parseInt(temp[1]));
+                        case "gender" : user.setGender(Integer.parseInt(temp[1])); break;
+                        case "addressLine" : address.setAddressLine(temp[1]); break;
+                        case "barangay" : address.setBarangay(temp[1]); break;
                     }
 
                 }
                 bufferedReader.close();
+
+                user.setAddress(address);
 
                 //Read avatar
                 try{

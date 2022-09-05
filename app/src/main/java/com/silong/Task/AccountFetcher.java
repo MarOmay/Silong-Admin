@@ -123,6 +123,30 @@ public class AccountFetcher extends AsyncTask {
 
                 }
             });
+            tempReference.child("address").child("addressLine").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String addressLine = snapshot.getValue().toString();
+                    AdminData.writeToLocal(activity, uid, "addressLine", addressLine);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            tempReference.child("address").child("barangay").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String barangay = snapshot.getValue().toString();
+                    AdminData.writeToLocal(activity, uid, "barangay", barangay);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             tempReference.child("photo").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
