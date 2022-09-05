@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.silong.CustomView.AppointmentReqDialog;
 import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Request;
 import com.silong.Object.User;
@@ -91,6 +92,14 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                         activity.finish();
                         break;
                     case RequestCode.APPOINTMENT:
+                        //prepare message
+                        String s = "Name: " + user.getFirstName() + " " + user.getLastName();
+                        s += "\nPetID: " + request.getRequestDetails();
+                        String[] dt = request.getDate().split(" ");
+                        s += "\nDate: " + dt[0];
+                        s += "\nDate: " + dt[1].replace("*",":") + dt[2];
+                        AppointmentReqDialog appointmentReqDialog = new AppointmentReqDialog(activity, s, user.userID);
+                        appointmentReqDialog.show();
                         break;
                     case RequestCode.ACCOUNT_ACTIVATION:
                         Intent intent = new Intent(activity, ManageAccount.class);
