@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.silong.CustomView.AppointmentTagger;
 import com.silong.Object.AppointmentRecords;
 import com.silong.admin.R;
 
@@ -42,7 +44,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //codes here
+                AppointmentTagger appointmentTagger = new AppointmentTagger(activity, appointmentRecordsList.getUserID(), appointmentRecordsList.getName());
+                appointmentTagger.show();
             }
         });
     }

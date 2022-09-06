@@ -65,7 +65,7 @@ public class AppointmentsList extends AppCompatActivity {
         //make a copy of appointments
         AppointmentRecords [] appointmentRecords = new AppointmentRecords[AdminData.appointments.size()];
         for (AppointmentRecords appointment : AdminData.appointments){
-            appointmentRecords[AdminData.appointments.indexOf(appointment)] = new AppointmentRecords(appointment.getName(), appointment.getDateTime(), appointment.getPetId(), appointment.getUserPic());
+            appointmentRecords[AdminData.appointments.indexOf(appointment)] = new AppointmentRecords(appointment.getName(), appointment.getDateTime(), appointment.getPetId(), appointment.getUserPic(), appointment.getUserID());
             Log.d("DEBUGGER>>>", "added appointment - " + appointment.getName());
         }
 

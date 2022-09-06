@@ -45,6 +45,9 @@ public class AppointmentFetcher extends AsyncTask {
 
                         User user = AdminData.getUser(key);
 
+                        if (user == null)
+                            continue;
+
                         appointment.setName(user.getFirstName() + " " + user.getLastName());
                         appointment.setUserID(key);
 
@@ -60,6 +63,8 @@ public class AppointmentFetcher extends AsyncTask {
                         String date = snap.child("appointmentDate").getValue().toString();
                         date += " " + snap.child("appointmentTime").getValue().toString().replace("*",":");
                         appointment.setDateTime(date);
+
+                        appointment.setUserPic(user.getPhoto());
 
                         if (AdminData.appointments.size() < 1){
                             AdminData.appointments.add(appointment);

@@ -11,11 +11,12 @@ public class AppointmentRecords {
 
     private String userID;
 
-    public AppointmentRecords(String name, String dateTime, String petId, Bitmap userPic) {
+    public AppointmentRecords(String name, String dateTime, String petId, Bitmap userPic, String userID) {
         this.name = name;
         this.dateTime = dateTime;
         this.petId = petId;
         this.userPic = userPic;
+        this.userID = userID;
     }
 
     public AppointmentRecords() {
