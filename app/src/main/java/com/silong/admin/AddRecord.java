@@ -18,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +43,7 @@ import com.silong.Operation.Utility;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +51,7 @@ public class AddRecord extends AppCompatActivity {
 
     private final int PICK_IMAGE = 2;
 
-    ImageView addRecordPicIv, addRecordBackIv;
+    ImageView addRecordPicIv, addRecordBackIv, deleteIcon;
     Button saveRecordBtn;
     ChipGroup typeToggle, genderToggle, ageToggle, sizeToggle, colorToggle;
 
@@ -84,6 +87,11 @@ public class AddRecord extends AppCompatActivity {
         colorToggle = findViewById(R.id.colorToggle);
         saveRecordBtn = (Button) findViewById(R.id.saveRecordBtn);
 
+        deleteIcon = findViewById(R.id.deleteIcon);
+        deleteIcon.setVisibility(View.INVISIBLE);
+        deleteIcon.setClickable(false);
+        deleteIcon.setEnabled(false);
+
         loadForEdit();
     }
 
@@ -95,6 +103,10 @@ public class AddRecord extends AppCompatActivity {
                 //change header label
                 TextView headerTv = findViewById(R.id.headerTv);
                 headerTv.setText("Edit Record");
+
+                deleteIcon.setVisibility(View.VISIBLE);
+                deleteIcon.setClickable(true);
+                deleteIcon.setEnabled(true);
 
                 addRecordPicIv.setImageBitmap(selectedPet.getPhoto());
 
@@ -149,6 +161,45 @@ public class AddRecord extends AppCompatActivity {
             Log.d("AddRecord", e.getMessage());
         }
     }
+    
+    public void onPressedDelete(View view){
+        //check internet
+        if (!Utility.internetConnection(AddRecord.this)){
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String petID = selectedPet.getPetID();
+        if (petID != null){
+            //delete from recordSummary only (keeps the record in Pets)
+            DatabaseReference tempRef = mDatabase.getReference().child("recordSummary").child(petID);
+            tempRef.setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    //delete local copy
+                    File file = new File(AddRecord.this.getFilesDir(), "pet-"+petID);
+                    file.delete();
+                    //notify user
+                    Toast.makeText(AddRecord.this, "Record deleted successfully.", Toast.LENGTH_SHORT).show();
+
+                    //go back to Dashboard to trigger sync
+                    Intent intent = new Intent(AddRecord.this, Dashboard.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AddRecord.this, "Record deletion failed. (oFL)", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            Toast.makeText(this, "Record deletion failed.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     public void onPressedPhoto(View view){
         new ImagePicker(AddRecord.this, PICK_IMAGE);
@@ -165,6 +216,12 @@ public class AddRecord extends AppCompatActivity {
     }
 
     public void onPressedSave(View view){
+        //check internet
+        if (!Utility.internetConnection(AddRecord.this)){
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         //validate input
         if (addRecordPicIv.getDrawable() == null){
             Toast.makeText(this, "Please select a photo.", Toast.LENGTH_SHORT).show();

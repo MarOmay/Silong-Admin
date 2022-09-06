@@ -44,6 +44,7 @@
         <!-- delete icon-->
         <ImageView
             android:id="@+id/deleteIcon"
+            android:onClick="onPressedDelete"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
