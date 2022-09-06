@@ -41,6 +41,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         holder.estSize.setText(petRecordsDataList.getEstSize());
         holder.petColor.setText(petRecordsDataList.getPetColor());
         holder.petPic.setImageBitmap(petRecordsDataList.getPetpic());
+        holder.petID.setText("ID: " + petRecordsDataList.getPetID());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +64,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         TextView estAge;
         TextView petColor;
         TextView estSize;
+        TextView petID;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +74,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
             estAge = itemView.findViewById(R.id.estAgeTv);
             petColor = itemView.findViewById(R.id.petColorTv);
             estSize = itemView.findViewById(R.id.estSizeTv);
+            petID = itemView.findViewById(R.id.petIDTv);
         }
     }
 }

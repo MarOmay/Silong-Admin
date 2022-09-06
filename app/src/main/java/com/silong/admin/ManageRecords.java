@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,8 @@ import com.silong.EnumClass.PetType;
 import com.silong.Object.Pet;
 import com.silong.Object.PetRecordsData;
 import com.silong.Operation.Utility;
+
+import java.util.Comparator;
 
 public class ManageRecords extends AppCompatActivity {
 
@@ -80,6 +83,19 @@ public class ManageRecords extends AppCompatActivity {
         loadingDialog.startLoadingDialog();
 
         try {
+
+            //sort
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                AdminData.pets.sort(new Comparator<Pet>() {
+                    @Override
+                    public int compare(Pet pet, Pet t1) {
+                        int id1 = Integer.parseInt(pet.getPetID());
+                        int id2 = Integer.parseInt(t1.getPetID());
+                        return ((Integer) id1).compareTo(((Integer) id2));
+                    }
+                });
+            }
+
             PetRecordsData[] recordsData = new PetRecordsData[AdminData.pets.size()];
 
             for (Pet pet : AdminData.pets){
