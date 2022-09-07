@@ -181,7 +181,7 @@
                             android:layout_height="match_parent">
 
                             <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/messagesDot"
+                                android:id="@+id/appointmentsDot"
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
                                 android:layout_gravity="end"
@@ -192,7 +192,7 @@
 
                             <LinearLayout
                                 android:onClick="onPressedMessages"
-                                android:id="@+id/messagesPad"
+                                android:id="@+id/appointmentsPad"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -203,13 +203,13 @@
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="100dp"
-                                    android:src="@drawable/icon_messages" />
+                                    android:src="@drawable/icon_appointments" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="20dp"
-                                    android:text="Messages"
+                                    android:text="Appointments"
                                     android:textAlignment="center"
                                     android:textColor="@color/gray"
                                     android:textSize="17dp" />

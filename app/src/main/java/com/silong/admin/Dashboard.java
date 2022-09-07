@@ -43,8 +43,8 @@ import java.util.ArrayList;
 
 public class Dashboard extends AppCompatActivity {
 
-    LinearLayout requestsPad, messagesPad, manageRecordsPad, manageAccountsPad;
-    MaterialCardView requestsDot, messagesDot;
+    LinearLayout requestsPad, appointmentsPad, manageRecordsPad, manageAccountsPad;
+    MaterialCardView requestsDot, appointmentsDot;
     TextView adminFnameTv, logoutTv;
 
     private FirebaseAnalytics mAnalytics;
@@ -88,9 +88,9 @@ public class Dashboard extends AppCompatActivity {
         requestsDot = (MaterialCardView) findViewById(R.id.requestsDot);
         requestsDot.setVisibility(View.INVISIBLE);
 
-        messagesPad = (LinearLayout) findViewById(R.id.messagesPad);
-        messagesDot = (MaterialCardView) findViewById(R.id.messagesDot);
-        messagesDot.setVisibility(View.INVISIBLE);
+        appointmentsPad = (LinearLayout) findViewById(R.id.appointmentsPad);
+        appointmentsDot = (MaterialCardView) findViewById(R.id.appointmentsDot);
+        appointmentsDot.setVisibility(View.INVISIBLE);
 
         manageAccountsPad = (LinearLayout) findViewById(R.id.manageAccountsPad);
         manageRecordsPad = (LinearLayout) findViewById(R.id.manageRecordsPad);
