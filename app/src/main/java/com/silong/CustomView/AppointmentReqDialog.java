@@ -22,7 +22,7 @@ public class AppointmentReqDialog extends MaterialAlertDialogBuilder {
         super((Context) activity);
         Context context = (Context) activity;
         super.setTitle(Html.fromHtml("<b>"+"Appointment"+"</b>"));
-        super.setIcon(context.getDrawable(R.drawable.req_appointment_icon));
+        super.setIcon(context.getDrawable(R.drawable.req_appointment_icon_pink));
         super.setBackground(context.getDrawable(R.drawable.dialog_bg));
         super.setMessage(string);
 
