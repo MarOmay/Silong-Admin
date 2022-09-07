@@ -13,11 +13,14 @@ import android.os.Build;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import com.silong.admin.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -54,6 +57,29 @@ public class Utility {
         SimpleDateFormat formatter = new SimpleDateFormat("HH*mm*ss");
         Date date = new Date();
         return formatter.format(date);
+    }
+
+    public static void log(Activity activity, String log){
+        Context context = (Context) activity;
+        //Check if file exists
+        File file = new File(context.getFilesDir() + "/logs.dat");
+        if (!file.exists()){
+            try{
+                FileOutputStream fileOuputStream = context.openFileOutput("logs.dat", Context.MODE_PRIVATE);
+            }
+            catch (Exception e){
+                Log.d("LOGS.DAT", "Error writing logs");
+            }
+        }
+        //Create local storage copy of user data
+        try (FileOutputStream fileOutputStream = context.openFileOutput( "logs.dat", Context.MODE_APPEND)) {
+            String data = dateToday() + "@" + timeNow() + " : " + log + "\n";
+            fileOutputStream.write(data.getBytes());
+            fileOutputStream.flush();
+        }
+        catch (Exception e){
+            Log.d("Utility-log", e.getMessage());
+        }
     }
 
     //  NON STATIC METHODS

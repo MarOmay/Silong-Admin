@@ -1,11 +1,13 @@
 package com.silong.Adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,8 +46,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppointmentTagger appointmentTagger = new AppointmentTagger(activity, appointmentRecordsList.getUserID(), appointmentRecordsList.getName());
-                appointmentTagger.show();
+                try {
+                    AppointmentTagger appointmentTagger = new AppointmentTagger(activity, appointmentRecordsList.getUserID(), appointmentRecordsList.getName());
+                    appointmentTagger.show();
+                }
+                catch (Exception e){
+                    Toast.makeText(activity, "Action can't be performed.", Toast.LENGTH_SHORT).show();
+                    Log.d("AA-oBVH", e.getMessage());
+                }
             }
         });
     }

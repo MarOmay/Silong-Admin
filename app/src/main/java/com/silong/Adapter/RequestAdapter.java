@@ -3,6 +3,7 @@ package com.silong.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,31 +83,37 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (request.getRequestCode()){
-                    case RequestCode.ADOPTION_REQUEST:
-                        Intent gotoRI = new Intent(activity, RequestInformation.class);
-                        gotoRI.putExtra("userID", request.getUserID());
-                        gotoRI.putExtra("petID", request.getRequestDetails());
-                        gotoRI.putExtra("dateRequested", request.getDate());
-                        activity.startActivity(gotoRI);
-                        activity.finish();
-                        break;
-                    case RequestCode.APPOINTMENT:
-                        //prepare message
-                        String s = "Name: " + user.getFirstName() + " " + user.getLastName();
-                        s += "\nPetID: " + request.getRequestDetails();
-                        String[] dt = request.getDate().split(" ");
-                        s += "\nDate: " + dt[0];
-                        s += "\nDate: " + dt[1].replace("*",":") + dt[2];
-                        AppointmentReqDialog appointmentReqDialog = new AppointmentReqDialog(activity, s, user.userID);
-                        appointmentReqDialog.show();
-                        break;
-                    case RequestCode.ACCOUNT_ACTIVATION:
-                        Intent intent = new Intent(activity, ManageAccount.class);
-                        intent.putExtra("goto-user-info", user.getUserID());
-                        activity.startActivity(intent);
-                        activity.finish();
-                        break;
+                try {
+                    switch (request.getRequestCode()){
+                        case RequestCode.ADOPTION_REQUEST:
+                            Intent gotoRI = new Intent(activity, RequestInformation.class);
+                            gotoRI.putExtra("userID", request.getUserID());
+                            gotoRI.putExtra("petID", request.getRequestDetails());
+                            gotoRI.putExtra("dateRequested", request.getDate());
+                            activity.startActivity(gotoRI);
+                            activity.finish();
+                            break;
+                        case RequestCode.APPOINTMENT:
+                            //prepare message
+                            String s = "Name: " + user.getFirstName() + " " + user.getLastName();
+                            s += "\nPetID: " + request.getRequestDetails();
+                            String[] dt = request.getDate().split(" ");
+                            s += "\nDate: " + dt[0];
+                            s += "\nDate: " + dt[1].replace("*",":") + dt[2];
+                            AppointmentReqDialog appointmentReqDialog = new AppointmentReqDialog(activity, s, user.userID);
+                            appointmentReqDialog.show();
+                            break;
+                        case RequestCode.ACCOUNT_ACTIVATION:
+                            Intent intent = new Intent(activity, ManageAccount.class);
+                            intent.putExtra("goto-user-info", user.getUserID());
+                            activity.startActivity(intent);
+                            activity.finish();
+                            break;
+                    }
+                }
+                catch (Exception e){
+                    Toast.makeText(activity, "Operation can't be performed.", Toast.LENGTH_SHORT).show();
+                    Log.d("ReqA-oBVH", e.getMessage());
                 }
 
             }

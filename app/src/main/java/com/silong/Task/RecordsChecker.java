@@ -43,6 +43,9 @@ public class RecordsChecker extends AsyncTask {
                         //Get all User uid
                         ArrayList<String> list = new ArrayList<>();
                         for (DataSnapshot snap : snapshot.getChildren()){
+                            if (snap.getKey().equals("null")){
+                                continue;
+                            }
 
                             File file = new File(activity.getFilesDir(), "pet-" + snap.getKey());
                             if (file.exists()){
