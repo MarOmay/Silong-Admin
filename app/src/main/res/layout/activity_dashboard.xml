@@ -302,16 +302,17 @@
 
                         <TextView
                             android:id="@+id/logoutTv"
-                            android:onClick="onPressedLogout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:gravity="end"
+                            android:onClick="onPressedLogout"
                             android:text="LOGOUT"
                             android:textColor="@color/pink"
                             android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:ignore="TouchTargetSizeCheck" />
 
                     </LinearLayout>
 
