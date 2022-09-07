@@ -21,12 +21,13 @@
 
         <ImageView
             android:id="@+id/requestBackIv"
-            android:onClick="back"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
+            android:onClick="back"
             android:src="@drawable/ic_round_arrow_back_ios_24"
-            app:tint="@color/whitey" />
+            app:tint="@color/whitey"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <TextView
             android:layout_width="match_parent"
@@ -40,11 +41,10 @@
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageView
-            android:id="@+id/appointmentCalendarIcon"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
-            android:src="@drawable/appointment_icon"
+            android:alpha="0"
             app:tint="@color/whitey"/>
 
     </LinearLayout>
