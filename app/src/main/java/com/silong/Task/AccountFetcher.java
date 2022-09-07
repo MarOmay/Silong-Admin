@@ -111,6 +111,20 @@ public class AccountFetcher extends AsyncTask {
 
                 }
             });
+            tempReference.child("lastModified").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String lastModified = "no data";
+                    if (snapshot.getValue() != null)
+                        lastModified = snapshot.getValue().toString();
+                    AdminData.writeToLocal(activity, uid, "lastModified", lastModified);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             tempReference.child("gender").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
