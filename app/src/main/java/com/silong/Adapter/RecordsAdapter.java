@@ -1,11 +1,13 @@
 package com.silong.Adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,8 +48,14 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PetInfoDialog petInfoDialog = new PetInfoDialog(activity, petRecordsDataList.getPetID());
-                petInfoDialog.show();
+                try {
+                    PetInfoDialog petInfoDialog = new PetInfoDialog(activity, petRecordsDataList.getPetID());
+                    petInfoDialog.show();
+                }
+                catch (Exception e){
+                    Toast.makeText(activity, "Operation can't be performed.", Toast.LENGTH_SHORT).show();
+                    Log.d("RA-oBVH", e.getMessage());
+                }
             }
         });
     }

@@ -128,6 +128,7 @@ public class AdminData {
                         case "gender" : user.setGender(Integer.parseInt(temp[1])); break;
                         case "addressLine" : address.setAddressLine(temp[1]); break;
                         case "barangay" : address.setBarangay(temp[1]); break;
+                        case "lastModified" : user.setLastModified(temp[1]); break;
                     }
 
                 }

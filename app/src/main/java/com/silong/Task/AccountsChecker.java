@@ -30,6 +30,7 @@ public class AccountsChecker extends AsyncTask {
         this.activity = activity;
     }
 
+    boolean skip = false;
     @Override
     protected Object doInBackground(Object[] objects) {
         try{
@@ -53,6 +54,43 @@ public class AccountsChecker extends AsyncTask {
                                     AccountFetcher accountFetcher = new AccountFetcher(snap.getKey(), activity);
                                     accountFetcher.execute();
                                 }
+                                else {
+                                    //check last revision
+                                    mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
+                                    mReference = mDatabase.getReference().child("Users").child(snap.getKey()).child("lastModified");
+                                    mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.getValue() == null){
+                                                skip = true;
+                                                return;
+                                            }
+
+                                            String lastModified = snapshot.getValue().toString();
+                                            Log.d("DEBUGGER>>>", "cur " + tempUser.getLastModified());
+                                            Log.d("DEBUGGER>>>", "new " + lastModified);
+                                            if (tempUser.getLastModified() != null){
+                                                if (!tempUser.getLastModified().equals(lastModified)){
+                                                    //delete local record, to rewrite new record
+                                                    file.delete();
+                                                    AccountFetcher accountFetcher = new AccountFetcher(snap.getKey(), activity);
+                                                    accountFetcher.execute();
+                                                }
+                                            }
+                                            else {
+                                                AccountFetcher accountFetcher = new AccountFetcher(snap.getKey(), activity);
+                                                accountFetcher.execute();
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                }
+
                             }
                             else {
                                 AccountFetcher accountFetcher = new AccountFetcher(snap.getKey(), activity);

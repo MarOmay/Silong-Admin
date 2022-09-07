@@ -44,6 +44,7 @@ public class RequestInformation extends AppCompatActivity {
         setContentView(R.layout.activity_request_information);
         getSupportActionBar().hide();
 
+        boolean load_contents = true;
         try {
             String userID = getIntent().getStringExtra("userID");
             String petID = getIntent().getStringExtra("petID");
@@ -52,12 +53,21 @@ public class RequestInformation extends AppCompatActivity {
             USER = AdminData.getUser(userID);
             PET = AdminData.getPet(petID);
 
-            if (USER == null || PET == null)
-                onBackPressed();
+            if (USER == null){
+                Toast.makeText(this, "Error: Account is invalid", Toast.LENGTH_SHORT).show();
+                updateStatus("7");
+                load_contents = false;
+            }
+            else if (PET == null) {
+                Toast.makeText(this, "Error: Pet is invalid", Toast.LENGTH_SHORT).show();
+                updateStatus("7");
+                load_contents = false;
+            }
+
         }
         catch (Exception e){
             Log.d("DEBUGGER>>>", "Failed to get userID or petID");
-            onBackPressed();
+            gotoDashboard();
         }
 
         //to adopt status bar to the pink header
@@ -82,57 +92,69 @@ public class RequestInformation extends AppCompatActivity {
         declineBtn = (LinearLayout) findViewById(R.id.declineBtn);
 
         //display values
-        reqInfoUserPicIv.setImageBitmap(USER.getPhoto());
-        reqInfoUserNameTv.setText(USER.getFirstName() + " " + USER.getLastName());
-        reqInfoUserEmailTv.setText(USER.getEmail());
-        reqInfoUserContactTv.setText(USER.getContact());
-        reqInforUserAddressTv.setText(USER.getAddress().getAddressLine() + ", " + USER.getAddress().getBarangay());
+        if (load_contents)
+            loadContents();
+    }
 
-        reqInfoPetPicIv.setImageBitmap(PET.getPhoto());
+    private void loadContents(){
+        try {
 
-        String genderType = "";
-        switch (PET.getGender()){
-            case Gender.MALE: genderType = "Male"; break;
-            case Gender.FEMALE: genderType = "Female"; break;
-        }
-        switch (PET.getType()){
-            case PetType.DOG: genderType += " Dog"; break;
-            case PetType.CAT: genderType += " Cat"; break;
-        }
-        reqInfoGenderTypeTv.setText(genderType);
+            reqInfoUserPicIv.setImageBitmap(USER.getPhoto());
+            reqInfoUserNameTv.setText(USER.getFirstName() + " " + USER.getLastName());
+            reqInfoUserEmailTv.setText(USER.getEmail());
+            reqInfoUserContactTv.setText(USER.getContact());
+            reqInforUserAddressTv.setText(USER.getAddress().getAddressLine() + ", " + USER.getAddress().getBarangay());
 
-        String age = "";
-        switch (PET.getAge()){
-            case PetAge.PUPPY: age = PET.getType() == PetType.DOG ? "Puppy" : "Kitten"; break;
-            case PetAge.YOUNG: age = "Young"; break;
-            case PetAge.OLD: age = "Old"; break;
-        }
-        reqInfoAgeTv.setText(age);
+            reqInfoPetPicIv.setImageBitmap(PET.getPhoto());
 
-        String color = "";
-        for (char c : PET.getColor().toCharArray()){
-            switch (Integer.parseInt(c+"")){
-                case PetColor.BLACK: color += "Black "; break;
-                case PetColor.BROWN: color += "Brown "; break;
-                case PetColor.CREAM: color += "Cream "; break;
-                case PetColor.WHITE: color += "White "; break;
-                case PetColor.ORANGE: color += "Orange "; break;
-                case PetColor.GRAY: color += "Gray "; break;
+            String genderType = "";
+            switch (PET.getGender()){
+                case Gender.MALE: genderType = "Male"; break;
+                case Gender.FEMALE: genderType = "Female"; break;
             }
-        }
-        color.trim();
-        color.replace(" ", " / ");
-        reqInfoColorTv.setText(color);
+            switch (PET.getType()){
+                case PetType.DOG: genderType += " Dog"; break;
+                case PetType.CAT: genderType += " Cat"; break;
+            }
+            reqInfoGenderTypeTv.setText(genderType);
 
-        String size = "";
-        switch (PET.getSize()){
-            case PetSize.SMALL: size = "Small"; break;
-            case PetSize.MEDIUM: size = "Medium"; break;
-            case PetSize.LARGE: size = "Large"; break;
-        }
-        reqInfoSizeTv.setText(size);
+            String age = "";
+            switch (PET.getAge()){
+                case PetAge.PUPPY: age = PET.getType() == PetType.DOG ? "Puppy" : "Kitten"; break;
+                case PetAge.YOUNG: age = "Young"; break;
+                case PetAge.OLD: age = "Old"; break;
+            }
+            reqInfoAgeTv.setText(age);
 
-        reqInfoSubmitDateTv.setText(DATE);
+            String color = "";
+            for (char c : PET.getColor().toCharArray()){
+                switch (Integer.parseInt(c+"")){
+                    case PetColor.BLACK: color += "Black "; break;
+                    case PetColor.BROWN: color += "Brown "; break;
+                    case PetColor.CREAM: color += "Cream "; break;
+                    case PetColor.WHITE: color += "White "; break;
+                    case PetColor.ORANGE: color += "Orange "; break;
+                    case PetColor.GRAY: color += "Gray "; break;
+                }
+            }
+            color.trim();
+            color.replace(" ", " / ");
+            reqInfoColorTv.setText(color);
+
+            String size = "";
+            switch (PET.getSize()){
+                case PetSize.SMALL: size = "Small"; break;
+                case PetSize.MEDIUM: size = "Medium"; break;
+                case PetSize.LARGE: size = "Large"; break;
+            }
+            reqInfoSizeTv.setText(size);
+
+            reqInfoSubmitDateTv.setText(DATE);
+        }
+        catch (Exception e){
+            Toast.makeText(this, "Action can't be performed.", Toast.LENGTH_SHORT).show();
+            Log.d("ReqInfo", e.getMessage());
+        }
     }
 
     public void onPressedDecline(View view){
@@ -159,6 +181,13 @@ public class RequestInformation extends AppCompatActivity {
         Toast.makeText(this, "Adoption Request: " + (status.equals("2") ? "Approved" : "Declined"), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(RequestInformation.this, Dashboard.class);
         startActivity(intent);
+        finish();
+    }
+
+    private void gotoDashboard(){
+        Intent intent = new Intent(RequestInformation.this, Dashboard.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         finish();
     }
 
