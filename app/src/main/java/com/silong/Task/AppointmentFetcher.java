@@ -1,10 +1,12 @@
 package com.silong.Task;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -88,6 +90,14 @@ public class AppointmentFetcher extends AsyncTask {
                         Log.d("DEBUGGER>>>", "details " + date);
                     }
 
+                    //send broadcast to show/hide red dot
+                    if (AdminData.appointments.isEmpty()){
+                        sendBroadcast(false);
+                    }
+                    else {
+                        sendBroadcast(true);
+                    }
+
                 }
 
                 @Override
@@ -102,5 +112,11 @@ public class AppointmentFetcher extends AsyncTask {
         }
 
         return null;
+    }
+
+    private void sendBroadcast(boolean notify){
+        Intent intent = new Intent("AF-sb-notify");
+        intent.putExtra("notify", notify);
+        LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
     }
 }

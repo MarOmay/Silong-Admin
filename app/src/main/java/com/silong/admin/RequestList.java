@@ -53,15 +53,6 @@ public class RequestList extends AppCompatActivity {
         loadRequestList();
         manualAddSearchListener();
 
-        //fetch appointments
-        AppointmentFetcher appointmentFetcher = new AppointmentFetcher(RequestList.this);
-        appointmentFetcher.execute();
-
-    }
-
-    public void onPressedCalendar(View view){
-        Intent intent = new Intent(RequestList.this, AppointmentsList.class);
-        startActivity(intent);
     }
 
     private void manualAddSearchListener(){

@@ -36,6 +36,7 @@ import com.silong.Task.AccountsChecker;
 import com.silong.Task.ActivationRequestFetcher;
 import com.silong.Task.AdoptionRequestFetcher;
 import com.silong.Task.AdoptionScheduleFetcher;
+import com.silong.Task.AppointmentFetcher;
 import com.silong.Task.RecordsChecker;
 
 import java.io.File;
@@ -74,6 +75,7 @@ public class Dashboard extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mAccountsChecker, new IntentFilter("AC-done"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mRecordsChecker, new IntentFilter("RC-done"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mRequestsNotify, new IntentFilter("ARF-sb-notify"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mAppointmentNotify, new IntentFilter("AF-sb-notify"));
 
         loadingDialog = new LoadingDialog(Dashboard.this);
 
@@ -112,9 +114,9 @@ public class Dashboard extends AppCompatActivity {
         finish();
     }
 
-    public void onPressedMessages(View view){
-        Intent i = new Intent(Dashboard.this, Messages.class);
-        startActivity(i);
+    public void onPressedAppointment(View view){
+        Intent intent = new Intent(Dashboard.this, AppointmentsList.class);
+        startActivity(intent);
         finish();
     }
 
@@ -159,6 +161,10 @@ public class Dashboard extends AppCompatActivity {
             //sync adoption appointment
             AdoptionScheduleFetcher adoptionScheduleFetcher = new AdoptionScheduleFetcher(Dashboard.this);
             adoptionScheduleFetcher.execute();
+
+            //sync appointments
+            AppointmentFetcher appointmentFetcher = new AppointmentFetcher(Dashboard.this);
+            appointmentFetcher.execute();
 
             //sync account copies
             AccountsChecker accountsChecker = new AccountsChecker(Dashboard.this);
@@ -213,6 +219,19 @@ public class Dashboard extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver mAppointmentNotify = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                boolean notify = intent.getBooleanExtra("notify", false);
+                appointmentsDot.setVisibility( notify ? View.VISIBLE : View.INVISIBLE);
+            }
+            catch (Exception e){
+                Log.d("Dashboard-mAN", e.getMessage());
+            }
+        }
+    };
+
     //Method Overriding
 
     @Override
@@ -230,6 +249,7 @@ public class Dashboard extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mAccountsChecker);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRecordsChecker);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRequestsNotify);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mAppointmentNotify);
         super.onDestroy();
     }
 }

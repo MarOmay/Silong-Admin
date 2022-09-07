@@ -191,12 +191,12 @@
                                 app:cardCornerRadius="100dp" />
 
                             <LinearLayout
-                                android:onClick="onPressedMessages"
                                 android:id="@+id/appointmentsPad"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:gravity="center"
+                                android:onClick="onPressedAppointment"
                                 android:orientation="vertical"
                                 android:paddingVertical="25dp">
 
