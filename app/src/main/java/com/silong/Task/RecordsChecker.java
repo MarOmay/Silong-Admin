@@ -41,11 +41,14 @@ public class RecordsChecker extends AsyncTask {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     try{
                         //Get all User uid
+                        ArrayList<String> keys = new ArrayList<>();
                         ArrayList<String> list = new ArrayList<>();
                         for (DataSnapshot snap : snapshot.getChildren()){
                             if (snap.getKey().equals("null")){
                                 continue;
                             }
+
+                            keys.add("pet-" + snap.getKey());
 
                             File file = new File(activity.getFilesDir(), "pet-" + snap.getKey());
                             if (file.exists()){
@@ -62,16 +65,37 @@ public class RecordsChecker extends AsyncTask {
                                 RecordFetcher recordFetcher = new RecordFetcher(snap.getKey(), activity);
                                 recordFetcher.execute();
                             }
-                            list.add("pet-" + snap.getKey());
+                            list.add(snap.getKey());
                         }
+
+                        //get pet- files only
+                        ArrayList<File> petFiles = new ArrayList<>();
+                        File [] files = activity.getFilesDir().listFiles();
+                        for (File file : files){
+                            if (file.getAbsolutePath().contains("pet-"))
+                                petFiles.add(file);
+                        }
+
+                        for (File petFile : petFiles){
+                            boolean found = false;
+                            for (String key : keys){
+                                File tempFile = new File(activity.getFilesDir(), key);
+                                if (petFile.getAbsolutePath().equals(tempFile.getAbsolutePath()))
+                                    found = true;
+                            }
+
+                            //remove file if not found in key
+                            if (!found)
+                                petFile.delete();
+                        }
+
                         //delete local copy of deleted accounts
-                        //cleanLocalRecord(list, "pet-");
+                        cleanLocalRecord(list, "pet-");
                     }
                     catch (Exception e){
                         Log.d("RC-dIB", e.getMessage());
                     }
                     AdminData.populateRecords(activity);
-                    updateRecordList();
                     sendBroadcast();
                 }
 
@@ -120,11 +144,6 @@ public class RecordsChecker extends AsyncTask {
             }
         }
 
-    }
-
-    private void updateRecordList(){
-        //Intent intent = new Intent("update-record-list");
-        //LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     private void sendBroadcast(){
