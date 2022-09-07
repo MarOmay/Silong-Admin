@@ -40,10 +40,11 @@
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageView
+            android:id="@+id/appointmentCalendarIcon"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
-            android:alpha="0"
+            android:src="@drawable/appointment_icon"
             app:tint="@color/whitey"/>
 
     </LinearLayout>
