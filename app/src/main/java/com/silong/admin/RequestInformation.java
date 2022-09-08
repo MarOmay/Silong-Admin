@@ -22,6 +22,10 @@ import com.silong.EnumClass.PetSize;
 import com.silong.EnumClass.PetType;
 import com.silong.Object.Pet;
 import com.silong.Object.User;
+import com.silong.Operation.ImageProcessor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestInformation extends AppCompatActivity {
 
@@ -159,10 +163,18 @@ public class RequestInformation extends AppCompatActivity {
 
     public void onPressedDecline(View view){
         updateStatus("7");
+
+        //archive to user's RTDB
+        DatabaseReference tempRef = mDatabase.getReference().child("Users").child(USER.getUserID()).child("adoptionHistory").child(PET.getPetID());
+        Map<String, Object> map = new HashMap<>();
+        map.put("dateRequested", DATE);
+        map.put("status", 7); //7 == DECLINED
+        tempRef.updateChildren(map);
     }
 
     public void onPressedAccept(View view){
         updateStatus("2");
+        new ImageProcessor().saveToLocal(getApplicationContext(), PET.getPhoto(), "approved-" + PET.getPetID());
     }
 
     private void updateStatus(String status){
