@@ -44,7 +44,7 @@ public class RecordsChecker extends AsyncTask {
                         ArrayList<String> keys = new ArrayList<>();
                         ArrayList<String> list = new ArrayList<>();
                         for (DataSnapshot snap : snapshot.getChildren()){
-                            if (snap.getKey().equals("null")){
+                            if (snap.getKey().equals("null") || snap.getKey() == null || snap == null){
                                 continue;
                             }
 

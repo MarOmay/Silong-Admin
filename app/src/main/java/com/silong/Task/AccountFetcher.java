@@ -38,137 +38,46 @@ public class AccountFetcher extends AsyncTask {
 
             AdminData.writeToLocal(activity, uid, "userID", uid);
 
-            DatabaseReference tempReference = mDatabase.getReference("Users/" + uid);
-            tempReference.child("accountStatus").addValueEventListener(new ValueEventListener() {
+            DatabaseReference tempReference = mDatabase.getReference("Users").child(uid);
+            tempReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String status = (Boolean) snapshot.getValue() ? "true" : "false";
-                    AdminData.writeToLocal(activity, uid, "accountStatus", status);
-                }
+                    try {
+                        String status = (Boolean) snapshot.child("accountStatus").getValue() ? "true" : "false";
+                        String fname = snapshot.child("firstName").getValue().toString();
+                        String lname = snapshot.child("lastName").getValue().toString();
+                        String email = snapshot.child("email").getValue().toString();
+                        String contact = snapshot.child("contact").getValue().toString();
+                        String birthday = snapshot.child("birthday").getValue().toString();
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                        String lastModified = "no data";
+                        if (snapshot.child("lastModified").getValue() != null)
+                            lastModified = snapshot.child("lastModified").getValue().toString();
 
-                }
-            });
-            tempReference.child("firstName").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String fname = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "firstName", fname);
-                }
+                        String gender = snapshot.child("gender").getValue().toString();
+                        String addressLine = snapshot.child("address").child("addressLine").getValue().toString();
+                        String barangay = snapshot.child("address").child("barangay").getValue().toString();
+                        String photo = snapshot.child("photo").getValue().toString();
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                        AdminData.writeToLocal(activity, uid, "accountStatus", status);
+                        AdminData.writeToLocal(activity, uid, "firstName", fname);
+                        AdminData.writeToLocal(activity, uid, "lastName", lname);
+                        AdminData.writeToLocal(activity, uid, "email", email);
+                        AdminData.writeToLocal(activity, uid, "contact", contact);
+                        AdminData.writeToLocal(activity, uid, "birthday", birthday);
+                        AdminData.writeToLocal(activity, uid, "lastModified", lastModified);
+                        AdminData.writeToLocal(activity, uid, "gender", gender);
+                        AdminData.writeToLocal(activity, uid, "addressLine", addressLine);
+                        AdminData.writeToLocal(activity, uid, "barangay", barangay);
 
-                }
-            });
-            tempReference.child("lastName").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String lname = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "lastName", lname);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("email").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String email = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "email", email);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("contact").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String contact = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "contact", contact);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("birthday").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String birthday = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "birthday", birthday);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("lastModified").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String lastModified = "no data";
-                    if (snapshot.getValue() != null)
-                        lastModified = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "lastModified", lastModified);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("gender").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String gender = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "gender", gender);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("address").child("addressLine").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String addressLine = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "addressLine", addressLine);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("address").child("barangay").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String barangay = snapshot.getValue().toString();
-                    AdminData.writeToLocal(activity, uid, "barangay", barangay);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("photo").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String photo = snapshot.getValue().toString();
-                    Bitmap bitmap = new ImageProcessor().toBitmap(photo);
-                    new ImageProcessor().saveToLocal(activity, bitmap, "avatar-" + uid);
-                    AdminData.populateAccounts(activity);
-                    updateAccountList();
+                        Bitmap bitmap = new ImageProcessor().toBitmap(photo);
+                        new ImageProcessor().saveToLocal(activity, bitmap, "avatar-" + uid);
+                        AdminData.populateAccounts(activity);
+                        updateAccountList();
+                    }
+                    catch (Exception e){
+                        Log.d("DEBUGGER>>>", e.getMessage());
+                    }
                 }
 
                 @Override

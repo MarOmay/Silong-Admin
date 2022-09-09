@@ -36,111 +36,42 @@ public class RecordFetcher extends AsyncTask {
 
             AdminData.writePetToLocal(activity, id, "petID", id);
 
-            DatabaseReference tempReference = mDatabase.getReference("Pets/" + id);
-            tempReference.child("status").addValueEventListener(new ValueEventListener() {
+            Log.d("DEBUGGER>>>", "Fetching Pet: " + id);
+
+            DatabaseReference tempReference = mDatabase.getReference("Pets").child(id);
+            tempReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int status = Integer.valueOf(snapshot.getValue().toString());
-                    AdminData.writePetToLocal(activity, id, "status", String.valueOf(status));
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                    try{
+                        int status = Integer.valueOf(snapshot.child("status").getValue().toString());
+                        int type = Integer.valueOf(snapshot.child("type").getValue().toString());
+                        int gender = Integer.valueOf(snapshot.child("gender").getValue().toString());
+                        int size = Integer.valueOf(snapshot.child("size").getValue().toString());
+                        int age = Integer.valueOf(snapshot.child("age").getValue().toString());
+                        String color = snapshot.child("color").getValue().toString();
+                        String modifiedBy = snapshot.child("modifiedBy").getValue().toString();
+                        String lastModified = snapshot.child("lastModified").getValue().toString();
 
-                }
-            });
-            tempReference.child("type").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int type = Integer.valueOf(snapshot.getValue().toString());
-                    AdminData.writePetToLocal(activity, id, "type", String.valueOf(type));
-                }
+                        AdminData.writePetToLocal(activity, id, "status", String.valueOf(status));
+                        AdminData.writePetToLocal(activity, id, "type", String.valueOf(type));
+                        AdminData.writePetToLocal(activity, id, "gender", String.valueOf(gender));
+                        AdminData.writePetToLocal(activity, id, "size", String.valueOf(size));
+                        AdminData.writePetToLocal(activity, id, "age", String.valueOf(age));
+                        AdminData.writePetToLocal(activity, id, "color", String.valueOf(color));
+                        AdminData.writePetToLocal(activity, id, "modifiedBy", String.valueOf(modifiedBy));
+                        AdminData.writePetToLocal(activity, id, "lastModified", String.valueOf(lastModified));
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                        String photo = snapshot.child("photo").getValue().toString();
+                        Bitmap bitmap = new ImageProcessor().toBitmap(photo);
+                        new ImageProcessor().saveToLocal(activity, bitmap, "petpic-" + id);
+                        AdminData.populateRecords(activity);
+                        updateRecordList();
+                    }
+                    catch (Exception e){
+                        Log.d("DEBUGGER>>>", e.getMessage());
+                    }
 
-                }
-            });
-            tempReference.child("gender").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int gender = Integer.valueOf(snapshot.getValue().toString());
-                    AdminData.writePetToLocal(activity, id, "gender", String.valueOf(gender));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("size").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int size = Integer.valueOf(snapshot.getValue().toString());
-                    AdminData.writePetToLocal(activity, id, "size", String.valueOf(size));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("age").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int age = Integer.valueOf(snapshot.getValue().toString());
-                    AdminData.writePetToLocal(activity, id, "age", String.valueOf(age));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("color").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String color = snapshot.getValue().toString();
-                    AdminData.writePetToLocal(activity, id, "color", String.valueOf(color));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("modifiedBy").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String modifiedBy = snapshot.getValue().toString();
-                    AdminData.writePetToLocal(activity, id, "modifiedBy", String.valueOf(modifiedBy));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("lastModified").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String lastModified = snapshot.getValue().toString();
-                    AdminData.writePetToLocal(activity, id, "lastModified", String.valueOf(lastModified));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            tempReference.child("photo").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String photo = snapshot.getValue().toString();
-                    Bitmap bitmap = new ImageProcessor().toBitmap(photo);
-                    new ImageProcessor().saveToLocal(activity, bitmap, "petpic-" + id);
-                    AdminData.populateRecords(activity);
-                    updateRecordList();
                 }
 
                 @Override

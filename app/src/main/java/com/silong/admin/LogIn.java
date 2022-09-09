@@ -194,90 +194,62 @@ public class LogIn extends AppCompatActivity {
         //Check internet connection first
         if (Utility.internetConnection(getApplicationContext())){
             //try to retrieve admin info
-            try {
-                mReference.child("firstName").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        AdminData.firstName = snapshot.getValue().toString();
+            mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    try {
+                        AdminData.firstName = snapshot.child("firstName").getValue().toString();
+                        AdminData.lastName = snapshot.child("lastName").getValue().toString();
+                        AdminData.adminEmail = snapshot.child("email").getValue().toString();
+                        AdminData.contact = snapshot.child("contact").getValue().toString();
+
                         Toast.makeText(LogIn.this, "Welcome, " + AdminData.firstName + "!", Toast.LENGTH_SHORT).show();
-                        new ImageProcessor().saveToLocal(getApplicationContext(), "firstName", AdminData.firstName);
+
                         //send first name to next activity
                         Intent intent = new Intent("update-first-name");
                         intent.putExtra("message", AdminData.firstName);
                         LocalBroadcastManager.getInstance(LogIn.this).sendBroadcast(intent);
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                mReference.child("lastName").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        AdminData.lastName = snapshot.getValue().toString();
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "firstName", AdminData.firstName);
                         new ImageProcessor().saveToLocal(getApplicationContext(), "lastName", AdminData.lastName);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                mReference.child("email").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        AdminData.adminEmail = snapshot.getValue().toString();
                         new ImageProcessor().saveToLocal(getApplicationContext(), "email", AdminData.adminEmail);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                mReference.child("contact").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        AdminData.contact = snapshot.getValue().toString();
                         new ImageProcessor().saveToLocal(getApplicationContext(), "contact", AdminData.contact);
+
+                        loadingDialog.dismissLoadingDialog();
+                        Intent gotoDashboard = new Intent(LogIn.this, Dashboard.class);
+                        startActivity(gotoDashboard);
+
+                        //Listen to RTDB for request
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    startForegroundService(new Intent(LogIn.this, RequestWatcher.class));
+                                }
+                                else {
+                                    startService(new Intent(LogIn.this, RequestWatcher.class));
+                                }
+                            }
+                        });
+                        thread.run();
+
+                        LogIn.this.finish();
+                    }
+                    catch (Exception e){
+                        loadingDialog.dismissLoadingDialog();
+                        Log.d("LogIn", e.getMessage());
+                        Toast.makeText(LogIn.this, "Database error. Please try again.", Toast.LENGTH_SHORT).show();
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                }
 
-                    }
-                });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                //insert  adminInteraction
+                }
+            });
 
-
-
-                loadingDialog.dismissLoadingDialog();
-                Intent intent = new Intent(LogIn.this, Dashboard.class);
-                startActivity(intent);
-
-                //Listen to RTDB for reques
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            startForegroundService(new Intent(LogIn.this, RequestWatcher.class));
-                        }
-                        else {
-                            startService(new Intent(LogIn.this, RequestWatcher.class));
-                        }
-                    }
-                });
-                thread.run();
-
-                finish();
-            }
-            catch (Exception e){
-                loadingDialog.dismissLoadingDialog();
-                Log.d("LogIn", e.getMessage());
-                Toast.makeText(this, "Database error. Please try again.", Toast.LENGTH_SHORT).show();
-            }
         }
         else {
             loadingDialog.dismissLoadingDialog();
