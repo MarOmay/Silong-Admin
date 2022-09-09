@@ -18,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,9 @@ public class LogIn extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
+    static boolean passwordVisible = false;
+    int ctr = 0;
+    ImageView showHideIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,7 @@ public class LogIn extends AppCompatActivity {
         loginPasswordEt = (EditText) findViewById(R.id.loginPasswordEt);
         loginBtn = (Button) findViewById(R.id.loginBtn);
         forgotPasswordTv = (TextView) findViewById(R.id.forgotPasswordTv);
+        showHideIv = (ImageView) findViewById(R.id.showHideIv);
 
         //for transpa status bar
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
@@ -385,5 +390,20 @@ public class LogIn extends AppCompatActivity {
         // Unregister since the activity is about to be closed.
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
+    }
+
+    public void onShowHide(View view){
+        if (ctr == 0){
+            new Utility().passwordFieldTransformer(loginPasswordEt, true);
+            showHideIv.setImageDrawable(getDrawable(R.drawable.ic_baseline_visibility_24));
+            loginPasswordEt.setSelection(loginPasswordEt.getText().length());
+            ctr++;
+        }
+        else {
+            new Utility().passwordFieldTransformer(loginPasswordEt, false);
+            showHideIv.setImageDrawable(getDrawable(R.drawable.ic_baseline_visibility_off_24));
+            loginPasswordEt.setSelection(loginPasswordEt.getText().length());
+            ctr--;
+        }
     }
 }

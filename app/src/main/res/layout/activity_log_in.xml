@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp">
+        android:paddingHorizontal="25dp">
 
         <EditText
             android:id="@+id/loginEmailEt"
@@ -62,15 +62,36 @@
             android:hint="Email Address"
             android:inputType="textEmailAddress"/>
 
-        <EditText
-            android:id="@+id/loginPasswordEt"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textField_style"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:hint="Password"
-            android:inputType="textPassword"/>
+            android:gravity="center_vertical"
+            android:background="@drawable/tf_background"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/loginPasswordEt"
+                style="@style/passField_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:layout_gravity="center"
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+            <ImageView
+                android:id="@+id/showHideIv"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_weight="1.7"
+                android:onClick="onShowHide"
+                android:src="@drawable/ic_baseline_visibility_off_24"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/forgotPasswordTv"
