@@ -10,9 +10,11 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -108,6 +110,10 @@ public class Utility {
         notificationManager.notify(reqCode, notificationBuilder.build()); // 0 is the request code, it should be unique id
 
         Log.d("showNotification", "showNotification: " + reqCode);
+    }
+
+    public void passwordFieldTransformer(EditText field, boolean visible){
+        field.setTransformationMethod(visible ? null : new PasswordTransformationMethod());
     }
 
 }
