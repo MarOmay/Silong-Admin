@@ -134,7 +134,6 @@ public class ProcessSignUp extends AppCompatActivity {
         map.put("email", ADMIN.getAdminEmail());
         map.put("contact", ADMIN.getContact());
         map.put("accountStatus", true);
-        map.put("userInteraction", 0);
 
         mDatabase.child(ADMIN.getAdminID()).updateChildren(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
