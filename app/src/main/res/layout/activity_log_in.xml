@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:background="@drawable/login_bg"
+        android:background="@drawable/login_bg_resized"
         android:gravity="bottom"
         android:orientation="horizontal">
 
