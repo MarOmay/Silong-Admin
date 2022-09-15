@@ -8,17 +8,37 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <pl.droidsonroids.gif.GifImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/signuploading_gif">
-    </pl.droidsonroids.gif.GifImageView>
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
+        <ProgressBar
+            android:layout_marginTop="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/pink" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Signing Up..."
-        android:textSize="20sp"
-        android:gravity="center"/>
+        android:layout_height="match_parent"
+        android:layout_weight="2.5"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Signing Up..."
+            android:textSize="20sp" />
+
+    </LinearLayout>
 
 </LinearLayout>
