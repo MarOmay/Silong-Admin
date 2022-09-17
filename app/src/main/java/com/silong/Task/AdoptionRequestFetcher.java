@@ -45,6 +45,12 @@ public class AdoptionRequestFetcher extends AsyncTask {
                         request.setRequestCode(RequestCode.ADOPTION_REQUEST);
                         request.setUserID(key);
 
+                        if (snap.child("petID").getValue() == null ||
+                                snap.child("dateRequested").getValue() == null ||
+                                snap.child("status").getValue() == null){
+                            continue;
+                        }
+
                         String status = snap.child("status").getValue().toString();
                         if (status.equals("1"))
                             Log.d("DEBUGGER>>>", "adoption request");
