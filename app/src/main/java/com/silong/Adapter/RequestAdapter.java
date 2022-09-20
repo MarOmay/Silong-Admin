@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.silong.CustomView.AppointmentReqDialog;
 import com.silong.EnumClass.RequestCode;
+import com.silong.Object.Adoption;
 import com.silong.Object.Request;
 import com.silong.Object.User;
 import com.silong.admin.AdminData;
@@ -99,8 +100,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                             s += "\nPetID: " + request.getRequestDetails();
                             String[] dt = request.getDate().split(" ");
                             s += "\nDate: " + dt[0];
-                            s += "\nDate: " + dt[1].replace("*",":") + dt[2];
-                            AppointmentReqDialog appointmentReqDialog = new AppointmentReqDialog(activity, s, user.userID);
+                            s += "\nTime: " + dt[1].replace("*",":") + dt[2];
+                            Adoption adoption = new Adoption();
+                            adoption.setPetID(Integer.parseInt(request.getRequestDetails()));
+                            adoption.setAppointmentDate(dt[0] + " " + dt[1].replace("*",":") + dt[2]);
+                            AppointmentReqDialog appointmentReqDialog = new AppointmentReqDialog(activity, s, user.userID, adoption);
                             appointmentReqDialog.show();
                             break;
                         case RequestCode.ACCOUNT_ACTIVATION:

@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
+import com.silong.Operation.EmailNotif;
 import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
@@ -20,7 +22,9 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
 
-    public AppointmentTagger(@NonNull Activity activity, String userID, String name) {
+    private Adoption ADOPTION;
+
+    public AppointmentTagger(@NonNull Activity activity, String userID, String name, Adoption adoption) {
         super((Context) activity);
         Context context = (Context) activity;
 
@@ -28,13 +32,23 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
         super.setTitle(name);
         super.setMessage("Tag this application as done?\n");
 
+        this.ADOPTION = adoption;
+
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
         mReference = mDatabase.getReference().child("adoptionRequest").child(userID).child("status");
 
         super.setPositiveButton(Html.fromHtml("<b>"+"YES"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
+                //update adoptionRequest
                 mReference.setValue("5");
+
+                //send email notif
+                String userEmail = AdminData.getUser(userID).getEmail();
+                EmailNotif emailNotif = new EmailNotif(userEmail, EmailNotif.ADOPTION_SUCCESSFUL, ADOPTION);
+                emailNotif.sendNotif();
+
                 Toast.makeText(activity, "Appointment confirmed!", Toast.LENGTH_SHORT).show();
                 for (AppointmentRecords ap : AdminData.appointments){
                     if (ap.getUserID().equals(userID))

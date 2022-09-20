@@ -20,8 +20,10 @@ import com.silong.EnumClass.PetAge;
 import com.silong.EnumClass.PetColor;
 import com.silong.EnumClass.PetSize;
 import com.silong.EnumClass.PetType;
+import com.silong.Object.Adoption;
 import com.silong.Object.Pet;
 import com.silong.Object.User;
+import com.silong.Operation.EmailNotif;
 import com.silong.Operation.ImageProcessor;
 
 import java.util.HashMap;
@@ -164,6 +166,12 @@ public class RequestInformation extends AppCompatActivity {
     public void onPressedDecline(View view){
         updateStatus("7");
 
+        //send email notif
+        Adoption adoption = new Adoption();
+        adoption.setPetID(Integer.parseInt(PET.getPetID()));
+        EmailNotif emailNotif = new EmailNotif(USER.getEmail(), EmailNotif.DECLINED, adoption);
+        emailNotif.sendNotif();
+
         //archive to user's RTDB
         DatabaseReference tempRef = mDatabase.getReference().child("Users").child(USER.getUserID()).child("adoptionHistory").child(PET.getPetID());
         Map<String, Object> map = new HashMap<>();
@@ -174,6 +182,13 @@ public class RequestInformation extends AppCompatActivity {
 
     public void onPressedAccept(View view){
         updateStatus("2");
+
+        //send email notif
+        Adoption adoption = new Adoption();
+        adoption.setPetID(Integer.parseInt(PET.getPetID()));
+        EmailNotif emailNotif = new EmailNotif(USER.getEmail(), EmailNotif.REQUEST_APPROVED, adoption);
+        emailNotif.sendNotif();
+
         new ImageProcessor().saveToLocal(getApplicationContext(), PET.getPhoto(), "approved-" + PET.getPetID());
     }
 

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.silong.CustomView.AppointmentTagger;
+import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
 import com.silong.admin.R;
 
@@ -47,7 +48,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             @Override
             public void onClick(View view) {
                 try {
-                    AppointmentTagger appointmentTagger = new AppointmentTagger(activity, appointmentRecordsList.getUserID(), appointmentRecordsList.getName());
+                    Adoption adoption = new Adoption();
+                    adoption.setAppointmentDate(appointmentRecordsList.getDateTime());
+                    adoption.setPetID(Integer.parseInt(appointmentRecordsList.getPetId()));
+
+                    AppointmentTagger appointmentTagger = new AppointmentTagger(activity, appointmentRecordsList.getUserID(), appointmentRecordsList.getName(), adoption);
                     appointmentTagger.show();
                 }
                 catch (Exception e){
