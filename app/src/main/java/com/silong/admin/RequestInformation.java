@@ -187,7 +187,7 @@ public class RequestInformation extends AppCompatActivity {
         Adoption adoption = new Adoption();
         adoption.setPetID(Integer.parseInt(PET.getPetID()));
         EmailNotif emailNotif = new EmailNotif(USER.getEmail(), EmailNotif.REQUEST_APPROVED, adoption);
-        emailNotif.sendNotif();
+        emailNotif.sendEmailApproval();
 
         new ImageProcessor().saveToLocal(getApplicationContext(), PET.getPhoto(), "approved-" + PET.getPetID());
     }

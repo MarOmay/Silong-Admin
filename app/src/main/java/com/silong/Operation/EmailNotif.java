@@ -1,18 +1,27 @@
 package com.silong.Operation;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.silong.Object.Adoption;
+import com.silong.admin.AdminData;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
 import javax.mail.Authenticator;
+import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 public class EmailNotif {
 
@@ -29,6 +38,7 @@ public class EmailNotif {
 
     private String EMAIL = "silong.sjdm@gmail.com";
     private String PASSWORD = "sfajljaebmquggxs";
+    private String SENDER = "Silong Support";
     private String HOST = "smtp.gmail.com";
     private String PORT = "465";
 
@@ -50,9 +60,8 @@ public class EmailNotif {
         switch (status){
             case REQUEST_APPROVED:
                 SUBJECT = "Silong | Request Approved";
-                BODY = "Your adoption application for PetID#" + ADOPTION.getPetID() + " has been APPROVED.";
-                BODY += "\nPlease set an appointment for your visit using the Silong App.";
-                BODY += "\n\n- Your Silong Team";
+                HTML_BODY = HTML_BODY.replace("#DATE_TODAY#", Utility.dateToday());
+                HTML_BODY = HTML_BODY.replace("#PET_ID#", String.valueOf(ADOPTION.getPetID()));
                 break;
             case APPOINTMENT_CONFIRMED:
                 SUBJECT = "Silong | Appointment Confirmed";
@@ -102,6 +111,8 @@ public class EmailNotif {
             //compose mime
             MimeMessage mimeMessage = new MimeMessage(session);
 
+            mimeMessage.setFrom(new InternetAddress(EMAIL, SENDER));
+
             mimeMessage.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(RECEIVER)));
 
             mimeMessage.setSubject(SUBJECT);
@@ -130,5 +141,82 @@ public class EmailNotif {
             return false;
         }
     }
+
+    public void sendEmailApproval(){
+        Log.d("DEBUGGER>>>", "Sending email sendEmailApproval");
+
+        //try sending the email
+        try{
+            //set properties
+            Properties properties = System.getProperties();
+
+            properties.put("mail.smtp.host", HOST);
+            properties.put("mail.smtp.port", PORT);
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            javax.mail.Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(EMAIL, PASSWORD);
+                }
+            });
+
+            //compose mime
+            MimeMessage mimeMessage = new MimeMessage(session);
+
+            mimeMessage.addHeader("Content-type", "text/HTML; charset=UTF-8");
+            mimeMessage.addHeader("format", "flowed");
+            mimeMessage.addHeader("Content-Transfer-Encoding", "8bit");
+
+            mimeMessage.setFrom(new InternetAddress(EMAIL, SENDER));
+
+            mimeMessage.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(RECEIVER)));
+            mimeMessage.setSubject(SUBJECT);
+
+            Multipart multipart = new MimeMultipart();
+            BodyPart messageBodyPart = new MimeBodyPart();
+            //String htmlText = "<H1>Welcome to Medium!</H1>";
+            messageBodyPart.setContent(HTML_BODY, "text/html");
+            multipart.addBodyPart(messageBodyPart);
+
+            Bitmap bitmap = AdminData.getPet(String.valueOf(ADOPTION.getPetID())).getPhoto();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageInByte = baos.toByteArray();
+
+            MimeBodyPart imageBodyPart = new MimeBodyPart();
+            ByteArrayDataSource bds = new ByteArrayDataSource(imageInByte, "image/jpeg");
+            imageBodyPart.setDataHandler(new DataHandler(bds));
+            imageBodyPart.setHeader("Content-ID", "<petphoto>");
+            imageBodyPart.setFileName("petphoto.jpg");
+            multipart.addBodyPart(imageBodyPart);
+
+            mimeMessage.setContent(multipart);
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                        sent = true;
+                    }
+                    catch (Exception ex){
+                        sent = false;
+                        Log.d("DEBUGGER>>>", "EmaiLNotif.sEA: " + ex.getMessage());
+                    }
+                }
+            });
+
+            thread.start();
+
+        }
+        catch (Exception e){
+            Log.d("DEBUGGER>>>", "EmaiLNotif.sEA: " + e.getMessage());
+        }
+    }
+
+    private String HTML_BODY = "<html><head><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Montserrat\"><style>.resize_fit_center { width: 100px; height:100px; vertical-align: middle; object-fit: cover; }</style></head><body style=\"font-family: Montserrat;\"><p>Your adoption request has been <b>approved</b>!</p><table><tr><td><img src=\"cid:petphoto\" alt=\"Pet Photo\" class=\"resize_fit_center\"></td><td style=\"padding-left: 10px;vertical-align: top;\"><p>Date: #DATE_TODAY#</p><p>Pet ID: #PET_ID#</p></td></tr></table><p>Kindly <b>set an appointment</b> using the Silong app.</p><p>Please present this email on your visit to the City Veterinary Office.</p><br><p>- Your Silong Team</p><img src=\"https://drive.google.com/uc?export=view&id=1F7k71GFicdhU2F4BUymmfox_QFNkTvEq\" alt=\"Header\" style=\"width: 150px;height: 50px;\"></body></html>";
 
 }
