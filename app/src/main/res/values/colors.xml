@@ -19,6 +19,7 @@
     <color name="gray">#6e6e6a</color>
     <color name="textgray">#9fb0b9</color>
     <color name="lightgray">#eceff1</color>
+    <color name="graphBg">#eceff1</color>
     <color name="Graygray">#eceff1</color>
     <color name="darkgray">#3d3d39</color>
     <color name="green">#04d428</color>
