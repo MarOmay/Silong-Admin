@@ -66,6 +66,7 @@
             android:layout_marginVertical="10dp">
 
             <LinearLayout
+                android:onClick="onAdoptionRecordsPressed"
                 android:id="@+id/adoptionRecordsTile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -110,6 +111,7 @@
             android:layout_marginVertical="10dp">
 
             <LinearLayout
+                android:onClick="onUserRecordsPressed"
                 android:id="@+id/userRecordsTile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -154,6 +156,7 @@
             android:layout_marginVertical="10dp">
 
             <LinearLayout
+                android:onClick="onPetRecordsPressed"
                 android:id="@+id/petRecordsTile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
