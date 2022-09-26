@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.silong.Object.Adoption;
 import com.silong.Operation.EmailNotif;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
@@ -47,6 +48,8 @@ public class AppointmentReqDialog extends MaterialAlertDialogBuilder {
                 EmailNotif emailNotif = new EmailNotif(email, EmailNotif.APPOINTMENT_CONFIRMED, ADOPTION);
                 emailNotif.sendNotif();
 
+                Utility.dbLog("Accepted appointment for " + email);
+
                 Toast.makeText(activity, "Appointment confirmed!", Toast.LENGTH_SHORT).show();
                 activity.onBackPressed();
             }
@@ -55,6 +58,8 @@ public class AppointmentReqDialog extends MaterialAlertDialogBuilder {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mReference.setValue("2");
+                String email = AdminData.getUser(userID).getEmail();
+                Utility.dbLog("Declined appointment for " + email);
                 Toast.makeText(activity, "Appointment declined!", Toast.LENGTH_SHORT).show();
                 activity.onBackPressed();
             }

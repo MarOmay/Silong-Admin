@@ -327,6 +327,8 @@ public class AddRecord extends AppCompatActivity {
                                 mReference = mDatabase.getReference("recordSummary").child(String.valueOf(counter));
                                 mReference.setValue(PetStatus.ACTIVE);
 
+                                Utility.dbLog("Published record. PetID:" + counter);
+
                                 try {
 
                                     //write to file
@@ -355,6 +357,8 @@ public class AddRecord extends AppCompatActivity {
                                 else {
                                     Toast.makeText(getApplicationContext(), "Changes may take some time to reflect.", Toast.LENGTH_SHORT).show();
                                 }
+
+
 
                                 //go back to previous screen
                                 loadingDialog.dismissLoadingDialog();

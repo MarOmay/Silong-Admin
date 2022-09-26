@@ -17,16 +17,26 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utility {
+
+    public static final String LOG_SEPARATOR = "#LOG-SEPARATOR#";
 
     public static boolean internetConnection(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -59,6 +69,13 @@ public class Utility {
         SimpleDateFormat formatter = new SimpleDateFormat("HH*mm*ss");
         Date date = new Date();
         return formatter.format(date);
+    }
+
+    public static void log(String message){
+        if (message.length() < 1)
+            return;
+        else
+            Log.d("DEBUGGER>>>", message);
     }
 
     public static void log(Activity activity, String log){
@@ -114,6 +131,49 @@ public class Utility {
 
     public void passwordFieldTransformer(EditText field, boolean visible){
         field.setTransformationMethod(visible ? null : new PasswordTransformationMethod());
+    }
+
+    public static void dbLog(String message){
+        try {
+
+            String date = dateToday();
+            String time = timeNow();
+
+            String manufacturer = Build.MANUFACTURER;
+            String model = Build.MODEL;
+
+            String email = "";
+
+            if (AdminData.adminEmail != null)
+                email = AdminData.adminEmail;
+            else if (AdminData.adminID != null)
+                email = AdminData.adminID;
+            else
+                email = "EMAIL_NOT_FOUND";
+
+            String data = email + LOG_SEPARATOR + message + LOG_SEPARATOR + manufacturer + LOG_SEPARATOR + model;
+
+            FirebaseDatabase tempDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
+            DatabaseReference tempRef = tempDatabase.getReference("adminLogs").child(date + "--" + time);
+
+            tempRef.setValue(data)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            log("Utility.dbLog: Logged to RTDB");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            log("Utility.dbLog: Failed to write log to RTDB");
+                        }
+                    });
+        }
+        catch (Exception e){
+            log("Utility.dbLog: " + e.getMessage());
+        }
+
     }
 
 }

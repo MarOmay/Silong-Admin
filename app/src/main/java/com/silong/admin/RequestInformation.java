@@ -25,6 +25,7 @@ import com.silong.Object.Pet;
 import com.silong.Object.User;
 import com.silong.Operation.EmailNotif;
 import com.silong.Operation.ImageProcessor;
+import com.silong.Operation.Utility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -178,6 +179,8 @@ public class RequestInformation extends AppCompatActivity {
         map.put("dateRequested", DATE);
         map.put("status", 7); //7 == DECLINED
         tempRef.updateChildren(map);
+
+        Utility.dbLog("Declined application. User:" + USER.getEmail() + " PetID:" + PET.getPetID());
     }
 
     public void onPressedAccept(View view){
@@ -190,6 +193,8 @@ public class RequestInformation extends AppCompatActivity {
         emailNotif.sendEmailApproval();
 
         new ImageProcessor().saveToLocal(getApplicationContext(), PET.getPhoto(), "approved-" + PET.getPetID());
+
+        Utility.dbLog("Accepted application. User:" + USER.getEmail() + " PetID:" + PET.getPetID());
     }
 
     private void updateStatus(String status){

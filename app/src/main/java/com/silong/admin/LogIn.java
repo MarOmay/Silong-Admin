@@ -224,6 +224,7 @@ public class LogIn extends AppCompatActivity {
                         loadingDialog.dismissLoadingDialog();
                         Intent gotoDashboard = new Intent(LogIn.this, Dashboard.class);
                         startActivity(gotoDashboard);
+                        Utility.dbLog("Successful login.");
 
                         //Listen to RTDB for request
                         Thread thread = new Thread(new Runnable() {

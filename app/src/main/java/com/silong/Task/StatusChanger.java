@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.silong.Operation.Utility;
+import com.silong.admin.AdminData;
 
 public class StatusChanger extends AsyncTask {
 
@@ -19,6 +21,7 @@ public class StatusChanger extends AsyncTask {
     public final static String FAILURE = "failure";
 
     private String uid;
+    private String email;
     private boolean status;
     private Activity activity;
 
@@ -28,6 +31,7 @@ public class StatusChanger extends AsyncTask {
         this.uid = uid;
         this.status = status;
         this.activity = activity;
+        this.email = AdminData.getUser(uid).getEmail();
     }
 
     @Override
@@ -71,6 +75,8 @@ public class StatusChanger extends AsyncTask {
                                 activationRequest.setValue(null);
                             }
                             sendBroadcast(SUCCESS, uid, status);
+
+                            Utility.dbLog("Set " + email + " account status to " + status);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

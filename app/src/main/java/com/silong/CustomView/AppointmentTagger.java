@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
 import com.silong.Operation.EmailNotif;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
@@ -55,6 +56,8 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
                         AdminData.appointments.remove(ap);
                 }
                 activity.onBackPressed();
+
+                Utility.dbLog("Tagged adoption as done. Client: " + name);
             }
         });
         super.setNegativeButton(Html.fromHtml("<b>"+"NO"+"</b>"), new DialogInterface.OnClickListener() {
