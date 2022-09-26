@@ -44,6 +44,9 @@ public class AccountsChecker extends AsyncTask {
                         ArrayList<String> list = new ArrayList<>();
                         for (DataSnapshot snap : snapshot.getChildren()){
 
+                            if (!snap.getValue().toString().equals("true") && !snap.getValue().toString().equals("false"))
+                                continue; //skip
+
                             File file = new File(activity.getFilesDir(), "account-" + snap.getKey());
                             if (file.exists()){
                                 //Check if status of local record matches
