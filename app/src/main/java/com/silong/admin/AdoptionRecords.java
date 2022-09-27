@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -189,7 +190,7 @@ public class AdoptionRecords extends AppCompatActivity {
         try {
 
             for (User user : users){
-                int age = getAge(user.getBirthday());
+                int age = Utility.getAge(user.getBirthday());
 
                 if (age >= 18 && age <= 28) {
                     int i = user.getGender() == Gender.MALE ? male1++ : female1++;
@@ -258,6 +259,12 @@ public class AdoptionRecords extends AppCompatActivity {
     }
 
     private void extractAdoptionHistory(){
+        //check internet connection
+        if (!Utility.internetConnection(AdoptionRecords.this)){
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         try {
 
             LoadingDialog loadingDialog = new LoadingDialog(AdoptionRecords.this);
@@ -432,36 +439,6 @@ public class AdoptionRecords extends AppCompatActivity {
         catch (Exception e){
             Utility.log("AdoptionRecords.ePI: " + e.getMessage());
         }
-    }
-
-    public static int getAge(String bday) {
-
-        String [] date = bday.split("/");
-
-        Calendar today = Calendar.getInstance();
-        Calendar birthDate = Calendar.getInstance();
-
-        int age = 0;
-
-        birthDate.set(Integer.valueOf(date[2]), Integer.valueOf(date[0]), Integer.valueOf(date[1]));
-        if (birthDate.after(today)) {
-            throw new IllegalArgumentException("Can't be born in the future");
-        }
-
-        age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
-
-        // If birth date is greater than todays date (after 2 days adjustment of leap year) then decrement age one year
-        if ( (birthDate.get(Calendar.DAY_OF_YEAR) - today.get(Calendar.DAY_OF_YEAR) > 3) ||
-                (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH ))){
-            age--;
-
-            // If birth date and todays date are of same month and birth day of month is greater than todays day of month then decrement age
-        }else if ((birthDate.get(Calendar.MONTH) == today.get(Calendar.MONTH )) &&
-                (birthDate.get(Calendar.DAY_OF_MONTH) > today.get(Calendar.DAY_OF_MONTH ))){
-            age--;
-        }
-
-        return age;
     }
 
     public void back(View view){

@@ -30,6 +30,7 @@ import com.silong.admin.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -99,6 +100,25 @@ public class Utility {
         catch (Exception e){
             Log.d("Utility-log", e.getMessage());
         }
+    }
+
+    public static int getAge(String bday) {
+
+        String [] date = bday.split("/");
+
+        Calendar today = Calendar.getInstance();
+        Calendar birthDate = Calendar.getInstance();
+
+        int age = 0;
+
+        birthDate.set(Integer.valueOf(date[2]), Integer.valueOf(date[0]), Integer.valueOf(date[1]));
+        if (birthDate.after(today)) {
+            throw new IllegalArgumentException("Can't be born in the future");
+        }
+
+        age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+
+        return age;
     }
 
     //  NON STATIC METHODS

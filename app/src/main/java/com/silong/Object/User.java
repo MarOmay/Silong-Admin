@@ -2,6 +2,8 @@ package com.silong.Object;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -20,9 +22,9 @@ public class User implements Serializable {
     public boolean accountStatus;
     public int adoptionCounter;
     public com.silong.Object.Address address;
-    public ArrayList<Adoption> adoptionHistory;
-    public ArrayList<com.silong.Object.Chat> chatHistory;
-    public ArrayList<com.silong.Object.Favorite> likedPet;
+    public ArrayList<Adoption> adoptionHistory = new ArrayList<>();
+
+    private boolean isDeleted;
 
     public User() {
     }
@@ -40,8 +42,6 @@ public class User implements Serializable {
         this.adoptionCounter = adoptionCounter;
         this.address = address;
         this.adoptionHistory = adoptionHistory;
-        this.chatHistory = chatHistory;
-        this.likedPet = likedPet;
     }
 
     public String getUserID() {
@@ -156,19 +156,11 @@ public class User implements Serializable {
         this.adoptionHistory = adoptionHistory;
     }
 
-    public ArrayList<com.silong.Object.Chat> getChatHistory() {
-        return chatHistory;
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
-    public void setChatHistory(ArrayList<com.silong.Object.Chat> chatHistory) {
-        this.chatHistory = chatHistory;
-    }
-
-    public ArrayList<com.silong.Object.Favorite> getLikedPet() {
-        return likedPet;
-    }
-
-    public void setLikedPet(ArrayList<com.silong.Object.Favorite> likedPet) {
-        this.likedPet = likedPet;
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
