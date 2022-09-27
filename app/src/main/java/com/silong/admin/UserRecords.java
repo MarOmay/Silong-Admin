@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -77,7 +78,9 @@ public class UserRecords extends AppCompatActivity {
             PieData userPieData = new PieData(pieDataSet);
             userGenderPieChart.setData(userPieData);
             userGenderPieChart.getDescription().setEnabled(false);
-            userGenderPieChart.setCenterText("User Gender");
+            userGenderPieChart.setCenterText(String.valueOf(male+female));
+            userGenderPieChart.setCenterTextSize(40);
+            userGenderPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             userGenderPieChart.setVisibility(View.VISIBLE);
             userGenderPieChart.animate();
         }
@@ -195,7 +198,9 @@ public class UserRecords extends AppCompatActivity {
             PieData statusPieData = new PieData(statusDataSet);
             accountStatusPieChart.setData(statusPieData);
             accountStatusPieChart.getDescription().setEnabled(false);
-            accountStatusPieChart.setCenterText("Account Status");
+            accountStatusPieChart.setCenterText(String.valueOf(active+inactive+deleted));
+            accountStatusPieChart.setCenterTextSize(40);
+            accountStatusPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             accountStatusPieChart.setVisibility(View.VISIBLE);
             accountStatusPieChart.animate();
         }
@@ -231,7 +236,9 @@ public class UserRecords extends AppCompatActivity {
             PieData historyPieData = new PieData(historyDataSet);
             adoptionHistoryPieChart.setData(historyPieData);
             adoptionHistoryPieChart.getDescription().setEnabled(false);
-            adoptionHistoryPieChart.setCenterText("Adoption History");
+            adoptionHistoryPieChart.setCenterText(String.valueOf(with+without));
+            adoptionHistoryPieChart.setCenterTextSize(40);
+            adoptionHistoryPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             adoptionHistoryPieChart.setVisibility(View.VISIBLE);
             adoptionHistoryPieChart.animate();
 

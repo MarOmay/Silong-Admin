@@ -3,6 +3,7 @@ package com.silong.admin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -48,7 +49,9 @@ public class PetRecords extends AppCompatActivity {
         PieData dogStatusPieData = new PieData(dogStatusDataSet);
         dogStatusPieChart.setData(dogStatusPieData);
         dogStatusPieChart.getDescription().setEnabled(false);
-        dogStatusPieChart.setCenterText("Dog Status");
+        dogStatusPieChart.setCenterText("99");
+        dogStatusPieChart.setCenterTextSize(40);
+        dogStatusPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         dogStatusPieChart.animate();
 
         //Dog Gender Pie Chart
@@ -63,7 +66,9 @@ public class PetRecords extends AppCompatActivity {
         PieData dogGenderPieData = new PieData(dogGenderDataSet);
         dogGenderPieChart.setData(dogGenderPieData);
         dogGenderPieChart.getDescription().setEnabled(false);
-        dogGenderPieChart.setCenterText("Dog Gender");
+        dogGenderPieChart.setCenterText("99");
+        dogGenderPieChart.setCenterTextSize(40);
+        dogGenderPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         dogGenderPieChart.animate();
 
         //Dog Age Pie Chart
@@ -79,7 +84,9 @@ public class PetRecords extends AppCompatActivity {
         PieData dogAgePieData = new PieData(dogAgeDataSet);
         dogAgePieChart.setData(dogAgePieData);
         dogAgePieChart.getDescription().setEnabled(false);
-        dogAgePieChart.setCenterText("Dog Age");
+        dogAgePieChart.setCenterText("99");
+        dogAgePieChart.setCenterTextSize(40);
+        dogAgePieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         dogAgePieChart.animate();
 
         //Dog Size Pie Chart
@@ -95,7 +102,9 @@ public class PetRecords extends AppCompatActivity {
         PieData dogSizePieData = new PieData(dogSizeDataSet);
         dogSizePieChart.setData(dogSizePieData);
         dogSizePieChart.getDescription().setEnabled(false);
-        dogSizePieChart.setCenterText("Dog Size");
+        dogSizePieChart.setCenterText("99");
+        dogSizePieChart.setCenterTextSize(40);
+        dogSizePieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         dogSizePieChart.animate();
 
         // ALL CAT
@@ -112,7 +121,9 @@ public class PetRecords extends AppCompatActivity {
         PieData catStatusPieData = new PieData(catStatusDataSet);
         catStatusPieChart.setData(catStatusPieData);
         catStatusPieChart.getDescription().setEnabled(false);
-        catStatusPieChart.setCenterText("Cat Status");
+        catStatusPieChart.setCenterText("99");
+        catStatusPieChart.setCenterTextSize(40);
+        catStatusPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         catStatusPieChart.animate();
 
         //Dog Gender Pie Chart
@@ -127,7 +138,9 @@ public class PetRecords extends AppCompatActivity {
         PieData catGenderPieData = new PieData(catGenderDataSet);
         catGenderPieChart.setData(catGenderPieData);
         catGenderPieChart.getDescription().setEnabled(false);
-        catGenderPieChart.setCenterText("Cat Gender");
+        catGenderPieChart.setCenterText("99");
+        catGenderPieChart.setCenterTextSize(40);
+        catGenderPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         catGenderPieChart.animate();
 
         //Dog Age Pie Chart
@@ -143,7 +156,9 @@ public class PetRecords extends AppCompatActivity {
         PieData catAgePieData = new PieData(catAgeDataSet);
         catAgePieChart.setData(catAgePieData);
         catAgePieChart.getDescription().setEnabled(false);
-        catAgePieChart.setCenterText("Cat Age");
+        catAgePieChart.setCenterText("99");
+        catAgePieChart.setCenterTextSize(40);
+        catAgePieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         catAgePieChart.animate();
 
         //Dog Size Pie Chart
@@ -159,7 +174,9 @@ public class PetRecords extends AppCompatActivity {
         PieData catSizePieData = new PieData(catSizeDataSet);
         catSizePieChart.setData(catSizePieData);
         catSizePieChart.getDescription().setEnabled(false);
-        catSizePieChart.setCenterText("Cat Size");
+        catSizePieChart.setCenterText("99");
+        catSizePieChart.setCenterTextSize(40);
+        catSizePieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         catSizePieChart.animate();
     }
 

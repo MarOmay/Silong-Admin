@@ -57,30 +57,45 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginVertical="10dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
             android:orientation="vertical">
 
             <!--GENDER PIE CHART-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gender"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Gender"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/userGenderPieChart"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/userGenderPieChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:text="User Gender"
+                        android:textColor="@color/blacky"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -88,12 +103,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Age"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="80dp"/>
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="10dp"
+                android:text="Age"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -111,22 +126,37 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Account Status"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="80dp"/>
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="10dp"
+                android:text="Account Status"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/accountStatusPieChart"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/accountStatusPieChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:text="Account Status"
+                        android:textColor="@color/blacky"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -134,22 +164,37 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Adoption History"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="80dp"/>
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="10dp"
+                android:text="Adoption History"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/adoptionHistoryPieChart"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/adoptionHistoryPieChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:text="Adoption History"
+                        android:textColor="@color/blacky"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 

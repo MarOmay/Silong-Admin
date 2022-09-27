@@ -104,10 +104,25 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/dogStatusPieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Dog Status"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textColor="@color/blacky"
+                        android:layout_marginTop="25dp"/>
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -127,10 +142,25 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/dogGenderPieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Dog Gender"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textColor="@color/blacky"
+                        android:layout_marginTop="25dp"/>
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -150,10 +180,26 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/dogAgePieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Dog Age"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textColor="@color/blacky"
+                        android:layout_marginTop="25dp"/>
+
+                </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!--DOG SIZE PIE CHART-->
@@ -172,10 +218,26 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/dogSizePieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Dog Size"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textColor="@color/blacky"
+                        android:layout_marginTop="25dp"/>
+
+                </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!-- break here-->
@@ -230,10 +292,25 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/catStatusPieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Cat Status"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textColor="@color/blacky"
+                        android:layout_marginTop="25dp"/>
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -253,10 +330,25 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/catGenderPieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Cat Gender"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textColor="@color/blacky"
+                        android:layout_marginTop="25dp"/>
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -276,10 +368,26 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/catAgePieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Cat Age"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textColor="@color/blacky"
+                        android:layout_marginTop="25dp"/>
+
+                </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!--CAT SIZE PIE CHART-->
@@ -298,10 +406,26 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/catSizePieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Cat Size"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textColor="@color/blacky"
+                        android:layout_marginTop="25dp"/>
+
+                </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>

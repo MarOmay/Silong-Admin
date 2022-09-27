@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -34,6 +35,7 @@ import com.silong.Object.Pet;
 import com.silong.Object.User;
 import com.silong.Operation.Utility;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,7 +97,9 @@ public class AdoptionRecords extends AppCompatActivity {
             PieData pieData = new PieData(pieDataSet);
             requestsPieChart.setData(pieData);
             requestsPieChart.getDescription().setEnabled(false);
-            requestsPieChart.setCenterText("Requests");
+            requestsPieChart.setCenterText(String.valueOf(processing+successful));
+            requestsPieChart.setCenterTextSize(40);
+            requestsPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             requestsPieChart.setVisibility(View.VISIBLE);
             requestsPieChart.animate();
         }
