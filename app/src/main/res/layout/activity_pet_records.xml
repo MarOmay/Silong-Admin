@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
                 android:paddingStart="30dp"
-                android:text="Pet Records"
+                android:text="Pet Records (Active)"
                 android:textColor="@color/whitey"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -82,49 +82,29 @@
                     android:id="@+id/dogTotalTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="25"
+                    android:text="0"
+                    android:textSize="20dp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="10dp"
+                    android:text="CAT"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/catTotalTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
                     android:textSize="20dp"
                     android:textColor="@color/black" />
 
             </LinearLayout>
-
-            <!--DOG STATUS PIE CHART-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="10dp"
-                android:text="Status"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:backgroundTint="@color/graphBg">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                <com.silong.CustomView.CustomPieChart
-                    android:id="@+id/dogStatusPieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="25dp"
-                        android:gravity="center"
-                        android:text="Dog Status"
-                        android:textColor="@color/blacky"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
 
             <!--DOG GENDER PIE CHART-->
             <TextView
@@ -146,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <com.github.mikephil.charting.charts.PieChart
+                <com.silong.CustomView.CustomPieChart
                     android:id="@+id/dogGenderPieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -158,7 +138,7 @@
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textColor="@color/blacky"
-                        android:layout_marginTop="25dp"/>
+                        android:layout_marginTop="60dp"/>
 
                 </RelativeLayout>
 
@@ -184,7 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <com.github.mikephil.charting.charts.PieChart
+                <com.silong.CustomView.CustomPieChart
                     android:id="@+id/dogAgePieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -196,7 +176,7 @@
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textColor="@color/blacky"
-                        android:layout_marginTop="25dp"/>
+                        android:layout_marginTop="60dp"/>
 
                 </RelativeLayout>
 
@@ -222,7 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <com.github.mikephil.charting.charts.PieChart
+                <com.silong.CustomView.CustomPieChart
                     android:id="@+id/dogSizePieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -234,7 +214,7 @@
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textColor="@color/blacky"
-                        android:layout_marginTop="25dp"/>
+                        android:layout_marginTop="60dp"/>
 
                 </RelativeLayout>
 

@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.CustomBarGraph;
+import com.silong.CustomView.CustomPieChart;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.EnumClass.PetAge;
@@ -84,25 +85,19 @@ public class AdoptionRecords extends AppCompatActivity {
                 }
             }
 
-            //Requests Pie Chart
-            PieChart requestsPieChart = (PieChart) findViewById(R.id.requestsPieChart);
-            requestsPieChart.setVisibility(View.GONE);
+            if (processing + successful == 0)
+                return;
 
+            //Requests Pie Chart
             ArrayList<PieEntry> requests = new ArrayList<>();
-            requests.add(new PieEntry(successful, "Successful"));
-            requests.add(new PieEntry(processing, "Processing"));
-            PieDataSet pieDataSet = new PieDataSet(requests, "");
-            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            pieDataSet.setValueTextColor(Color.WHITE);
-            pieDataSet.setValueTextSize(16f);
-            PieData pieData = new PieData(pieDataSet);
-            requestsPieChart.setData(pieData);
-            requestsPieChart.getDescription().setEnabled(false);
-            requestsPieChart.setCenterText(String.valueOf(processing+successful));
-            requestsPieChart.setCenterTextSize(40);
-            requestsPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            requestsPieChart.setVisibility(View.VISIBLE);
-            requestsPieChart.animate();
+            if (successful > 0)
+                requests.add(new PieEntry(successful, "Successful"));
+            if (processing > 0)
+                requests.add(new PieEntry(processing, "Processing"));
+
+            CustomPieChart requestsPieChart = findViewById(R.id.requestsPieChart);
+            requestsPieChart.setEntries(requests).refresh();
+
         }
         catch (Exception e){
             Utility.log("AdoptionRecords.showRequests: " + e.getMessage());
