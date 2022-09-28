@@ -81,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.github.mikephil.charting.charts.PieChart
+                    <com.silong.CustomView.CustomPieChart
                         android:id="@+id/userGenderPieChart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -89,7 +89,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="60dp"
                         android:gravity="center"
                         android:text="User Gender"
                         android:textColor="@color/blacky"
@@ -115,7 +115,7 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
-                <com.github.mikephil.charting.charts.BarChart
+                <com.silong.CustomView.CustomBarGraph
                     android:id="@+id/userAgeBarChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -142,7 +142,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.github.mikephil.charting.charts.PieChart
+                    <com.silong.CustomView.CustomPieChart
                         android:id="@+id/accountStatusPieChart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -150,7 +150,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="60dp"
                         android:gravity="center"
                         android:text="Account Status"
                         android:textColor="@color/blacky"
@@ -180,7 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.github.mikephil.charting.charts.PieChart
+                    <com.silong.CustomView.CustomPieChart
                         android:id="@+id/adoptionHistoryPieChart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -188,7 +188,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="60dp"
                         android:gravity="center"
                         android:text="Adoption History"
                         android:textColor="@color/blacky"

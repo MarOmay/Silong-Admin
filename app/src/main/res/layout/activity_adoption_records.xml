@@ -115,7 +115,7 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
-                <com.github.mikephil.charting.charts.BarChart
+                <com.silong.CustomView.CustomBarGraph
                     android:id="@+id/petDemogBarChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -138,7 +138,7 @@
                 android:layout_height="400dp"
                 android:backgroundTint="@color/graphBg">
 
-                <com.github.mikephil.charting.charts.BarChart
+                <com.silong.CustomView.CustomBarGraph
                     android:id="@+id/ownerDemogBarChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

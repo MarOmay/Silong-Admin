@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.silong.CustomView.CustomBarGraph;
+import com.silong.CustomView.CustomPieChart;
 import com.silong.EnumClass.Gender;
 import com.silong.Object.Adoption;
 import com.silong.Object.User;
@@ -64,25 +66,19 @@ public class UserRecords extends AppCompatActivity {
                 int temp = user.getGender() == Gender.MALE ? male++ : female++;
             }
 
-            //Gender Pie Chart
-            PieChart userGenderPieChart = (PieChart) findViewById(R.id.userGenderPieChart);
-            userGenderPieChart.setVisibility(View.GONE);
+            if (male + female == 0)
+                return;
 
+            //Gender Pie Chart
             ArrayList<PieEntry> userGender = new ArrayList<>();
-            userGender.add(new PieEntry(male, "Male"));
-            userGender.add(new PieEntry(female, "Female"));
-            PieDataSet pieDataSet = new PieDataSet(userGender, "");
-            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            pieDataSet.setValueTextColor(Color.WHITE);
-            pieDataSet.setValueTextSize(16f);
-            PieData userPieData = new PieData(pieDataSet);
-            userGenderPieChart.setData(userPieData);
-            userGenderPieChart.getDescription().setEnabled(false);
-            userGenderPieChart.setCenterText(String.valueOf(male+female));
-            userGenderPieChart.setCenterTextSize(40);
-            userGenderPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            userGenderPieChart.setVisibility(View.VISIBLE);
-            userGenderPieChart.animate();
+            if (male > 0)
+                userGender.add(new PieEntry(male, "Male"));
+            if (female > 0)
+                userGender.add(new PieEntry(female, "Female"));
+
+            CustomPieChart userGenderPieChart = findViewById(R.id.userGenderPieChart);
+            userGenderPieChart.setEntries(userGender).refresh();
+
         }
         catch (Exception e){
             Utility.log("UserRecords.sGG: " + e.getMessage());
@@ -119,8 +115,6 @@ public class UserRecords extends AppCompatActivity {
 
             //User Age Bar Chart
             String[] labels = new String[]{"18-28", "29-39", "40-50", "51-60"};
-            BarChart userAgeBarChart = (BarChart) findViewById(R.id.userAgeBarChart);
-            userAgeBarChart.setVisibility(View.GONE);
 
             ArrayList<BarEntry> femaleAge = new ArrayList<>();
             //for 19-28
@@ -131,6 +125,7 @@ public class UserRecords extends AppCompatActivity {
             femaleAge.add(new BarEntry(3,female3));
             //for 50-60
             femaleAge.add(new BarEntry(4, female4));
+
             ArrayList<BarEntry> maleAge = new ArrayList<>();
             //for 18-28
             maleAge.add(new BarEntry(1,male1));
@@ -140,29 +135,15 @@ public class UserRecords extends AppCompatActivity {
             maleAge.add(new BarEntry(3, male3));
             //for 50-60
             maleAge.add(new BarEntry(4, male4));
+
             BarDataSet barDataSet1 = new BarDataSet(femaleAge, "Female");
             barDataSet1.setColor(Color.MAGENTA);
             BarDataSet barDataSet2 = new BarDataSet(maleAge, "Male");
             barDataSet2.setColor(Color.BLUE);
-            BarData barData = new BarData(barDataSet1, barDataSet2);
-            userAgeBarChart.setData(barData);
-            userAgeBarChart.getDescription().setEnabled(false);
-            XAxis xAxis2 = userAgeBarChart.getXAxis();
-            xAxis2.setValueFormatter(new IndexAxisValueFormatter(labels));
-            xAxis2.setCenterAxisLabels(true);
-            xAxis2.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis2.setGranularity(1);
-            xAxis2.setGranularityEnabled(true);
-            userAgeBarChart.setDragEnabled(true);
-            userAgeBarChart.setVisibleXRangeMaximum(3);
-            float ownerBarSpace = 0.1f;
-            float ownerGroupSpace = 0.5f;
-            barData.setBarWidth(0.15f);
-            userAgeBarChart.getXAxis().setAxisMinimum(0);
-            userAgeBarChart.setVisibility(View.VISIBLE);
-            userAgeBarChart.animate();
-            userAgeBarChart.groupBars(0, ownerGroupSpace, ownerBarSpace);
-            userAgeBarChart.invalidate();
+
+            CustomBarGraph userAgeBarChart = findViewById(R.id.userAgeBarChart);
+            userAgeBarChart.setEntries(labels, barDataSet1, barDataSet2).refresh();
+
         }
         catch (Exception e){
             Utility.log("UserRecords.sAG: " + e.getMessage());
@@ -183,26 +164,21 @@ public class UserRecords extends AppCompatActivity {
                     deleted++;
             }
 
-            //Account Status Pie Chart
-            PieChart accountStatusPieChart = (PieChart) findViewById(R.id.accountStatusPieChart);
-            accountStatusPieChart.setVisibility(View.GONE);
+            if (active + inactive + deleted == 0)
+                return;
 
+            //Account Status Pie Chart
             ArrayList<PieEntry> status = new ArrayList<>();
-            status.add(new PieEntry(active, "Active"));
-            status.add(new PieEntry(inactive, "Deactivated"));
-            status.add(new PieEntry(deleted, "Deleted"));
-            PieDataSet statusDataSet = new PieDataSet(status, "");
-            statusDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-            statusDataSet.setValueTextColor(Color.WHITE);
-            statusDataSet.setValueTextSize(16f);
-            PieData statusPieData = new PieData(statusDataSet);
-            accountStatusPieChart.setData(statusPieData);
-            accountStatusPieChart.getDescription().setEnabled(false);
-            accountStatusPieChart.setCenterText(String.valueOf(active+inactive+deleted));
-            accountStatusPieChart.setCenterTextSize(40);
-            accountStatusPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            accountStatusPieChart.setVisibility(View.VISIBLE);
-            accountStatusPieChart.animate();
+            if (active > 0)
+                status.add(new PieEntry(active, "Active"));
+            if (inactive > 0)
+                status.add(new PieEntry(inactive, "Deactivated"));
+            if (deleted > 0)
+                status.add(new PieEntry(deleted, "Deleted"));
+
+            CustomPieChart accountStatusPieChart = findViewById(R.id.accountStatusPieChart);
+            accountStatusPieChart.setEntries(status).refresh();
+
         }
         catch (Exception e){
             Utility.log("UserRecords.sSG: " + e.getMessage());
@@ -222,25 +198,18 @@ public class UserRecords extends AppCompatActivity {
                     without++;
             }
 
-            //Adoption History Pie Chart
-            PieChart adoptionHistoryPieChart = (PieChart) findViewById(R.id.adoptionHistoryPieChart);
-            adoptionHistoryPieChart.setVisibility(View.GONE);
+            if (with + without == 0)
+                return;
 
+            //Adoption History Pie Chart
             ArrayList<PieEntry> history = new ArrayList<>();
-            history.add(new PieEntry(with, "With"));
-            history.add(new PieEntry(without, "Without"));
-            PieDataSet historyDataSet = new PieDataSet(history, "");
-            historyDataSet.setColors(ColorTemplate.PASTEL_COLORS);
-            historyDataSet.setValueTextColor(Color.WHITE);
-            historyDataSet.setValueTextSize(16f);
-            PieData historyPieData = new PieData(historyDataSet);
-            adoptionHistoryPieChart.setData(historyPieData);
-            adoptionHistoryPieChart.getDescription().setEnabled(false);
-            adoptionHistoryPieChart.setCenterText(String.valueOf(with+without));
-            adoptionHistoryPieChart.setCenterTextSize(40);
-            adoptionHistoryPieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            adoptionHistoryPieChart.setVisibility(View.VISIBLE);
-            adoptionHistoryPieChart.animate();
+            if (with > 0)
+                history.add(new PieEntry(with, "With"));
+            if (without > 0)
+                history.add(new PieEntry(without, "Without"));
+
+            CustomPieChart adoptionHistoryPieChart = findViewById(R.id.adoptionHistoryPieChart);
+            adoptionHistoryPieChart.setEntries(history).refresh();
 
         }
         catch (Exception e){

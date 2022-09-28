@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.silong.CustomView.CustomBarGraph;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.EnumClass.PetAge;
@@ -137,8 +138,6 @@ public class AdoptionRecords extends AppCompatActivity {
 
             //Pet Demographics Bar Chart
             String[] xAxisLables = new String[]{"Puppy/Kitten", "Young", "Adult"};
-            BarChart petDemogBarChart = (BarChart) findViewById(R.id.petDemogBarChart);
-            petDemogBarChart.setVisibility(View.GONE);
 
             ArrayList<BarEntry> entriesOne = new ArrayList<>();
             //for puppy/kitten
@@ -160,25 +159,9 @@ public class AdoptionRecords extends AppCompatActivity {
             barDataSetOne.setColor(getResources().getColor(R.color.pink));
             BarDataSet barDataSetTwo = new BarDataSet(entriesTwo, "Dog");
             barDataSetTwo.setColor(getResources().getColor(R.color.orange));
-            BarData data = new BarData(barDataSetOne, barDataSetTwo);
-            petDemogBarChart.setData(data);
-            petDemogBarChart.getDescription().setEnabled(false);
-            XAxis xAxis = petDemogBarChart.getXAxis();
-            xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLables));
-            xAxis.setCenterAxisLabels(true);
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis.setGranularity(1);
-            xAxis.setGranularityEnabled(true);
-            petDemogBarChart.setDragEnabled(true);
-            petDemogBarChart.setVisibleXRangeMaximum(3);
-            float barSpace = 0.1f;
-            float groupSpace = 0.5f;
-            data.setBarWidth(0.15f);
-            petDemogBarChart.getXAxis().setAxisMinimum(0);
-            petDemogBarChart.setVisibility(View.VISIBLE);
-            petDemogBarChart.animate();
-            petDemogBarChart.groupBars(0, groupSpace, barSpace);
-            petDemogBarChart.invalidate();
+
+            CustomBarGraph petDemogBarChart = findViewById(R.id.petDemogBarChart);
+            petDemogBarChart.setEntries(xAxisLables, barDataSetOne, barDataSetTwo).refresh();
         }
         catch (Exception e){
             Utility.log("AdoptionRecords.sPD: " + e.getMessage());
@@ -212,8 +195,6 @@ public class AdoptionRecords extends AppCompatActivity {
 
             //Owner Demographics Bar Chart
             String[] xLabels = new String[]{"18-28", "29-39", "40-50", "51-60"};
-            BarChart ownerDemogBarChart = (BarChart) findViewById(R.id.ownerDemogBarChart);
-            ownerDemogBarChart.setVisibility(View.GONE);
 
             ArrayList<BarEntry> entries1 = new ArrayList<>();
             //for 19-28
@@ -237,25 +218,10 @@ public class AdoptionRecords extends AppCompatActivity {
             barDataSet1.setColor(Color.MAGENTA);
             BarDataSet barDataSet2 = new BarDataSet(entries2, "Male");
             barDataSet2.setColor(Color.BLUE);
-            BarData barData = new BarData(barDataSet1, barDataSet2);
-            ownerDemogBarChart.setData(barData);
-            ownerDemogBarChart.getDescription().setEnabled(false);
-            XAxis xAxis2 = ownerDemogBarChart.getXAxis();
-            xAxis2.setValueFormatter(new IndexAxisValueFormatter(xLabels));
-            xAxis2.setCenterAxisLabels(true);
-            xAxis2.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis2.setGranularity(1);
-            xAxis2.setGranularityEnabled(true);
-            ownerDemogBarChart.setDragEnabled(true);
-            ownerDemogBarChart.setVisibleXRangeMaximum(3);
-            float ownerBarSpace = 0.1f;
-            float ownerGroupSpace = 0.5f;
-            barData.setBarWidth(0.15f);
-            ownerDemogBarChart.getXAxis().setAxisMinimum(0);
-            ownerDemogBarChart.setVisibility(View.VISIBLE);
-            ownerDemogBarChart.animate();
-            ownerDemogBarChart.groupBars(0, ownerGroupSpace, ownerBarSpace);
-            ownerDemogBarChart.invalidate();
+
+            CustomBarGraph ownerDemogBarChart =  findViewById(R.id.ownerDemogBarChart);
+            ownerDemogBarChart.setEntries(xLabels, barDataSet1, barDataSet2).refresh();
+
         }
         catch (Exception e){
             Utility.log("AdoptionRecords.sOD: " + e.getMessage());

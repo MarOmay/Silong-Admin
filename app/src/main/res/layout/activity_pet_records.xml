@@ -108,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <com.github.mikephil.charting.charts.PieChart
+                <com.silong.CustomView.CustomPieChart
                     android:id="@+id/dogStatusPieChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -116,11 +116,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Dog Status"
-                        android:textSize="14sp"
+                        android:layout_marginTop="25dp"
                         android:gravity="center"
+                        android:text="Dog Status"
                         android:textColor="@color/blacky"
-                        android:layout_marginTop="25dp"/>
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -231,194 +231,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="Dog Size"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        android:textColor="@color/blacky"
-                        android:layout_marginTop="25dp"/>
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- break here-->
-
-            <View
-                android:layout_marginTop="60dp"
-                android:layout_gravity="center"
-                android:layout_width="300dp"
-                android:layout_height="1dp"
-                android:background="@color/black" />
-
-            <LinearLayout
-                android:layout_marginTop="50dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="CAT"
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/catTotalTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20"
-                    android:textSize="20dp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <!--CAT STATUS PIE CHART-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="10dp"
-                android:text="Status"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:backgroundTint="@color/graphBg">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/catStatusPieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Cat Status"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        android:textColor="@color/blacky"
-                        android:layout_marginTop="25dp"/>
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!--CAT GENDER PIE CHART-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginBottom="10dp"
-                android:text="Gender"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:backgroundTint="@color/graphBg">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/catGenderPieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Cat Gender"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        android:textColor="@color/blacky"
-                        android:layout_marginTop="25dp"/>
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!--CAT AGE PIE CHART-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginBottom="10dp"
-                android:text="Age"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:backgroundTint="@color/graphBg">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/catAgePieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Cat Age"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        android:textColor="@color/blacky"
-                        android:layout_marginTop="25dp"/>
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!--CAT SIZE PIE CHART-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginBottom="10dp"
-                android:text="Size"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:backgroundTint="@color/graphBg">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/catSizePieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Cat Size"
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textColor="@color/blacky"
