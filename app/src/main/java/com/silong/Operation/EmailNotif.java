@@ -1,12 +1,14 @@
 package com.silong.Operation;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.util.Log;
-
 import com.silong.Object.Adoption;
 import com.silong.admin.AdminData;
 
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -218,5 +220,101 @@ public class EmailNotif {
     }
 
     private String HTML_BODY = "<html><head><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Montserrat\"><style>.resize_fit_center { width: 100px; height:100px; vertical-align: middle; object-fit: cover; }</style></head><body style=\"font-family: Montserrat;\"><p>Your adoption request has been <b>approved</b>!</p><table><tr><td><img src=\"cid:petphoto\" alt=\"Pet Photo\" class=\"resize_fit_center\"></td><td style=\"padding-left: 10px;vertical-align: top;\"><p>Date: #DATE_TODAY#</p><p>Pet ID: #PET_ID#</p></td></tr></table><p>Kindly <b>set an appointment</b> using the Silong app.</p><p>Please present this email on your visit to the City Veterinary Office.</p><br><p>- Your Silong Team</p><img src=\"https://drive.google.com/uc?export=view&id=1F7k71GFicdhU2F4BUymmfox_QFNkTvEq\" alt=\"Header\" style=\"width: 150px;height: 50px;\"></body></html>";
+
+
+    /*
+    *       DIFFERENT FORM, VERY DIFFERENT USE
+    *
+    */
+
+    private File file;
+    private String title;
+    private Activity activity;
+    public EmailNotif(Activity activity, File file, String title){
+        this.activity = activity;
+        this.file = file;
+        this.title = title;
+        this.RECEIVER = AdminData.adminEmail;
+    }
+
+    public boolean sendWithAttachment(){
+        try{
+            //set properties
+            Properties properties = System.getProperties();
+
+            properties.put("mail.smtp.host", HOST);
+            properties.put("mail.smtp.port", PORT);
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            javax.mail.Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(EMAIL, PASSWORD);
+                }
+            });
+
+            //compose mime
+            MimeMessage mimeMessage = new MimeMessage(session);
+
+            mimeMessage.setFrom(new InternetAddress(EMAIL, SENDER));
+
+            mimeMessage.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(RECEIVER)));
+
+            mimeMessage.setSubject("Silong Report | " + title);
+
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText("Hi! Attached is the file that you have generated.\n- Your Silong Team");
+
+            MimeBodyPart attachmentPart = new MimeBodyPart();
+            attachmentPart.attachFile(file);
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            multipart.addBodyPart(attachmentPart);
+
+            mimeMessage.setContent(multipart);
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                        clean(activity, true);
+                        sent = true;
+                    }
+                    catch (Exception ex){
+                        sent = false;
+                        clean(activity, false);
+                        ex.printStackTrace();
+                        Utility.log("EmailNotif - thread: " + ex.getMessage());
+                    }
+                }
+            });
+
+            thread.start();
+            return sent;
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Utility.log("EmailNotif.sWA: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private static void clean(Activity activity, boolean status){
+
+        if (status)
+            new Utility().showNotification(activity, "Report Created", "The report you requested has been sent to your email.");
+        else
+            new Utility().showNotification(activity, "Report Failed", "The report you requested was not successfully sent to your email.");
+
+        for (File f : activity.getApplicationContext().getFilesDir().listFiles()){
+            if (f.getAbsolutePath().endsWith(".xls"))
+                f.delete();
+        }
+
+    }
 
 }

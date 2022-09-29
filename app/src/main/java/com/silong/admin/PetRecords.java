@@ -1,32 +1,39 @@
 package com.silong.admin;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.silong.Operation.Utility.dateToday;
+import static com.silong.Operation.Utility.timeNow;
 
-import android.graphics.Color;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.silong.CustomView.CustomBarGraph;
 import com.silong.CustomView.CustomPieChart;
 import com.silong.EnumClass.Gender;
 import com.silong.EnumClass.PetAge;
+import com.silong.EnumClass.PetColor;
 import com.silong.EnumClass.PetSize;
 import com.silong.EnumClass.PetType;
 import com.silong.Object.Pet;
+import com.silong.Operation.Spreadsheet;
 import com.silong.Operation.Utility;
+
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.ArrayList;
 
 public class PetRecords extends AppCompatActivity {
+
+    private final static int STORAGE_REQUEST_CODE = 3;
 
     TextView dogTotalTv, catTotalTv;
 
@@ -35,6 +42,9 @@ public class PetRecords extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_records);
         getSupportActionBar().hide();
+
+        //register receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mExportDialogReceiver, new IntentFilter("export-requested"));
 
         //to adopt status bar to the pink header
         Window window = this.getWindow();
@@ -61,6 +71,14 @@ public class PetRecords extends AppCompatActivity {
         showAgeChart();
         showSizeChart();
 
+    }
+
+    public void onPressedExport(View view){
+
+        if (!Utility.requestPermission(PetRecords.this, STORAGE_REQUEST_CODE))
+            return;
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("export-requested").putExtra("exportType", "email"));
     }
 
     private void showGenderChart(){
@@ -208,6 +226,84 @@ public class PetRecords extends AppCompatActivity {
         }
     }
 
+    private BroadcastReceiver mExportDialogReceiver =  new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //prepare file
+
+            ArrayList<Object[]> entries = new ArrayList<>();
+            //labels
+            entries.add(new Object[]{"PetID", "Type", "Gender", "Age", "Size", "Color"});
+
+            for (Pet pet: AdminData.pets){
+
+                //translate gender and type
+                String gender = "", type = "";
+                switch (pet.getGender()){
+                    case Gender.MALE: gender = "Male"; break;
+                    case Gender.FEMALE: gender = "Female"; break;
+                }
+                switch (pet.getType()){
+                    case PetType.DOG: type += "Dog"; break;
+                    case PetType.CAT: type += "Cat"; break;
+                }
+
+                //translate age
+                String age = "";
+                switch (pet.getAge()){
+                    case PetAge.PUPPY: age = (pet.getType() == PetType.DOG ? "Puppy" : "Kitten"); break;
+                    case PetAge.YOUNG: age = "Young"; break;
+                    case PetAge.OLD: age = "Old"; break;
+                }
+
+                //translate color
+                String color = "";
+                for (char c : pet.getColor().toCharArray()){
+                    switch (Integer.parseInt(c+"")){
+                        case PetColor.BLACK: color += "Black "; break;
+                        case PetColor.BROWN: color += "Brown "; break;
+                        case PetColor.CREAM: color += "Cream "; break;
+                        case PetColor.WHITE: color += "White "; break;
+                        case PetColor.ORANGE: color += "Orange "; break;
+                        case PetColor.GRAY: color += "Gray "; break;
+                    }
+                }
+                color.trim();
+                color.replace(" ", " / ");
+
+                //translate size
+                String size = "";
+                switch (pet.getSize()){
+                    case PetSize.SMALL: size = "Small"; break;
+                    case PetSize.MEDIUM: size = "Medium"; break;
+                    case PetSize.LARGE: size = "Large"; break;
+                }
+
+                entries.add(new Object[]{ String.valueOf(pet.getPetID()), type, gender, age, size, color });
+            }
+
+            Spreadsheet spreadsheet = new Spreadsheet(PetRecords.this);
+            spreadsheet.setEntries(entries);
+
+            Workbook workbook = spreadsheet.create();
+
+            //export process here
+            String exportType = intent.getStringExtra("exportType"); //email or device
+            if (exportType.equals("email")){
+                spreadsheet.sendAsEmail("Pet Records");
+            }
+            else if (exportType.equals("device")){
+
+                String filename = "Pet Records" + "-" + dateToday() + "-" + timeNow().replace("*", "") + ".xls";
+                boolean success = spreadsheet.writeToFile(filename, false);
+                Toast.makeText(PetRecords.this, "Export " + (success ? "successful" : "failed"), Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+    };
+
     public void back(View view){
         onBackPressed();
     }
@@ -216,5 +312,11 @@ public class PetRecords extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mExportDialogReceiver);
     }
 }
