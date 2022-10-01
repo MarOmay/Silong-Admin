@@ -45,6 +45,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:onClick="onPressedExport"
                 android:id="@+id/adoptionExport"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"

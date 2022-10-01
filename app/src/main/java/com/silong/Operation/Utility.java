@@ -39,6 +39,8 @@ import java.util.Date;
 
 public class Utility {
 
+    public final static int STORAGE_REQUEST_CODE = 3;
+
     public static final String LOG_SEPARATOR = "#LOG-SEPARATOR#";
 
     public static boolean internetConnection(Context context){

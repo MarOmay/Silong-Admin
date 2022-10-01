@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.data.PieEntry;
 import com.silong.CustomView.CustomPieChart;
+import com.silong.CustomView.ExportDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.EnumClass.PetAge;
 import com.silong.EnumClass.PetColor;
@@ -33,8 +34,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.util.ArrayList;
 
 public class PetRecords extends AppCompatActivity {
-
-    private final static int STORAGE_REQUEST_CODE = 3;
 
     TextView dogTotalTv, catTotalTv;
     ImageView petExport;
@@ -78,10 +77,11 @@ public class PetRecords extends AppCompatActivity {
 
     public void onPressedExport(View view){
 
-        if (!Utility.requestPermission(PetRecords.this, STORAGE_REQUEST_CODE))
+        if (!Utility.requestPermission(PetRecords.this, Utility.STORAGE_REQUEST_CODE))
             return;
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("export-requested").putExtra("exportType", "email"));
+        ExportDialog exportDialog = new ExportDialog(PetRecords.this);
+        exportDialog.show();
     }
 
     private void showGenderChart(){
@@ -300,7 +300,11 @@ public class PetRecords extends AppCompatActivity {
 
                 String filename = "Pet Records" + "-" + dateToday() + "-" + timeNow().replace("*", "") + ".xls";
                 boolean success = spreadsheet.writeToFile(filename, false);
-                Toast.makeText(PetRecords.this, "Export " + (success ? "successful" : "failed"), Toast.LENGTH_SHORT).show();
+
+                if (success)
+                    Toast.makeText(PetRecords.this, "Exported to Documents/Silong/"+filename, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(PetRecords.this, "Export failed", Toast.LENGTH_SHORT).show();
 
             }
 

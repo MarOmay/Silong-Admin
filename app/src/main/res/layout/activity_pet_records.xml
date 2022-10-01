@@ -35,7 +35,6 @@
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
-                android:onClick="onPressedExport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
@@ -46,6 +45,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:onClick="onPressedExport"
                 android:id="@+id/petExport"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"

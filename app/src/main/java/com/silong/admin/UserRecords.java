@@ -1,8 +1,16 @@
 package com.silong.admin;
 
+import static com.silong.Operation.Utility.dateToday;
+import static com.silong.Operation.Utility.timeNow;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,10 +37,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.CustomBarGraph;
 import com.silong.CustomView.CustomPieChart;
+import com.silong.CustomView.ExportDialog;
 import com.silong.EnumClass.Gender;
+import com.silong.EnumClass.PetAge;
+import com.silong.EnumClass.PetColor;
+import com.silong.EnumClass.PetSize;
+import com.silong.EnumClass.PetType;
 import com.silong.Object.Adoption;
+import com.silong.Object.Pet;
 import com.silong.Object.User;
+import com.silong.Operation.Spreadsheet;
 import com.silong.Operation.Utility;
+
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.ArrayList;
 
@@ -50,6 +67,9 @@ public class UserRecords extends AppCompatActivity {
         setContentView(R.layout.activity_user_records);
         getSupportActionBar().hide();
 
+        //register receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mExportDialogReceiver, new IntentFilter("export-requested"));
+
         //to adopt status bar to the pink header
         Window window = this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.pink));
@@ -61,6 +81,15 @@ public class UserRecords extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         extractUsers();
+    }
+
+    public void onPressedExport(View view){
+
+        if (!Utility.requestPermission(UserRecords.this, Utility.STORAGE_REQUEST_CODE))
+            return;
+
+        ExportDialog exportDialog = new ExportDialog(UserRecords.this);
+        exportDialog.show();
     }
 
     private void showGenderGraph(){
@@ -262,6 +291,8 @@ public class UserRecords extends AppCompatActivity {
                         extractUserInfo(users.size()-1, user.getUserID(), "adoptionHistory");
                         extractUserInfo(users.size()-1, user.getUserID(), "birthday");
                         extractUserInfo(users.size()-1, user.getUserID(), "gender");
+                        extractUserInfo(users.size()-1, user.getUserID(), "lastName");
+                        extractUserInfo(users.size()-1, user.getUserID(), "firstName");
 
                         showStatusGraph();
                     }
@@ -289,6 +320,18 @@ public class UserRecords extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                     switch (info){
+                        case "firstName":
+                            String firstName = snapshot.getValue().toString();
+                            User f = users.get(index);
+                            f.setFirstName(firstName);
+                            users.set(index, f);
+                            break;
+                        case "lastName":
+                            String lastName = snapshot.getValue().toString();
+                            User l = users.get(index);
+                            l.setLastName(lastName);
+                            users.set(index, l);
+                            break;
                         case "birthday":
                             String birthday = snapshot.getValue().toString();
                             User b = users.get(index);
@@ -330,6 +373,52 @@ public class UserRecords extends AppCompatActivity {
         }
     }
 
+    private BroadcastReceiver mExportDialogReceiver =  new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //prepare file
+
+            ArrayList<Object[]> entries = new ArrayList<>();
+            //labels
+            entries.add(new Object[]{"Account Status", "First Name", "Last Name", "Gender", "Age", "Birthday"});
+
+            for (User user : users){
+                entries.add(new Object[]{
+                        user.getAccountStatus() ? "Active" : user.isDeleted() ? "Deleted" : "Deactivated",
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getGender() == Gender.MALE ? "Male" : "Female",
+                        String.valueOf(Utility.getAge(user.getBirthday())),
+                        user.getBirthday()
+                });
+            }
+
+            Spreadsheet spreadsheet = new Spreadsheet(UserRecords.this);
+            spreadsheet.setEntries(entries);
+
+            Workbook workbook = spreadsheet.create();
+
+            //export process here
+            String exportType = intent.getStringExtra("exportType"); //email or device
+            if (exportType.equals("email")){
+                spreadsheet.sendAsEmail("User Records");
+            }
+            else if (exportType.equals("device")){
+
+                String filename = "User Records" + "-" + dateToday() + "-" + timeNow().replace("*", "") + ".xls";
+                boolean success = spreadsheet.writeToFile(filename, false);
+
+                if (success)
+                    Toast.makeText(UserRecords.this, "Exported to Documents/Silong/"+filename, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(UserRecords.this, "Export failed", Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+    };
+
     public void back(View view){
         onBackPressed();
     }
@@ -338,5 +427,11 @@ public class UserRecords extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mExportDialogReceiver);
     }
 }

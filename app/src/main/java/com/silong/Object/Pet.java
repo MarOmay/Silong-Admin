@@ -15,7 +15,7 @@ public class Pet {
     private String photoAsString;
     private String modifiedBy;
     private String lastModified;
-    private int likes;
+    private String owner;
 
     public Pet() {
     }
@@ -28,7 +28,6 @@ public class Pet {
         this.color = color;
         this.age = age;
         this.size = size;
-        this.likes = likes;
     }
 
     public String getPetID() {
@@ -119,11 +118,11 @@ public class Pet {
         this.lastModified = lastModified;
     }
 
-    public int getLikes() {
-        return likes;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setLikes(int likes) {
-        this.likes = likes;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }

@@ -1,27 +1,26 @@
 package com.silong.admin;
 
+import static com.silong.Operation.Utility.dateToday;
+import static com.silong.Operation.Utility.timeNow;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,20 +28,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.CustomBarGraph;
 import com.silong.CustomView.CustomPieChart;
+import com.silong.CustomView.ExportDialog;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.EnumClass.PetAge;
+import com.silong.EnumClass.PetColor;
+import com.silong.EnumClass.PetSize;
 import com.silong.EnumClass.PetType;
 import com.silong.Object.Adoption;
 import com.silong.Object.Pet;
 import com.silong.Object.User;
+import com.silong.Operation.Spreadsheet;
 import com.silong.Operation.Utility;
 
-import java.lang.reflect.Type;
-import java.time.LocalDate;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class AdoptionRecords extends AppCompatActivity {
 
@@ -64,6 +65,9 @@ public class AdoptionRecords extends AppCompatActivity {
         //initialize Firebase objects
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
+        //initialize receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mExportDialogReceiver, new IntentFilter("export-requested"));
+
         //to adopt status bar to the pink header
         Window window = this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.pink));
@@ -72,6 +76,15 @@ public class AdoptionRecords extends AppCompatActivity {
         adoptionExport = findViewById(R.id.adoptionExport);
 
         extractAdoptionHistory();
+    }
+
+    public void onPressedExport(View view){
+
+        if (!Utility.requestPermission(AdoptionRecords.this, Utility.STORAGE_REQUEST_CODE))
+            return;
+
+        ExportDialog exportDialog = new ExportDialog(AdoptionRecords.this);
+        exportDialog.show();
     }
 
     private void showRequests(){
@@ -246,6 +259,10 @@ public class AdoptionRecords extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                     for (DataSnapshot snap : snapshot.getChildren()){
+
+                        if (snap.getKey() == null || snap.getKey().equals("null"))
+                            return; //skip
+
                         DatabaseReference tempRef = mDatabase.getReference("Users").child(snap.getKey()).child("adoptionHistory");
                         tempRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -262,6 +279,9 @@ public class AdoptionRecords extends AppCompatActivity {
                                         adoption.setStatus(Integer.parseInt(ds.child("status").getValue().toString()));
                                         adoption.setDateRequested(ds.child("dateRequested").getValue().toString());
 
+                                        if (adoption.getStatus() < 1)
+                                            return;
+
                                         adoptions.add(adoption);
 
                                         //record only successful adoption
@@ -269,6 +289,7 @@ public class AdoptionRecords extends AppCompatActivity {
                                             //record pet
                                             Pet pet = new Pet();
                                             pet.setPetID(ds.getKey());
+                                            pet.setOwner(snap.getKey());
 
                                             pets.add(pet);
                                             Utility.log("pet added: " + pet.getPetID());
@@ -411,6 +432,108 @@ public class AdoptionRecords extends AppCompatActivity {
         }
     }
 
+    private BroadcastReceiver mExportDialogReceiver =  new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //prepare file
+
+            ArrayList<Object[]> entries = new ArrayList<>();
+            //labels
+            entries.add(new Object[]{"Date", "Status", "PetID", "Pet Type", "Pet Age", "Owner", "Gender", "Birthday"});
+
+            for (Adoption adoption : adoptions){
+
+                String[] entry = new String[8];
+                entry[0] = adoption.getDateRequested();
+
+                switch (adoption.getStatus()){
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6: entry[1] = "PROCESSING"; break;
+                    case 7: entry[1] = "SUCCESSFUL"; break;
+                }
+
+                entry[2] = String.valueOf(adoption.getPetID());
+
+                for (Pet p : pets){
+                    if (p.getPetID().equals(String.valueOf(adoption.getPetID()))){
+                        switch (p.getType()){
+                            case PetType.DOG: entry[3] = "Dog"; break;
+                            case PetType.CAT: entry[3] = "Cat"; break;
+                        }
+
+                        switch (p.getAge()){
+                            case PetAge.PUPPY: entry[4] = p.getType() == PetType.DOG ? "Puppy" : "Kitten"; break;
+                            case PetAge.YOUNG: entry[4] = "Young"; break;
+                            case PetAge.OLD: entry[4] = "Old"; break;
+                        }
+
+                        for (User u : users){
+                            if (p.getOwner().equals(u.getUserID())){
+                                entry[5] = u.getFirstName() + " " + u.getLastName();
+                                entry[6] = u.getGender() == Gender.MALE ? "Male" : "Female";
+                                entry[7] = u.getBirthday();
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                entries.add(entry);
+            }
+
+            /*
+            for (Adoption adoption : adoptions){
+                Utility.log("Adoption: D " + adoption.getDateRequested());
+                Utility.log("Adoption: S " + adoption.getStatus());
+                Utility.log("Adoption: P " + adoption.getPetID());
+            }
+
+            for (Pet p : pets){
+                Utility.log("Pet: I " + p.getPetID());
+                Utility.log("Pet: T " + p.getType());
+                Utility.log("Pet: G " + p.getGender());
+                Utility.log("Pet: O " + p.getOwner());
+            }
+
+            for (User u : users){
+                Utility.log("User: I " + u.getUserID());
+                Utility.log("User: F " + u.getFirstName());
+                Utility.log("User: L " + u.getLastName());
+                Utility.log("User: B " + u.getBirthday());
+            }*/
+
+            Spreadsheet spreadsheet = new Spreadsheet(AdoptionRecords.this);
+            spreadsheet.setEntries(entries);
+
+            Workbook workbook = spreadsheet.create();
+
+            //export process here
+            String exportType = intent.getStringExtra("exportType"); //email or device
+            if (exportType.equals("email")){
+                spreadsheet.sendAsEmail("Adoption Records");
+            }
+            else if (exportType.equals("device")){
+
+                String filename = "Adoption Records" + "-" + dateToday() + "-" + timeNow().replace("*", "") + ".xls";
+                boolean success = spreadsheet.writeToFile(filename, false);
+
+                if (success)
+                    Toast.makeText(AdoptionRecords.this, "Exported to Documents/Silong/"+filename, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(AdoptionRecords.this, "Export failed", Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+    };
+
     public void back(View view){
         onBackPressed();
     }
@@ -419,5 +542,11 @@ public class AdoptionRecords extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mExportDialogReceiver);
     }
 }
