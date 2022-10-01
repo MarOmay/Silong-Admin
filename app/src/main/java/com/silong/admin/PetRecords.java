@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class PetRecords extends AppCompatActivity {
     private final static int STORAGE_REQUEST_CODE = 3;
 
     TextView dogTotalTv, catTotalTv;
+    ImageView petExport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class PetRecords extends AppCompatActivity {
 
         dogTotalTv = findViewById(R.id.dogTotalTv);
         catTotalTv = findViewById(R.id.catTotalTv);
+        petExport = findViewById(R.id.petExport);
 
         int dogCtr = 0, catCtr = 0;
 

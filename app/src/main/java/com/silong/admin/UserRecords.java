@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -41,6 +42,8 @@ public class UserRecords extends AppCompatActivity {
 
     private ArrayList<User> users = new ArrayList<>();
 
+    ImageView userExport;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,8 @@ public class UserRecords extends AppCompatActivity {
         Window window = this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.pink));
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+        userExport = findViewById(R.id.userExport);
 
         //initialize Firebase objects
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
