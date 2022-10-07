@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.silong.Operation.Utility;
 
 public class CreateReport extends AppCompatActivity {
 
@@ -43,21 +46,41 @@ public class CreateReport extends AppCompatActivity {
     }
 
     public void onAdoptionRecordsPressed(View view){
+        if (!Utility.internetConnection(CreateReport.this)){
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent i = new Intent(CreateReport.this, AdoptionRecords.class);
         startActivity(i);
     }
 
     public void onUserRecordsPressed(View view){
+        if (!Utility.internetConnection(CreateReport.this)){
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent i = new Intent(CreateReport.this, UserRecords.class);
         startActivity(i);
     }
 
     public void onPetRecordsPressed(View view){
+        if (!Utility.internetConnection(CreateReport.this)){
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent i = new Intent(CreateReport.this, PetRecords.class);
         startActivity(i);
     }
 
     public void onLogsPressed(View view){
+        if (!Utility.internetConnection(CreateReport.this)){
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent i = new Intent(CreateReport.this, Log.class);
         startActivity(i);
     }

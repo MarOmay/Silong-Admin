@@ -1,6 +1,5 @@
 package com.silong.admin;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -9,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,17 +19,10 @@ import android.widget.Toast;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.LoadingDialog;
-import com.silong.Object.Pet;
-import com.silong.Object.User;
-import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
-import com.silong.Service.RequestWatcher;
 import com.silong.Task.AccountsChecker;
 import com.silong.Task.ActivationRequestFetcher;
 import com.silong.Task.AdoptionRequestFetcher;
@@ -133,7 +124,6 @@ public class Dashboard extends AppCompatActivity {
     }
 
     public void onPressedLogout(View view){
-        stopService(new Intent(this, RequestWatcher.class));
         AdminData.logout();
         mAuth.signOut();
         Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();

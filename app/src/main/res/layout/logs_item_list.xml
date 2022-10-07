@@ -29,6 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:text="Approved an adoption request."
+        android:textAlignment="textStart"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
         android:textSize="18dp"
         android:paddingStart="5dp"/>
 
