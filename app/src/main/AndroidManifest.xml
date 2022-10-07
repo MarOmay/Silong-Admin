@@ -100,11 +100,6 @@
             android:name=".MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
-        <service
-            android:name="com.silong.Service.RequestWatcher"
-            android:exported="true"
-            android:process=".SilongAdmin" />
     </application>
 
 </manifest>

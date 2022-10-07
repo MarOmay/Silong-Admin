@@ -71,6 +71,7 @@
 
         <Button
             android:id="@+id/logsDownloadBtn"
+            android:onClick="onPressedDownload"
             style="@style/pinkButton_style"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -80,6 +81,7 @@
 
         <Button
             android:id="@+id/logsSendemailBtn"
+            android:onClick="onPressedEmail"
             style="@style/pinkButton_style"
             android:layout_width="wrap_content"
             android:layout_height="60dp"

@@ -10,8 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.silong.CustomView.LogDetailsDialog;
 import com.silong.Object.LogData;
-import com.silong.admin.Log;
 import com.silong.admin.R;
 
 public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder>{
@@ -36,13 +36,14 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull LogAdapter.ViewHolder holder, int position) {
         final LogData logDataList = logData[position];
-        holder.logRecordDate.setText(logDataList.getLogRecordDate());
-        holder.logRecordDesc.setText(logDataList.getLogRecordDesc());
+        holder.logRecordDate.setText(logDataList.getDate());
+        holder.logRecordDesc.setText(logDataList.getDescription());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(activity, logDataList.getLogRecordDesc(), Toast.LENGTH_SHORT).show();
+                LogDetailsDialog dialog = new LogDetailsDialog(activity, logDataList);
+                dialog.show();
             }
         });
     }
