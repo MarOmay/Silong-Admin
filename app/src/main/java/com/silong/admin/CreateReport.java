@@ -56,4 +56,9 @@ public class CreateReport extends AppCompatActivity {
         Intent i = new Intent(CreateReport.this, PetRecords.class);
         startActivity(i);
     }
+
+    public void onLogsPressed(View view){
+        Intent i = new Intent(CreateReport.this, Log.class);
+        startActivity(i);
+    }
 }

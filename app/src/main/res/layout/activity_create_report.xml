@@ -201,6 +201,7 @@
             android:layout_marginVertical="10dp">
 
             <LinearLayout
+                android:onClick="onLogsPressed"
                 android:id="@+id/logsTile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

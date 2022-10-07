@@ -60,4 +60,10 @@ dependencies {
     //for graphs --jepoy
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
+    //material date/time picker -jepoy
+    implementation ('com.wdullaer:materialdatetimepicker:4.2.3') {
+        exclude group: 'androidx.appcompat'
+        exclude group: 'androidx.recyclerview'
+    }
+
 }

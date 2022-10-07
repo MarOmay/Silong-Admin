@@ -18,6 +18,12 @@
         android:theme="@style/Theme.SilongAdmin"
         tools:targetApi="31">
         <activity
+            android:name=".DateRangePicker"
+            android:exported="false" />
+        <activity
+            android:name=".Log"
+            android:exported="false" />
+        <activity
             android:name=".UserRecords"
             android:exported="false" />
         <activity
