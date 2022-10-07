@@ -16,9 +16,11 @@ import java.util.Calendar;
 public class DateRangeToPicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private Context context;
+    private DateRangePickerDialog drpd;
 
-    public DateRangeToPicker(Context context){
+    public DateRangeToPicker(Context context, DateRangePickerDialog drpd){
         this.context = context;
+        this.drpd = drpd;
     }
 
     @Override
@@ -33,9 +35,14 @@ public class DateRangeToPicker extends DialogFragment implements DatePickerDialo
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        Intent intent = new Intent("update-date");
-        intent.putExtra("date", month+1+"/"+day+"/"+year);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-        Toast.makeText(context, "To: "+ (month+1) + "/" + day + "/" + year, Toast.LENGTH_SHORT).show();
+
+        String selectedDate = month+1 + "/" + day + "/" + year;
+
+        if (selectedDate.equals(drpd.newToDate))
+            return;
+
+        drpd.setNewToDate(selectedDate);
+        drpd.refresh();
+        drpd.setChanged(true);
     }
 }

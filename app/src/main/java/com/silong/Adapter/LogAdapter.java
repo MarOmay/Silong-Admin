@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.silong.CustomView.LogDetailsDialog;
 import com.silong.Object.LogData;
+import com.silong.admin.Log;
 import com.silong.admin.R;
+
+import java.util.Calendar;
 
 public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder>{
 
@@ -20,6 +23,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder>{
     Activity activity;
 
     public LogAdapter (LogData[] logData, Activity activity){
+        Log.EXPORTABLE.clear();
         this.logData = logData;
         this.activity = activity;
     }
@@ -38,6 +42,34 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder>{
         final LogData logDataList = logData[position];
         holder.logRecordDate.setText(logDataList.getDate());
         holder.logRecordDesc.setText(logDataList.getDescription());
+
+        //check if date range is set, then filter put logs if needed
+        if (Log.customDate){
+
+            String[] fromDate = Log.dateFrom.split("/");
+            Calendar from = Calendar.getInstance();
+            from.set(Integer.valueOf(fromDate[2]),Integer.valueOf(fromDate[0]),Integer.valueOf(fromDate[1]));
+
+            String[] toDate = Log.dateTo.split("/");
+            Calendar to = Calendar.getInstance();
+            to.set(Integer.valueOf(toDate[2]),Integer.valueOf(toDate[0]),Integer.valueOf(toDate[1]));
+
+            String[] logDate = logDataList.getDate().split("/");
+            Calendar log = Calendar.getInstance();
+            log.set(Integer.valueOf(logDate[2]),Integer.valueOf(logDate[0]),Integer.valueOf(logDate[1]));
+
+            if (log.after(to) || log.before(from)){
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            }
+            else {
+                Log.EXPORTABLE.add(logDataList);
+            }
+
+        }
+        else {
+            Log.EXPORTABLE.add(logDataList);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

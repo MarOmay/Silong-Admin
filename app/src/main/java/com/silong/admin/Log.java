@@ -21,7 +21,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.silong.Adapter.LogAdapter;
+import com.silong.CustomView.DateRangeFromPicker;
 import com.silong.CustomView.DateRangePickerDialog;
+import com.silong.CustomView.DateRangeToPicker;
 import com.silong.Object.LogData;
 import com.silong.Operation.Spreadsheet;
 import com.silong.Operation.Utility;
@@ -30,6 +32,7 @@ import com.silong.Task.LogsFetcher;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -41,9 +44,12 @@ public class Log extends AppCompatActivity {
     Button logsDownloadBtn, logsSendemailBtn;
 
     public static ArrayList<LogData> LOGDATA = new ArrayList<>();
+    public static ArrayList<LogData> EXPORTABLE = new ArrayList<>();
 
-    public static String dateFrom = Utility.dateToday();
-    public static String dateTo = Utility.dateToday();
+    public static String dateFrom = Utility.dateToday().replace("-","/");
+    public static String dateTo = Utility.dateToday().replace("-","/");
+
+    public static boolean customDate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,7 @@ public class Log extends AppCompatActivity {
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         LOGDATA.clear();
+        customDate = false;
 
         //register receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mReloadReceiver, new IntentFilter("refresh-logs"));
@@ -78,8 +85,30 @@ public class Log extends AppCompatActivity {
     }
 
     public void onDateRangePressed(View view){
-        DateRangePickerDialog dateRangePickerDialog = new DateRangePickerDialog(Log.this);
-        dateRangePickerDialog.show();
+        DateRangePickerDialog drpd = new DateRangePickerDialog(Log.this);
+        drpd.show();
+
+        DateRangeFromPicker drfp = new DateRangeFromPicker(Log.this, drpd);
+        DateRangeToPicker drtp = new DateRangeToPicker(Log.this, drpd);
+
+        drpd.fromET.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                drfp.show(getSupportFragmentManager(), null);
+
+            }
+        });
+
+        drpd.toET.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                drtp.show(getSupportFragmentManager(), null);
+
+            }
+        });
+
     }
 
     public void loadData(){
@@ -124,7 +153,7 @@ public class Log extends AppCompatActivity {
     }
 
     public void onPressedDownload(View view){
-        if (LOGDATA.isEmpty()){
+        if (EXPORTABLE.isEmpty()){
             Toast.makeText(this, "Nothing to export", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -149,7 +178,7 @@ public class Log extends AppCompatActivity {
     }
 
     public void onPressedEmail(View view){
-        if (LOGDATA.isEmpty()){
+        if (EXPORTABLE.isEmpty()){
             Toast.makeText(this, "Nothing to export", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -172,7 +201,7 @@ public class Log extends AppCompatActivity {
             //labels
             entries.add(new Object[]{"Date", "Time", "Email", "Description", "Device Maker", "Device Model"});
 
-            for (LogData data : LOGDATA){
+            for (LogData data : EXPORTABLE){
                 String[] entry = new String[6];
 
                 entry[0] = data.getDate();
