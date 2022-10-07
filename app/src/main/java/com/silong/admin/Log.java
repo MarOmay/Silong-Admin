@@ -1,6 +1,7 @@
 package com.silong.admin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,10 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.silong.Adapter.LogAdapter;
+import com.silong.CustomView.DateRangePickerDialog;
 import com.silong.Object.LogData;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 public class Log extends AppCompatActivity {
 
@@ -20,6 +24,8 @@ public class Log extends AppCompatActivity {
     RecyclerView logsRecycler;
     ImageView logDateRange;
     Button logsDownloadBtn, logsSendemailBtn;
+    //textfield for date pickers
+    EditText dateRangeFrom, dateRangeTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,8 @@ public class Log extends AppCompatActivity {
         logDateRange = findViewById(R.id.logDateRange);
         logsDownloadBtn = findViewById(R.id.logsDownloadBtn);
         logsSendemailBtn = findViewById(R.id.logsSendemailBtn);
+        dateRangeFrom = findViewById(R.id.dateRangeFrom);
+        dateRangeTo = findViewById(R.id.dateRangeTo);
 
         logsRecycler.setHasFixedSize(true);
         logsRecycler.setLayoutManager(new LinearLayoutManager(Log.this));
@@ -79,7 +87,7 @@ public class Log extends AppCompatActivity {
     }
 
     public void onDateRangePressed(View view){
-        Intent i = new Intent(Log.this, DateRangePicker.class);
-        startActivity(i);
+        DateRangePickerDialog dateRangePickerDialog = new DateRangePickerDialog(Log.this);
+        dateRangePickerDialog.show();
     }
 }

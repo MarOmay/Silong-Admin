@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DateRangePicker"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -42,7 +41,6 @@
                 android:textSize="15dp" />
 
             <EditText
-                android:onClick="onPressedDateRangeFrom"
                 android:id="@+id/dateRangeFrom"
                 style="@style/textField_style"
                 android:layout_width="match_parent"
@@ -75,7 +73,6 @@
                 android:textSize="15dp" />
 
             <EditText
-                android:onClick="onPressedDateRangeTo"
                 android:id="@+id/dateRangeTo"
                 style="@style/textField_style"
                 android:layout_width="match_parent"
@@ -91,50 +88,6 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="FILLER"
-            android:alpha="0"
-            android:textColor="@color/pink"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
-
-        <TextView
-            android:id="@+id/cancelRangeBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onPressedCancel"
-            android:text="CANCEL"
-            android:textAlignment="center"
-            android:textColor="@color/pink"
-            android:textSize="17dp"
-            android:textStyle="bold"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/applyRangeBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="APPLY"
-            android:textColor="@color/pink"
-            android:textSize="17dp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
 
     </LinearLayout>
 
