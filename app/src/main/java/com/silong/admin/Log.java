@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.silong.Adapter.LogAdapter;
+import com.silong.CustomView.DateRangePickerDialog;
 import com.silong.Object.LogData;
 import com.silong.Operation.Spreadsheet;
 import com.silong.Operation.Utility;
@@ -77,8 +78,8 @@ public class Log extends AppCompatActivity {
     }
 
     public void onDateRangePressed(View view){
-        Intent i = new Intent(Log.this, DateRangePicker.class);
-        startActivity(i);
+        DateRangePickerDialog dateRangePickerDialog = new DateRangePickerDialog(Log.this);
+        dateRangePickerDialog.show();
     }
 
     public void loadData(){
