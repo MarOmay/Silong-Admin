@@ -95,6 +95,7 @@ public class AddRecord extends AppCompatActivity {
         loadForEdit();
     }
 
+    private boolean isEditMode = false;
     private void loadForEdit(){
         try {
             String id = getIntent().getStringExtra("id");
@@ -155,6 +156,8 @@ public class AddRecord extends AppCompatActivity {
                         case PetColor.GRAY: colorToggle.check(R.id.addGrayChip); break;
                     }
                 }
+
+                isEditMode = true;
             }
         }
         catch (Exception e){
@@ -181,6 +184,8 @@ public class AddRecord extends AppCompatActivity {
                     file.delete();
                     //notify user
                     Toast.makeText(AddRecord.this, "Record deleted successfully.", Toast.LENGTH_SHORT).show();
+
+                    Utility.dbLog("Deleted record. PetID:" + petID);
 
                     //go back to Dashboard to trigger sync
                     Intent intent = new Intent(AddRecord.this, Dashboard.class);
@@ -327,7 +332,10 @@ public class AddRecord extends AppCompatActivity {
                                 mReference = mDatabase.getReference("recordSummary").child(String.valueOf(counter));
                                 mReference.setValue(PetStatus.ACTIVE);
 
-                                Utility.dbLog("Published record. PetID:" + counter);
+                                if (isEditMode)
+                                    Utility.dbLog("Edited record. PetID:" + counter);
+                                else
+                                    Utility.dbLog("Published record. PetID:" + counter);
 
                                 try {
 
