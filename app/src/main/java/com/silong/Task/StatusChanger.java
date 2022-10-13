@@ -15,6 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class StatusChanger extends AsyncTask {
 
     public final static String SUCCESS = "success";
@@ -37,10 +40,15 @@ public class StatusChanger extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try{
+            //prepare data
+            Map<String, Object> map = new HashMap<>();
+            map.put("accountStatus", status);
+            map.put("cancellation", 0);
+
             //Change value in specific account
             mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
             DatabaseReference tempReference = mDatabase.getReference("Users/" + uid);
-            tempReference.child("accountStatus").setValue(status)
+            tempReference.updateChildren(map)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
