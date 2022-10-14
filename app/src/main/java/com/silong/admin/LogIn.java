@@ -208,6 +208,15 @@ public class LogIn extends AppCompatActivity {
                         AdminData.adminEmail = snapshot.child("email").getValue().toString();
                         AdminData.contact = snapshot.child("contact").getValue().toString();
 
+                        AdminData.role_manageRequests = (boolean) snapshot.child("roles").child("manageRequests").getValue();
+                        AdminData.role_appointments = (boolean) snapshot.child("roles").child("appointments").getValue();
+                        AdminData.role_manageRecords = (boolean) snapshot.child("roles").child("manageRecords").getValue();
+                        AdminData.role_manageReports = (boolean) snapshot.child("roles").child("manageReports").getValue();
+                        AdminData.role_editAgreement = (boolean) snapshot.child("roles").child("editAgreement").getValue();
+                        AdminData.role_editContact = (boolean) snapshot.child("roles").child("editContact").getValue();
+                        AdminData.role_editSchedule = (boolean) snapshot.child("roles").child("editSchedule").getValue();
+                        AdminData.role_manageRoles = (boolean) snapshot.child("roles").child("manageRoles").getValue();
+
                         Toast.makeText(LogIn.this, "Welcome, " + AdminData.firstName + "!", Toast.LENGTH_SHORT).show();
 
                         //send first name to next activity
@@ -219,6 +228,15 @@ public class LogIn extends AppCompatActivity {
                         new ImageProcessor().saveToLocal(getApplicationContext(), "lastName", AdminData.lastName);
                         new ImageProcessor().saveToLocal(getApplicationContext(), "email", AdminData.adminEmail);
                         new ImageProcessor().saveToLocal(getApplicationContext(), "contact", AdminData.contact);
+
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_manageRequests", String.valueOf(AdminData.role_manageRequests));
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_appointments", String.valueOf(AdminData.role_appointments));
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_manageRecords", String.valueOf(AdminData.role_manageRecords));
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_manageReports", String.valueOf(AdminData.role_manageReports));
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_editAgreement", String.valueOf(AdminData.role_editAgreement));
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_editContact", String.valueOf(AdminData.role_editContact));
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_editSchedule", String.valueOf(AdminData.role_editSchedule));
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_manageRoles", String.valueOf(AdminData.role_manageRoles));
 
                         loadingDialog.dismissLoadingDialog();
                         Intent gotoDashboard = new Intent(LogIn.this, Dashboard.class);

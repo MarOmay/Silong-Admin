@@ -28,6 +28,15 @@ public class AdminData {
     public static String adminEmail;
     public static String contact;
 
+    public static boolean role_manageRequests = false;
+    public static boolean role_appointments = false;
+    public static boolean role_manageRecords = false;
+    public static boolean role_manageReports = false;
+    public static boolean role_editAgreement = false;
+    public static boolean role_editContact = false;
+    public static boolean role_editSchedule = false;
+    public static boolean role_manageRoles = false;
+
     public static ArrayList<User> users = new ArrayList<User>();
     public static ArrayList<String> uidList = new ArrayList<>();
     public static ArrayList<Pet> pets = new ArrayList<>();
@@ -73,6 +82,14 @@ public class AdminData {
                         tv.setText(AdminData.firstName); break;
                     case "lastName": lastName = temp[1]; break;
                     case "contact": contact = temp[1]; break;
+                    case "role_manageRequests": role_manageRequests = Boolean.parseBoolean(temp[1]); break;
+                    case "role_appointments": role_appointments = Boolean.parseBoolean(temp[1]); break;
+                    case "role_manageRecords": role_manageRecords = Boolean.parseBoolean(temp[1]); break;
+                    case "role_manageReports": role_manageReports = Boolean.parseBoolean(temp[1]); break;
+                    case "role_editAgreement": role_editAgreement = Boolean.parseBoolean(temp[1]); break;
+                    case "role_editContact": role_editContact = Boolean.parseBoolean(temp[1]); break;
+                    case "role_editSchedule": role_editSchedule = Boolean.parseBoolean(temp[1]); break;
+                    case "role_manageRoles": role_manageRoles = Boolean.parseBoolean(temp[1]); break;
                 }
 
             }

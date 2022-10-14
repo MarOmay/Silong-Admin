@@ -134,6 +134,14 @@ public class ProcessSignUp extends AppCompatActivity {
         map.put("email", ADMIN.getAdminEmail());
         map.put("contact", ADMIN.getContact());
         map.put("accountStatus", true);
+        map.put("roles/manageRequests", false);
+        map.put("roles/appointments", false);
+        map.put("roles/manageRecords", false);
+        map.put("roles/manageReports", false);
+        map.put("roles/editAgreement", false);
+        map.put("roles/editContact", false);
+        map.put("roles/editSchedule", false);
+        map.put("roles/manageRoles", false);
 
         mDatabase.child(ADMIN.getAdminID()).updateChildren(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
