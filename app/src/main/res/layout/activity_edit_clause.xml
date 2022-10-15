@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/nighty"
+    tools:context=".EditClause">
+
+    <LinearLayout
+        android:id="@+id/pinkHeader"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/pink"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/editClauseBackIv"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:onClick="back"
+            android:src="@drawable/ic_round_arrow_back_ios_24"
+            app:tint="@color/whitey"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:paddingStart="30dp"
+            android:text="Edit Clause"
+            android:textColor="@color/whitey"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/editClausePlus"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:src="@drawable/ic_round_add_24"
+            app:tint="@color/whitey" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="0.40"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="15sp"
+            android:layout_marginBottom="5dp"
+            android:paddingStart="10dp"/>
+
+        <EditText
+            android:id="@+id/clauseTitle"
+            style="@style/textField_style"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Title"
+            android:layout_marginBottom="10dp"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Body"
+            android:textSize="15sp"
+            android:layout_marginBottom="5dp"
+            android:paddingStart="10dp"/>
+
+        <EditText
+            android:id="@+id/clauseBody"
+            style="@style/textField_style"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:hint="Body"
+            android:layout_marginBottom="10dp"
+            android:inputType="textMultiLine"
+            android:gravity="start"
+            android:paddingVertical="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1.60"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="2"
+        android:paddingHorizontal="20dp">
+
+        <Button
+            android:id="@+id/deleteClauseBtn"
+            style="@style/pinkButton_style"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="DELETE"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/red"/>
+
+        <Button
+            android:id="@+id/saveClauseBtn"
+            style="@style/pinkButton_style"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="SAVE"
+            android:layout_marginStart="5dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

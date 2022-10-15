@@ -27,6 +27,7 @@
 
 
     <ImageView
+        android:id="@+id/headerLogo"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_weight="1.6"
