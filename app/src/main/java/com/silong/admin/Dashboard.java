@@ -8,10 +8,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ public class Dashboard extends AppCompatActivity {
     LinearLayout requestsPad, appointmentsPad, manageRecordsPad, manageAccountsPad;
     MaterialCardView requestsDot, appointmentsDot;
     TextView adminFnameTv, logoutTv;
+    ImageView headerLogo;
 
     private FirebaseAnalytics mAnalytics;
     private FirebaseAuth mAuth;
@@ -76,6 +79,18 @@ public class Dashboard extends AppCompatActivity {
         for (File file : getFilesDir().listFiles()){
             Log.d("FileInDir", file.getAbsolutePath());
         }
+
+        headerLogo = findViewById(R.id.headerLogo);
+        headerLogo.setImageDrawable(getDrawable(R.drawable.settings_icon_2));
+        headerLogo.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.darkgray)));
+        headerLogo.setPadding(30,30,30,30);
+        headerLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Dashboard.this, AboutTheOffice.class);
+                startActivity(i);
+            }
+        });
 
         requestsPad = (LinearLayout) findViewById(R.id.requestsPad);
         requestsDot = (MaterialCardView) findViewById(R.id.requestsDot);

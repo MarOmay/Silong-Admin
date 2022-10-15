@@ -18,6 +18,18 @@
         android:theme="@style/Theme.SilongAdmin"
         tools:targetApi="31">
         <activity
+            android:name=".ContactInformation"
+            android:exported="false" />
+        <activity
+            android:name=".EditClause"
+            android:exported="false" />
+        <activity
+            android:name=".AdoptionAgreement"
+            android:exported="false" />
+        <activity
+            android:name=".AboutTheOffice"
+            android:exported="false" />
+        <activity
             android:name=".Log"
             android:exported="false" />
         <activity
