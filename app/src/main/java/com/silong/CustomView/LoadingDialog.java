@@ -25,7 +25,7 @@ public class LoadingDialog {
     public void startLoadingDialog(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme);
         //builder.setBackground(getDrawable(activity, R.drawable.dialog_bg));
-        builder.setCancelable(true);
+        builder.setCancelable(false);
 
         ProgressBar pBar = new ProgressBar(activity);
         pBar.setIndeterminate(true);

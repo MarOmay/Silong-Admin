@@ -60,6 +60,28 @@ public class RecordsChecker extends AsyncTask {
                                     RecordFetcher recordFetcher = new RecordFetcher(snap.getKey(), activity);
                                     recordFetcher.execute();
                                 }
+
+                                //check if dateModified matches
+                                DatabaseReference tempRef = mDatabase.getReference("Pets").child(snap.getKey()).child("status");
+                                tempRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                        String lastModified = snapshot.getValue().toString();
+
+                                        if (!lastModified.equals(tempPet.getLastModified())){
+                                            //download latest version
+                                            RecordFetcher recordFetcher = new RecordFetcher(snap.getKey(), activity);
+                                            recordFetcher.execute();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                             }
                             else {
                                 RecordFetcher recordFetcher = new RecordFetcher(snap.getKey(), activity);
