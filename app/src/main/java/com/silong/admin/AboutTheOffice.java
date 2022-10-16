@@ -41,4 +41,9 @@ public class AboutTheOffice extends AppCompatActivity {
         Intent i = new Intent(AboutTheOffice.this, OfficeSchedule.class);
         startActivity(i);
     }
+
+    public void onPressedManageRoles(View view){
+        Intent i = new Intent(AboutTheOffice.this, ManageRoles.class);
+        startActivity(i);
+    }
 }
