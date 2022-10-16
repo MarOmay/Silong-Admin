@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,9 +37,8 @@ import java.util.Map;
 
 public class OfficeSchedule extends AppCompatActivity {
 
-    private ListView listView;
     private TextView officeTimeTv;
-    ArrayAdapter<String> arrayAdapter;
+    MaterialCheckBox monCb, tueCb, wedCb, thursCb, friCb;
 
     private FirebaseDatabase mDatabase;
 
@@ -67,11 +67,12 @@ public class OfficeSchedule extends AppCompatActivity {
         window.setStatusBarColor(this.getResources().getColor(R.color.pink));
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-        listView = findViewById(R.id.daysListView);
         officeTimeTv = findViewById(R.id.officeTimeTv);
-
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, getResources().getStringArray(R.array.days));
-        listView.setAdapter(arrayAdapter);
+        monCb = findViewById(R.id.monCb);
+        tueCb = findViewById(R.id.tueCb);
+        wedCb = findViewById(R.id.wedCb);
+        thursCb = findViewById(R.id.thursCb);
+        friCb = findViewById(R.id.friCb);
 
         //get schedule from cloud
         fetchScheduleFromCloud();
