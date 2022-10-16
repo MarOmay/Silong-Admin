@@ -8,21 +8,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Operation.Utility;
 import com.silong.Task.AccountsChecker;
@@ -40,14 +35,10 @@ public class Dashboard extends AppCompatActivity {
     LinearLayout requestsPad, appointmentsPad, manageRecordsPad, manageAccountsPad;
     MaterialCardView requestsDot, appointmentsDot;
     TextView adminFnameTv, logoutTv;
-    ImageView headerLogo;
-
-    private FirebaseAnalytics mAnalytics;
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
 
     private LoadingDialog loadingDialog;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +50,8 @@ public class Dashboard extends AppCompatActivity {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.darkerNighty));
         }
 
-        //Initialize Firebase objects
-        mAnalytics = FirebaseAnalytics.getInstance(this);
+        //initialize Firebase objects
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         //register receivers
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("update-first-name"));
@@ -78,18 +67,6 @@ public class Dashboard extends AppCompatActivity {
         for (File file : getFilesDir().listFiles()){
             Log.d("FileInDir", file.getAbsolutePath());
         }
-
-        headerLogo = findViewById(R.id.headerLogo);
-        headerLogo.setImageDrawable(getDrawable(R.drawable.settings_icon_2));
-        headerLogo.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.darkgrayz)));
-        headerLogo.setPadding(30,30,30,30);
-        headerLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Dashboard.this, AboutTheOffice.class);
-                startActivity(i);
-            }
-        });
 
         requestsPad = (LinearLayout) findViewById(R.id.requestsPad);
         requestsDot = (MaterialCardView) findViewById(R.id.requestsDot);
@@ -116,31 +93,42 @@ public class Dashboard extends AppCompatActivity {
 
     //onPressed Methods
 
+    public void onPressedSettings(View view){
+        Utility.animateOnClick(this, view);
+        Intent i = new Intent(Dashboard.this, AboutTheOffice.class);
+        startActivity(i);
+    }
+
     public void onPressedRequests(View view){
+        Utility.animateOnClick(this, view);
         Intent i = new Intent(Dashboard.this, RequestList.class);
         startActivity(i);
         finish();
     }
 
     public void onPressedAppointment(View view){
+        Utility.animateOnClick(this, view);
         Intent intent = new Intent(Dashboard.this, AppointmentsList.class);
         startActivity(intent);
         finish();
     }
 
     public void onPressedManageAccounts(View view){
+        Utility.animateOnClick(this, view);
         Intent i = new Intent (Dashboard.this, ManageAccount.class);
         startActivity(i);
         finish();
     }
 
     public void onPressedManageRecords(View view){
+        Utility.animateOnClick(this, view);
         Intent i = new Intent(Dashboard.this, ManageRecords.class);
         startActivity(i);
         finish();
     }
 
     public void onPressedLogout(View view){
+        Utility.animateOnClick(this, view);
         AdminData.logout();
         mAuth.signOut();
         Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();

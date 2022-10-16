@@ -45,7 +45,12 @@ public class AdoptionScheduleFetcher extends AsyncTask {
                         request.setRequestCode(RequestCode.APPOINTMENT);
                         request.setUserID(key);
 
-                        String status = snap.child("status").getValue().toString();
+                        Object tempStatus = snap.child("status").getValue();
+                        if (tempStatus == null)
+                            continue;
+
+                        String status = tempStatus.toString();
+
                         if (status.equals("3"))
                             Log.d("DEBUGGER>>>", "adoption request");
                         else

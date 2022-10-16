@@ -14,8 +14,10 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -124,6 +126,10 @@ public class Utility {
         age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
 
         return age;
+    }
+
+    public static void animateOnClick(Context context, View view){
+        view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.custom_on_click));
     }
 
     public static boolean requestPermission(Activity activity, int requestCode){

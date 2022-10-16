@@ -28,10 +28,13 @@
 
     <ImageView
         android:id="@+id/headerLogo"
+        android:onClick="onPressedSettings"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_weight="1.6"
         android:layout_gravity="end"
-        android:src="@drawable/circlelogo_gradient"/>
+        android:src="@drawable/settings_icon_2"
+        app:tint="@color/darkgrayz"
+        android:padding="30px"/>
 
 </LinearLayout>
