@@ -19,39 +19,50 @@
         tools:targetApi="31">
         <activity
             android:name=".ContactInformation"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".EditClause"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".AdoptionAgreement"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".AboutTheOffice"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Log"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".UserRecords"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".PetRecords"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".AdoptionRecords"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".AppointmentsList"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".RequestInformation"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".CreateReport"
             android:exported="false" />
         <activity
             android:name=".AddRecord"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".UserInformation"
