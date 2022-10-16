@@ -59,6 +59,7 @@
             android:exported="false" />
         <activity
             android:name=".CreateReport"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".AddRecord"
