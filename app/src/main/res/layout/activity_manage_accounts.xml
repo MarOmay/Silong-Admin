@@ -39,11 +39,11 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:alpha="0"
             android:id="@+id/accountCreateIv"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
-            android:onClick="onPressedAdd"
             android:src="@drawable/ic_round_add_24"
             app:tint="@color/whitey" />
 
