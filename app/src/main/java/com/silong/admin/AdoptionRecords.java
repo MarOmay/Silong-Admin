@@ -97,9 +97,8 @@ public class AdoptionRecords extends AppCompatActivity {
                     case 2:
                     case 3:
                     case 4:
-                    case 5:
-                    case 6: processing++; break;
-                    case 7: successful++; break;
+                    case 5: processing++; break;
+                    case 6: successful++; break;
                 }
             }
 
@@ -285,7 +284,7 @@ public class AdoptionRecords extends AppCompatActivity {
                                         adoptions.add(adoption);
 
                                         //record only successful adoption
-                                        if (adoption.getStatus() == 7){
+                                        if (adoption.getStatus() == 6){
                                             //record pet
                                             Pet pet = new Pet();
                                             pet.setPetID(ds.getKey());
@@ -452,9 +451,8 @@ public class AdoptionRecords extends AppCompatActivity {
                     case 2:
                     case 3:
                     case 4:
-                    case 5:
-                    case 6: entry[1] = "PROCESSING"; break;
-                    case 7: entry[1] = "SUCCESSFUL"; break;
+                    case 5: entry[1] = "PROCESSING"; break;
+                    case 6: entry[1] = "SUCCESSFUL"; break;
                 }
 
                 entry[2] = String.valueOf(adoption.getPetID());
