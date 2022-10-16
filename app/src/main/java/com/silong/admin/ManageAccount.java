@@ -89,16 +89,6 @@ public class ManageAccount extends AppCompatActivity {
         onBackPressed();
     }
 
-    public void onPressedAdd(View view){
-        if (Utility.internetConnection(getApplicationContext())){
-            Intent i = new Intent(ManageAccount.this, CreateAdminAccount.class);
-            startActivity(i);
-        }
-        else {
-            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     public void onPressedSearch(View view){
         keyword = accountSearchEt.getText().toString();
         loadAccountList();

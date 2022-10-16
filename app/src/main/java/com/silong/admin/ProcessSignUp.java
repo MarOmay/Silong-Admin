@@ -149,10 +149,8 @@ public class ProcessSignUp extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         Utility.dbLog("Create new Admin account: " + ADMIN.getAdminEmail());
 
-                        mAuth.signOut();
+                        //mAuth.signOut();
                         Toast.makeText(ProcessSignUp.this, "New Admin account created for " + ADMIN.getAdminEmail(), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(ProcessSignUp.this, ManageAccount.class);
-                        startActivity(intent);
                         finish();
                     }
                 })

@@ -68,7 +68,7 @@ public class AdoptionAgreement extends AppCompatActivity {
 
         if (AGREEMENT_DATA.isEmpty()){
             Toast.makeText(this, "No agreement written yet", Toast.LENGTH_SHORT).show();
-            Utility.log("AdpAgmnt.lC: No logs to be displayed");
+            Utility.log("AdpAgmnt.lC: No clause to be displayed");
             return;
         }
 

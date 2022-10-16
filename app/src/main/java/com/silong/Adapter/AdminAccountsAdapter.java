@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.silong.Object.Admin;
 import com.silong.Object.AdminAccountsData;
 import com.silong.admin.ManageRoles;
 import com.silong.admin.R;
@@ -19,10 +20,10 @@ import java.util.ConcurrentModificationException;
 
 public class AdminAccountsAdapter extends RecyclerView.Adapter<AdminAccountsAdapter.ViewHolder> {
 
-    AdminAccountsData[] adminAccountsData;
+    Admin[] adminAccountsData;
     Context context;
 
-    public AdminAccountsAdapter(AdminAccountsData[] adminAccountsData, ManageRoles activity){
+    public AdminAccountsAdapter(Admin[] adminAccountsData, ManageRoles activity){
         this. adminAccountsData = adminAccountsData;
         this.context = activity;
     }
@@ -38,15 +39,14 @@ public class AdminAccountsAdapter extends RecyclerView.Adapter<AdminAccountsAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final AdminAccountsData adminAccountsDataList = adminAccountsData[position];
-        holder.adminAvatar.setImageResource(adminAccountsDataList.getAdminAvatar());
-        holder.adminAccName.setText(adminAccountsDataList.getAdminAccName());
-        holder.adminAccEmail.setText(adminAccountsDataList.getAdminAccEmail());
+        final Admin adminAccountsDataList = adminAccountsData[position];
+        holder.adminAccName.setText(adminAccountsDataList.getFirstName() + " " + adminAccountsDataList.getLastName());
+        holder.adminAccEmail.setText(adminAccountsDataList.getAdminEmail());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, adminAccountsDataList.getAdminAccName(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -56,14 +56,12 @@ public class AdminAccountsAdapter extends RecyclerView.Adapter<AdminAccountsAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView adminAvatar;
         TextView adminAccName;
         TextView adminAccEmail;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
 
-            adminAvatar = itemView.findViewById(R.id.adminAccPicIv);
             adminAccName = itemView.findViewById(R.id.adminAccNameTv);
             adminAccEmail = itemView.findViewById(R.id.adminAccEmailTv);
         }

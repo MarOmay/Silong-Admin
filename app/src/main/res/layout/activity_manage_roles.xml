@@ -41,6 +41,7 @@
 
         <ImageView
             android:id="@+id/addAdminAccountBtn"
+            android:onClick="onPressedAdd"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
