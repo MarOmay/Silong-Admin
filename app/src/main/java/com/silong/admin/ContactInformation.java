@@ -131,19 +131,24 @@ public class ContactInformation extends AppCompatActivity {
                 int infoType = intent.getIntExtra("infoType", -1);
                 String newInfo = intent.getStringExtra("newInfo");
                 String childNode = "";
+                String plainText = "";
 
                 switch (infoType){
                     case EditContactDialog.FACEBOOK_PAGE:
                         childNode = "facebookPage";
+                        plainText = "Facebook Page";
                         break;
                     case EditContactDialog.EMAIL_ADDRESS:
                         childNode = "email";
+                        plainText = "Email Address";
                         break;
                     case EditContactDialog.MOBILE_NUMBER:
                         childNode = "phone";
+                        plainText = "Cellphone Number";
                         break;
                     case EditContactDialog.TELEPHONE_NUMBER:
                         childNode = "telephone";
+                        plainText = "Telephone Number";
                         break;
                 }
 
@@ -153,6 +158,7 @@ public class ContactInformation extends AppCompatActivity {
                 }
                 else {
                     DatabaseReference mRef = mDatabase.getReference("publicInformation").child("contactInformation").child(childNode);
+                    String finalPlainText = plainText;
                     mRef.setValue(newInfo)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -172,6 +178,8 @@ public class ContactInformation extends AppCompatActivity {
                                             TELEPHONE = newInfo;
                                             break;
                                     }
+
+                                    Utility.dbLog("Updated " + finalPlainText + " to " + newInfo);
 
                                     Toast.makeText(getApplicationContext(), "Successfully updated!", Toast.LENGTH_SHORT).show();
                                     loadingDialog.dismissLoadingDialog();
