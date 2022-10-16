@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.net.Inet4Address;
+
 public class AboutTheOffice extends AppCompatActivity {
 
     @Override
@@ -32,6 +34,11 @@ public class AboutTheOffice extends AppCompatActivity {
 
     public void onPressedContactInformation(View view){
         Intent i = new Intent(AboutTheOffice.this, ContactInformation.class);
+        startActivity(i);
+    }
+
+    public void onPressedOfficeSchedule(View view){
+        Intent i = new Intent(AboutTheOffice.this, OfficeSchedule.class);
         startActivity(i);
     }
 }

@@ -3,4 +3,13 @@
 
     <string name="accRecovMsg">\nCheck your Email for further instructions on how to recover your account.\n\nPlease check your spam and other folders if you don\'t immediately see the email.</string>
 
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 </resources>

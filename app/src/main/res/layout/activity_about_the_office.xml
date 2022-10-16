@@ -173,6 +173,7 @@
             app:cardCornerRadius="15dp">
 
             <LinearLayout
+                android:onClick="onPressedOfficeSchedule"
                 android:id="@+id/officeScheduleSettings"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nighty"
+    android:orientation="vertical"
+    tools:context=".OfficeSchedule">
+
+    <LinearLayout
+        android:id="@+id/pinkHeader"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/pink"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/officeScheduleBackIv"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:onClick="back"
+            android:src="@drawable/ic_round_arrow_back_ios_24"
+            app:tint="@color/whitey"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:paddingStart="30dp"
+            android:text="Office Schedule"
+            android:textColor="@color/whitey"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:alpha="0"
+            android:src="@drawable/ic_round_add_24"
+            app:tint="@color/whitey" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.25"
+        android:orientation="vertical"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10sp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/lightgray"
+            app:cardCornerRadius="15dp"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingHorizontal="20dp"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/officeTimeTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="00:00 AM - 00:00 PM"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+
+                <ImageView
+                    android:onClick="onPressedAdjustTime"
+                    android:id="@+id/editOfficeTimeBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.75"
+                    android:src="@drawable/ic_round_edit_24"
+                    app:tint="@color/black" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <ListView
+            android:id="@+id/daysListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="multipleChoice"/>
+
+    </LinearLayout>
+
+</LinearLayout>

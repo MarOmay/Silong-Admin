@@ -18,25 +18,28 @@
         android:theme="@style/Theme.SilongAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".ContactInformation"
-            android:screenOrientation="portrait"
+            android:name=".OfficeSchedule"
             android:exported="false" />
+        <activity
+            android:name=".ContactInformation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditClause"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AdoptionAgreement"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AboutTheOffice"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Log"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserRecords"
             android:exported="false" />
@@ -48,20 +51,20 @@
             android:exported="false" />
         <activity
             android:name=".AppointmentsList"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RequestInformation"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CreateReport"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddRecord"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserInformation"
             android:exported="false"
