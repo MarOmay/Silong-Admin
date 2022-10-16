@@ -73,8 +73,7 @@ public class Dashboard extends AppCompatActivity {
 
         loadingDialog = new LoadingDialog(Dashboard.this);
 
-        //Update local copies
-        startSync();
+        AdminData.populateRecords(this);
 
         for (File file : getFilesDir().listFiles()){
             Log.d("FileInDir", file.getAbsolutePath());
@@ -109,6 +108,9 @@ public class Dashboard extends AppCompatActivity {
         logoutTv = findViewById(R.id.logoutTv);
 
         AdminData.populate(this);
+
+        //Update local copies
+        startSync();
 
     }
 

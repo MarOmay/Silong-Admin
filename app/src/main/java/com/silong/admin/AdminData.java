@@ -309,6 +309,7 @@ public class AdminData {
                     case "email": user.setEmail(temp[1]); break;
                     case "contact": user.setContact(temp[1]); break;
                     case "birthday" : user.setBirthday(temp[1]); break;
+                    case "lastModified" : user.setLastModified(temp[1]); break;
                 }
 
             }
@@ -340,6 +341,8 @@ public class AdminData {
                     case "size": pet.setSize(Integer.parseInt(temp[1])); break;
                     case "age": pet.setAge(Integer.parseInt(temp[1])); break;
                     case "color" : pet.setColor(temp[1]); break;
+                    case "modifiedBy" : pet.setModifiedBy(temp[1]); break;
+                    case "lastModified" : pet.setLastModified(temp[1]); break;
                 }
 
             }

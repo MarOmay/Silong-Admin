@@ -8,27 +8,51 @@ import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.silong.Operation.Utility;
+
 import java.util.Calendar;
 
 public class TimeRangeToPicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     Context context;
+    private OfficeTimeAdjustmentDialog otad;
 
-    public TimeRangeToPicker(Context context){
+    public TimeRangeToPicker(Context context, OfficeTimeAdjustmentDialog otad){
         this.context = context;
+        this.otad = otad;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar cal = Calendar.getInstance();
-        int mHour = cal.get(Calendar.HOUR_OF_DAY);
-        int mMinute = cal.get(Calendar.MINUTE);
+
+        String[] formatted = otad.officeTimeTo.getText().toString().split(" ");
+        String[] time = formatted[0].split(":");
+        int mHour = Integer.parseInt(time[0]);
+        int mMinute = Integer.parseInt(time[1]);
+
+        if (formatted[1].equals("PM")){
+            mHour += 12;
+        }
+
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), this, mHour, mMinute, false);
         return  timePickerDialog;
     }
 
     @Override
-    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
 
+        //calculate 24hr format
+        String am_pm = "";
+        if (hour >= 12){
+            am_pm = "PM";
+            if (hour > 12)
+                hour -= 12;
+        }
+        else
+            am_pm = "AM";
+
+        String selectedTime = hour + ":" + (minute < 10 ? ("0" + minute) : minute) + " " + am_pm;
+
+        otad.officeTimeTo.setText(selectedTime);
     }
 }

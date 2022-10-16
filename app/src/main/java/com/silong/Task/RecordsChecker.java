@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.Object.Pet;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 
 import java.io.File;
@@ -54,6 +55,7 @@ public class RecordsChecker extends AsyncTask {
                             if (file.exists()){
                                 //Check if status of local record matches
                                 Pet tempPet = AdminData.fetchRecordFromLocal(activity, snap.getKey());
+
                                 if (tempPet.getStatus() != Integer.parseInt(snap.getValue().toString())){
                                     //delete local record, to rewrite new record
                                     file.delete();
@@ -62,7 +64,7 @@ public class RecordsChecker extends AsyncTask {
                                 }
 
                                 //check if dateModified matches
-                                DatabaseReference tempRef = mDatabase.getReference("Pets").child(snap.getKey()).child("status");
+                                DatabaseReference tempRef = mDatabase.getReference("Pets").child(snap.getKey()).child("lastModified");
                                 tempRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
