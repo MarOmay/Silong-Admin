@@ -150,6 +150,16 @@ public class EditClause extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(EditClause.this, "Clause " + (editMode ? (deleteMode ? "deleted" : "updated") : "uploaded"), Toast.LENGTH_SHORT).show();
+
+                            //log to RTDB
+                            if (!editMode)
+                                Utility.dbLog("Added new clause to the Adoption Agreement: " + clauseTitle.getText().toString());
+                            else if (!deleteMode)
+                                Utility.dbLog("Modified clause from the Adoption Agreement: " + clauseTitle.getText().toString());
+                            else
+                                Utility.dbLog("Deleted clause from the Adoption Agreement: " + clauseTitle.getText().toString());
+
+
                             loadingDialog.dismissLoadingDialog();
                             goBackFresh();
                         }
