@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.Operation.ImageProcessor;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 
 public class AccountFetcher extends AsyncTask {
@@ -37,6 +38,8 @@ public class AccountFetcher extends AsyncTask {
             mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
             AdminData.writeToLocal(activity, uid, "userID", uid);
+
+            Utility.log("Fetching Pet: " + uid);
 
             DatabaseReference tempReference = mDatabase.getReference("Users").child(uid);
             tempReference.addListenerForSingleValueEvent(new ValueEventListener() {

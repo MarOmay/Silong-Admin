@@ -70,8 +70,6 @@ public class AccountsChecker extends AsyncTask {
                                             }
 
                                             String lastModified = snapshot.getValue().toString();
-                                            Log.d("DEBUGGER>>>", "cur " + tempUser.getLastModified());
-                                            Log.d("DEBUGGER>>>", "new " + lastModified);
                                             if (tempUser.getLastModified() != null){
                                                 if (!tempUser.getLastModified().equals(lastModified)){
                                                     //delete local record, to rewrite new record
