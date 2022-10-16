@@ -39,15 +39,12 @@
             android:exported="false" />
         <activity
             android:name=".UserRecords"
-            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".PetRecords"
-            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".AdoptionRecords"
-            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".AppointmentsList"
