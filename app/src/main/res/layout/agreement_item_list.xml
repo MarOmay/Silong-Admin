@@ -31,7 +31,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="0.1"
-            android:src="@drawable/ic_round_close_24"
+            android:src="@drawable/ic_round_edit_24"
             app:tint="@color/black" />
 
     </LinearLayout>

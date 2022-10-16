@@ -25,6 +25,7 @@
     <color name="graphBg">#eceff1</color>
     <color name="Graygray">#7E7E80</color>
     <color name="darkgray">#3d3d39</color>
+    <color name="darkgrayz">#8F8F87</color>
     <color name="green">#61A86D</color>
     <color name="red">#C8595A</color>
     <color name="pastelGreen">#55ab55</color>

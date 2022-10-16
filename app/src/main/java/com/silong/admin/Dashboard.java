@@ -82,7 +82,7 @@ public class Dashboard extends AppCompatActivity {
 
         headerLogo = findViewById(R.id.headerLogo);
         headerLogo.setImageDrawable(getDrawable(R.drawable.settings_icon_2));
-        headerLogo.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.darkgray)));
+        headerLogo.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.darkgrayz)));
         headerLogo.setPadding(30,30,30,30);
         headerLogo.setOnClickListener(new View.OnClickListener() {
             @Override
