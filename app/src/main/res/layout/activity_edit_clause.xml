@@ -30,11 +30,12 @@
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <TextView
+            android:id="@+id/headerText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:paddingStart="30dp"
-            android:text="Edit Clause"
+            android:text="Add Clause"
             android:textColor="@color/whitey"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -107,6 +108,7 @@
 
         <Button
             android:id="@+id/deleteClauseBtn"
+            android:onClick="onPressedDelete"
             style="@style/pinkButton_style"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -117,6 +119,7 @@
 
         <Button
             android:id="@+id/saveClauseBtn"
+            android:onClick="onPressedSave"
             style="@style/pinkButton_style"
             android:layout_weight="1"
             android:layout_width="match_parent"

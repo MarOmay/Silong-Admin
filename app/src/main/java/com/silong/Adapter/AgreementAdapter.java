@@ -1,6 +1,8 @@
-package com.silong.admin;
+package com.silong.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +12,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.silong.Object.AgreementData;
+import com.silong.admin.AdoptionAgreement;
+import com.silong.admin.EditClause;
+import com.silong.admin.R;
+
+import java.io.Serializable;
+
 public class AgreementAdapter extends RecyclerView.Adapter<AgreementAdapter.ViewHolder> {
 
     AgreementData agreementData[];
+    Activity activity;
     Context context;
 
     public AgreementAdapter( AgreementData[] agreementData, AdoptionAgreement activity){
         this.agreementData = agreementData;
+        this.activity = activity;
         this.context = activity;
     }
 
@@ -37,7 +48,9 @@ public class AgreementAdapter extends RecyclerView.Adapter<AgreementAdapter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, agreementDataList.getAgreementTitle(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity, EditClause.class);
+                intent.putExtra("agreementData", (Serializable) agreementDataList);
+                activity.startActivity(intent);
             }
         });
     }

@@ -1,9 +1,16 @@
-package com.silong.admin;
+package com.silong.Object;
 
-public class AgreementData {
+import java.io.Serializable;
 
+public class AgreementData implements Serializable {
+
+    private String agreementDate;
     private String agreementTitle;
     private String agreementBody;
+
+    public AgreementData(){
+
+    }
 
     public AgreementData ( String agreementTitle, String agreementBody){
         this.agreementTitle = agreementTitle;
@@ -24,5 +31,13 @@ public class AgreementData {
 
     public void setAgreementBody(String agreementBody) {
         this.agreementBody = agreementBody;
+    }
+
+    public String getAgreementDate() {
+        return agreementDate;
+    }
+
+    public void setAgreementDate(String agreementDate) {
+        this.agreementDate = agreementDate;
     }
 }

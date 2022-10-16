@@ -42,6 +42,7 @@ public class Utility {
     public final static int STORAGE_REQUEST_CODE = 3;
 
     public static final String LOG_SEPARATOR = "#LOG-SEPARATOR#";
+    public static final String CLAUSE_SEPARATOR = "#CLAUSE-SEPARATOR#";
 
     public static boolean internetConnection(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
