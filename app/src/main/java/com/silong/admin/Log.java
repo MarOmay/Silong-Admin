@@ -24,6 +24,7 @@ import com.silong.Adapter.LogAdapter;
 import com.silong.CustomView.DateRangeFromPicker;
 import com.silong.CustomView.DateRangePickerDialog;
 import com.silong.CustomView.DateRangeToPicker;
+import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.LogData;
 import com.silong.Operation.Spreadsheet;
 import com.silong.Operation.Utility;
@@ -51,6 +52,8 @@ public class Log extends AppCompatActivity {
 
     public static boolean customDate = false;
 
+    private LoadingDialog loadingDialog = new LoadingDialog(Log.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,8 @@ public class Log extends AppCompatActivity {
 
         logsRecycler.setHasFixedSize(true);
         logsRecycler.setLayoutManager(new LinearLayoutManager(Log.this));
+
+        loadingDialog.startLoadingDialog();
 
         LogsFetcher logsFetcher = new LogsFetcher(Log.this);
         logsFetcher.execute();
@@ -239,6 +244,7 @@ public class Log extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 
             loadData();
+            loadingDialog.dismissLoadingDialog();
 
         }
     };
