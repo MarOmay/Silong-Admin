@@ -338,7 +338,7 @@ public class AdoptionRecords extends AppCompatActivity {
                                         for (Adoption ad : adoptions_cc)
                                             if (ad.getPetID() == adoption.getPetID()) found = true;
 
-                                        if (adoption.getStatus() < 1)
+                                        if (adoption.getStatus() < 1 || adoption.getStatus() > 6)
                                             continue;
                                         else if (adoption.getStatus() != 6)
                                             if (!found)
