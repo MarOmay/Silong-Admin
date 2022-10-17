@@ -15,12 +15,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.silong.Adapter.AdminAccountsAdapter;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.Admin;
-import com.silong.Object.AdminAccountsData;
 import com.silong.Operation.Utility;
 import com.silong.Task.AdminFetcher;
 
