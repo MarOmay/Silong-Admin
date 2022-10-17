@@ -8,7 +8,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +42,7 @@ import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;

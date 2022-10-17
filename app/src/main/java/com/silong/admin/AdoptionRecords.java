@@ -32,8 +32,6 @@ import com.silong.CustomView.ExportDialog;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.EnumClass.PetAge;
-import com.silong.EnumClass.PetColor;
-import com.silong.EnumClass.PetSize;
 import com.silong.EnumClass.PetType;
 import com.silong.Object.Adoption;
 import com.silong.Object.Pet;

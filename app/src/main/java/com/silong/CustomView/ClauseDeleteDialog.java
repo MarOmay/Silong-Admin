@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.silong.Operation.EmailNotif;
-import com.silong.Operation.Utility;
-import com.silong.admin.AdminData;
+
 import com.silong.admin.R;
 
 public class ClauseDeleteDialog extends MaterialAlertDialogBuilder {

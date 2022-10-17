@@ -12,24 +12,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.graphics.Typeface;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
+
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
+
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,12 +34,8 @@ import com.silong.CustomView.CustomBarGraph;
 import com.silong.CustomView.CustomPieChart;
 import com.silong.CustomView.ExportDialog;
 import com.silong.EnumClass.Gender;
-import com.silong.EnumClass.PetAge;
-import com.silong.EnumClass.PetColor;
-import com.silong.EnumClass.PetSize;
-import com.silong.EnumClass.PetType;
+
 import com.silong.Object.Adoption;
-import com.silong.Object.Pet;
 import com.silong.Object.User;
 import com.silong.Operation.Spreadsheet;
 import com.silong.Operation.Utility;

@@ -11,8 +11,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.silong.CustomView.DateRangePickerDialog;
+
 import com.silong.CustomView.LoadingDialog;
 import com.silong.CustomView.OfficeTimeAdjustmentDialog;
 import com.silong.CustomView.TimeRangeFromPicker;
@@ -32,7 +31,7 @@ import com.silong.CustomView.TimeRangeToPicker;
 import com.silong.Operation.Utility;
 
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 public class OfficeSchedule extends AppCompatActivity {

@@ -11,11 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.TextView;
+
 
 import com.silong.Adapter.AppointmentAdapter;
 import com.silong.Object.AppointmentRecords;
-import com.silong.Task.AppointmentFetcher;
+
 
 import java.util.Comparator;
 
