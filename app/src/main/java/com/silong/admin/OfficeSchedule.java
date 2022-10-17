@@ -101,10 +101,31 @@ public class OfficeSchedule extends AppCompatActivity {
 
     }
 
+    public void onPressedCheckBox(View view){
+        if (!Utility.internetConnection(OfficeSchedule.this)){
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+            updateUI();
+            return;
+        }
+
+        try {
+
+            updateSchedule(true);
+
+        }
+        catch (Exception e){
+            Utility.log("OfficeSchedule.oPCB: " + e.getMessage());
+        }
+    }
+
     private void updateUI(){
         try {
-            //listView.getAdapter().get
             officeTimeTv.setText(timeFrom + " - " + timeTo);
+            monCb.setChecked(MONDAY);
+            tueCb.setChecked(TUESDAY);
+            wedCb.setChecked(WEDNESDAY);
+            thursCb.setChecked(THURSDAY);
+            friCb.setChecked(FRIDAY);
         }
         catch (Exception e){
             Utility.log("OfficeSchedule.uUI: " + e.getMessage());
@@ -144,7 +165,7 @@ public class OfficeSchedule extends AppCompatActivity {
 
                     //check if there's schedule in rtdb
                     if (ctr == 0){
-                        updateSchedule();
+                        updateSchedule(false);
                     }
 
                     updateUI();
@@ -167,18 +188,24 @@ public class OfficeSchedule extends AppCompatActivity {
         }
     }
 
-    public void updateSchedule(){
+    public void updateSchedule(boolean getFromUI){
         LoadingDialog loadingDialog = new LoadingDialog(OfficeSchedule.this);
         loadingDialog.startLoadingDialog();
+
+        boolean monday = monCb.isChecked();
+        boolean tuesday = tueCb.isChecked();
+        boolean wednesday = wedCb.isChecked();
+        boolean thursday = thursCb.isChecked();
+        boolean friday = friCb.isChecked();
 
         Map<String, Object> map = new HashMap<>();
         map.put("timeFrom", timeFrom);
         map.put("timeTo", timeTo);
-        map.put("monday", MONDAY);
-        map.put("tuesday", TUESDAY);
-        map.put("wednesday", WEDNESDAY);
-        map.put("thursday", THURSDAY);
-        map.put("friday", FRIDAY);
+        map.put("monday", getFromUI ? monday : MONDAY);
+        map.put("tuesday", getFromUI ? tuesday : TUESDAY);
+        map.put("wednesday", getFromUI ? wednesday : WEDNESDAY);
+        map.put("thursday", getFromUI ? thursday :  THURSDAY);
+        map.put("friday", getFromUI ? friday :  FRIDAY);
 
         try {
 
@@ -188,8 +215,17 @@ public class OfficeSchedule extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void unused) {
 
+                            if (getFromUI){
+                                MONDAY = monday;
+                                TUESDAY = tuesday;
+                                WEDNESDAY = wednesday;
+                                THURSDAY = thursday;
+                                FRIDAY = friday;
+                            }
+
                             Utility.dbLog("Updated schedule.");
                             Toast.makeText(OfficeSchedule.this, "Schedule updated!", Toast.LENGTH_SHORT).show();
+                            updateUI();
                             loadingDialog.dismissLoadingDialog();
                         }
                     })
@@ -227,7 +263,7 @@ public class OfficeSchedule extends AppCompatActivity {
                     timeFrom = from;
                     timeTo = to;
                     updateUI();
-                    updateSchedule();
+                    updateSchedule(false);
                 }
             }
             catch (Exception e){
