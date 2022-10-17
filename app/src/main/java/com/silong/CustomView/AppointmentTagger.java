@@ -18,6 +18,9 @@ import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AppointmentTagger extends MaterialAlertDialogBuilder {
 
     private FirebaseDatabase mDatabase;
@@ -36,14 +39,18 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
         this.ADOPTION = adoption;
 
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        mReference = mDatabase.getReference().child("adoptionRequest").child(userID).child("status");
 
         super.setPositiveButton(Html.fromHtml("<b>"+"YES"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 //update adoptionRequest
-                mReference.setValue("5");
+                DatabaseReference sRef = mDatabase.getReference().child("adoptionRequest").child(userID).child("status");
+                sRef.setValue("5");
+
+                //reset cancellation counter
+                DatabaseReference cRef = mDatabase.getReference().child("Users").child(userID).child("cancellation");
+                cRef.setValue(0);
 
                 //send email notif
                 String userEmail = AdminData.getUser(userID).getEmail();
