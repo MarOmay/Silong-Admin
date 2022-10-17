@@ -38,16 +38,20 @@ public class AdoptionHistoryAdapter extends RecyclerView.Adapter<AdoptionHistory
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Adoption adoptionDataList = adoption[position];
-        holder.adoptionHistoryDate.setText(adoptionDataList.getAppointmentDate());
-        holder.petIdHistory.setText(adoptionDataList.getPetID());
-        holder.statusHistory.setText(adoptionDataList.getStatus());
+        holder.adoptionHistoryDate.setText(adoptionDataList.getDateRequested());
+        holder.petIdHistory.setText("Pet ID# " + adoptionDataList.getPetID());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        String status = "";
+        if (adoptionDataList.getStatus() < 1)
+            status = "Cancelled";
+        else if (adoptionDataList.getStatus() > 0 && adoptionDataList.getStatus() < 6)
+            status = "Processing";
+        else if (adoptionDataList.getStatus() == 6)
+            status = "Successful";
+        else
+            status = "Declined";
 
-            }
-        });
+        holder.statusHistory.setText(status);
     }
 
     @Override

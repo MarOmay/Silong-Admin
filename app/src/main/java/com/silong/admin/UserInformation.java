@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +27,11 @@ import com.silong.EnumClass.Gender;
 import com.silong.Object.Adoption;
 import com.silong.Object.User;
 import com.silong.Operation.Utility;
+import com.silong.Task.AdoptionHistoryFetcher;
 import com.silong.Task.StatusChanger;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class UserInformation extends AppCompatActivity {
 
@@ -34,6 +39,8 @@ public class UserInformation extends AppCompatActivity {
     ImageView profileIv, genderIv, accountBackIv;
     TextView nameTv, emailTv, contactTv;
     RecyclerView adoptionHistoryRecycler;
+
+    public static ArrayList<Adoption> ADOPTIONS = new ArrayList<>();
 
     private User selectedUser;
 
@@ -53,6 +60,7 @@ public class UserInformation extends AppCompatActivity {
         //register receivers
         LocalBroadcastManager.getInstance(this).registerReceiver(mDeactivateAccount, new IntentFilter("deactivate-user"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mStatusChanger, new IntentFilter("SC-coded"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mHistoryReceiver, new IntentFilter("refresh-history"));
 
         //Get specific account info
         String uid = getIntent().getStringExtra("uid");
@@ -77,6 +85,11 @@ public class UserInformation extends AppCompatActivity {
         //Display account info
         displayAccountInfo();
 
+        //fetch adoption history
+        loadingDialog.startLoadingDialog();
+        ADOPTIONS.clear();
+        AdoptionHistoryFetcher ahf = new AdoptionHistoryFetcher(UserInformation.this, uid);
+        ahf.execute();
     }
 
     private void displayAccountInfo() {
@@ -93,6 +106,41 @@ public class UserInformation extends AppCompatActivity {
             Intent intent = new Intent(UserInformation.this, Dashboard.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    private void loadAdoptionHistory(){
+        if (ADOPTIONS.isEmpty()){
+            Toast.makeText(this, "No adoption history", Toast.LENGTH_SHORT).show();
+            Utility.log("UserInfo.lAH: No adoption history");
+            return;
+        }
+
+        try {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                ADOPTIONS.sort(new Comparator<Adoption>() {
+                    @Override
+                    public int compare(Adoption a1, Adoption a2) {
+                        return a1.getDateRequested().compareTo(a2.getDateRequested());
+                    }
+                });
+            }
+
+            int listSize = ADOPTIONS.size();
+
+            Adoption[] adoptions = new Adoption[listSize];
+
+            for (int i = 0; i < listSize; i++){
+                adoptions[i] = ADOPTIONS.get(i);
+            }
+
+            AdoptionHistoryAdapter aha = new AdoptionHistoryAdapter(adoptions, UserInformation.this);
+            adoptionHistoryRecycler.setAdapter(aha);
+
+        }
+        catch (Exception e){
+            Utility.log("UserInfo.lAH: " + e.getMessage());
         }
     }
 
@@ -169,6 +217,16 @@ public class UserInformation extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver mHistoryReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            loadAdoptionHistory();
+            loadingDialog.dismissLoadingDialog();
+
+        }
+    };
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(UserInformation.this, ManageAccount.class);
@@ -182,5 +240,6 @@ public class UserInformation extends AppCompatActivity {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mDeactivateAccount);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mStatusChanger);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mHistoryReceiver);
     }
 }
