@@ -48,6 +48,7 @@ public class AdoptionRecords extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
 
     private ArrayList<Adoption> adoptions = new ArrayList<>();
+    private ArrayList<Adoption> adoptions_cc = new ArrayList<>(); //for cross-checking
     private ArrayList<Pet> pets = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
 
@@ -73,7 +74,8 @@ public class AdoptionRecords extends AppCompatActivity {
 
         adoptionExport = findViewById(R.id.adoptionExport);
 
-        extractAdoptionHistory();
+        extractAdoptionRequest();
+
     }
 
     public void onPressedExport(View view){
@@ -129,6 +131,7 @@ public class AdoptionRecords extends AppCompatActivity {
         try {
 
             for (Pet pet : pets){
+
                 if (pet.getType() == PetType.DOG){
                     switch (pet.getAge()){
                         case PetAge.PUPPY: puppy++; break;
@@ -238,6 +241,61 @@ public class AdoptionRecords extends AppCompatActivity {
         }
     }
 
+    private void extractAdoptionRequest(){
+        //check internet connection
+        if (!Utility.internetConnection(AdoptionRecords.this)){
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            LoadingDialog loadingDialog = new LoadingDialog(AdoptionRecords.this);
+            loadingDialog.startLoadingDialog();
+
+            DatabaseReference reqRef = mDatabase.getReference("adoptionRequest");
+            reqRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    for (DataSnapshot snap : snapshot.getChildren()){
+                        try {
+                            Adoption adoption = new Adoption();
+
+                            String dateRequested = snap.child("dateRequested").getValue().toString();
+                            int petID = Integer.parseInt(snap.child("petID").getValue().toString());
+                            int status = Integer.parseInt(snap.child("status").getValue().toString());
+
+                            adoption.setPetID(petID);
+                            adoption.setDateRequested(dateRequested);
+                            adoption.setStatus(status);
+
+                            adoptions_cc.add(adoption);
+                        }
+                        catch (Exception e){
+                            Utility.log("AdoptionRecords.eAR.oDC: " + e.getMessage());
+                        }
+                    }
+
+                    loadingDialog.dismissLoadingDialog();
+                    extractAdoptionHistory();
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    loadingDialog.dismissLoadingDialog();
+                    Utility.log("AdoptionRecords.eAR: " + error.getMessage());
+                }
+            });
+
+
+        }
+        catch (Exception e){
+            Utility.log("AdoptionRecords.eAR: " + e.getMessage());
+        }
+
+    }
+
     private void extractAdoptionHistory(){
         //check internet connection
         if (!Utility.internetConnection(AdoptionRecords.this)){
@@ -276,34 +334,61 @@ public class AdoptionRecords extends AppCompatActivity {
                                         adoption.setStatus(Integer.parseInt(ds.child("status").getValue().toString()));
                                         adoption.setDateRequested(ds.child("dateRequested").getValue().toString());
 
+                                        boolean found = false;
+                                        for (Adoption ad : adoptions_cc)
+                                            if (ad.getPetID() == adoption.getPetID()) found = true;
+
                                         if (adoption.getStatus() < 1)
-                                            return;
+                                            continue;
+                                        else if (adoption.getStatus() != 6)
+                                            if (!found)
+                                                continue;
 
                                         adoptions.add(adoption);
 
-                                        //record only successful adoption
-                                        if (adoption.getStatus() == 6){
+                                        //successful adoption
+                                        if (adoption.getStatus() > 0){
                                             //record pet
                                             Pet pet = new Pet();
                                             pet.setPetID(ds.getKey());
                                             pet.setOwner(snap.getKey());
 
-                                            pets.add(pet);
-                                            Utility.log("pet added: " + pet.getPetID());
+                                            boolean foundInPets = false;
+                                            for (Pet p : pets){
+                                                if (p.getPetID().equals(pet.getPetID()))
+                                                    foundInPets = true;
+                                            }
 
-                                            extractPetInfo(pets.size()-1, pet.getPetID(), "type");
-                                            extractPetInfo(pets.size()-1, pet.getPetID(), "age");
+                                            if (!foundInPets){
+                                                pets.add(pet);
+                                                Utility.log("pet added: " + pet.getPetID());
+
+                                                extractPetInfo(pets.size()-1, pet.getPetID(), "type");
+                                                extractPetInfo(pets.size()-1, pet.getPetID(), "age");
+                                            }
+
+
 
                                             //record user
                                             User user = new User();
                                             user.setUserID(snap.getKey());
 
-                                            users.add(user);
+                                            boolean foundInUser = false;
+                                            for (User u : users){
+                                                if (u.getUserID().equals(user.getUserID()))
+                                                    foundInUser = true;
+                                            }
 
-                                            extractUserInfo(users.size()-1, user.getUserID(), "firstName");
-                                            extractUserInfo(users.size()-1, user.getUserID(), "lastName");
-                                            extractUserInfo(users.size()-1, user.getUserID(), "gender");
-                                            extractUserInfo(users.size()-1, user.getUserID(), "birthday");
+                                            if (!foundInUser){
+                                                users.add(user);
+
+                                                extractUserInfo(users.size()-1, user.getUserID(), "firstName");
+                                                extractUserInfo(users.size()-1, user.getUserID(), "lastName");
+                                                extractUserInfo(users.size()-1, user.getUserID(), "gender");
+                                                extractUserInfo(users.size()-1, user.getUserID(), "birthday");
+                                            }
+
+
                                         }
 
                                     }
@@ -352,13 +437,13 @@ public class AdoptionRecords extends AppCompatActivity {
                             Pet p = pets.get(index);
                             p.setType(inf);
                             pets.set(index, p);
-                            Utility.log("triggered type");
+                            //Utility.log("triggered type");
                             break;
                         case "age":
                             Pet pp = pets.get(index);
                             pp.setAge(inf);
                             pets.set(index, pp);
-                            Utility.log("triggered age");
+                            //Utility.log("triggered age");
                             break;
                     }
 
@@ -453,6 +538,9 @@ public class AdoptionRecords extends AppCompatActivity {
                     case 6: entry[1] = "SUCCESSFUL"; break;
                 }
 
+                if (entry[1] == null)
+                    continue;
+
                 entry[2] = String.valueOf(adoption.getPetID());
 
                 for (Pet p : pets){
@@ -465,7 +553,7 @@ public class AdoptionRecords extends AppCompatActivity {
                         switch (p.getAge()){
                             case PetAge.PUPPY: entry[4] = p.getType() == PetType.DOG ? "Puppy" : "Kitten"; break;
                             case PetAge.YOUNG: entry[4] = "Young"; break;
-                            case PetAge.OLD: entry[4] = "Old"; break;
+                            case PetAge.OLD: entry[4] = "Adult"; break;
                         }
 
                         for (User u : users){
