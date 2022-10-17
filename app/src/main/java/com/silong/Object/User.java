@@ -2,8 +2,6 @@ package com.silong.Object;
 
 import android.graphics.Bitmap;
 
-import androidx.annotation.Nullable;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -27,21 +25,6 @@ public class User implements Serializable {
     private boolean isDeleted;
 
     public User() {
-    }
-
-    public User(String userID, String email, String firstName, String lastName, String birthday, int gender, String contact, Bitmap photo, boolean accountStatus, int adoptionCounter, com.silong.Object.Address address, ArrayList<Adoption> adoptionHistory, ArrayList<com.silong.Object.Chat> chatHistory, ArrayList<com.silong.Object.Favorite> likedPet) {
-        this.userID = userID;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.contact = contact;
-        this.photo = photo;
-        this.accountStatus = accountStatus;
-        this.adoptionCounter = adoptionCounter;
-        this.address = address;
-        this.adoptionHistory = adoptionHistory;
     }
 
     public String getUserID() {
