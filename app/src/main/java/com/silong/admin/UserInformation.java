@@ -2,6 +2,8 @@ package com.silong.admin;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,9 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.silong.Adapter.AdoptionHistoryAdapter;
 import com.silong.CustomView.DeactivationDialog;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.EnumClass.Gender;
+import com.silong.Object.Adoption;
 import com.silong.Object.User;
 import com.silong.Operation.Utility;
 import com.silong.Task.StatusChanger;
@@ -29,6 +33,7 @@ public class UserInformation extends AppCompatActivity {
     SwitchMaterial disableSw;
     ImageView profileIv, genderIv, accountBackIv;
     TextView nameTv, emailTv, contactTv;
+    RecyclerView adoptionHistoryRecycler;
 
     private User selectedUser;
 
@@ -62,6 +67,10 @@ public class UserInformation extends AppCompatActivity {
         nameTv = (TextView) findViewById(R.id.nameTv);
         emailTv = (TextView) findViewById(R.id.emailTv);
         contactTv = (TextView) findViewById(R.id.contactTv);
+        adoptionHistoryRecycler = findViewById(R.id.adoptionHistoryRecycler);
+
+        adoptionHistoryRecycler.setHasFixedSize(true);
+        adoptionHistoryRecycler.setLayoutManager(new LinearLayoutManager(UserInformation.this));
 
         loadingDialog = new LoadingDialog(UserInformation.this);
 
@@ -70,7 +79,7 @@ public class UserInformation extends AppCompatActivity {
 
     }
 
-    private void displayAccountInfo(){
+    private void displayAccountInfo() {
         try {
             disableSw.setChecked(selectedUser.getAccountStatus());
             profileIv.setImageBitmap(selectedUser.getPhoto());
@@ -78,8 +87,7 @@ public class UserInformation extends AppCompatActivity {
             nameTv.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
             emailTv.setText(selectedUser.getEmail());
             contactTv.setText(selectedUser.getContact());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.d("UserInfo", e.getMessage());
             Toast.makeText(this, "Can't display selected user.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(UserInformation.this, Dashboard.class);
@@ -88,20 +96,20 @@ public class UserInformation extends AppCompatActivity {
         }
     }
 
-    public void onPressedBack(View view){
+    public void onPressedBack(View view) {
         onBackPressed();
     }
 
     private boolean decisionMade = false;
-    public void onToggleStatus(View view){
-        if (Utility.internetConnection(getApplicationContext())){
-            if (disableSw.isChecked()){
+
+    public void onToggleStatus(View view) {
+        if (Utility.internetConnection(getApplicationContext())) {
+            if (disableSw.isChecked()) {
                 //activate account
                 loadingDialog.startLoadingDialog();
                 StatusChanger statusChanger = new StatusChanger(selectedUser.getUserID(), true, UserInformation.this);
                 statusChanger.execute();
-            }
-            else {
+            } else {
                 //ask if to deactivate account
                 DeactivationDialog deactivationDialog = new DeactivationDialog(UserInformation.this, nameTv.getText().toString());
                 deactivationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -112,16 +120,15 @@ public class UserInformation extends AppCompatActivity {
                 });
                 deactivationDialog.show();
             }
-        }
-        else {
+        } else {
             Toast.makeText(this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
             disableSw.setChecked(!disableSw.isChecked());
         }
 
     }
 
-    private User getUser(String uid){
-        for (User u : AdminData.users){
+    private User getUser(String uid) {
+        for (User u : AdminData.users) {
             if (u.getUserID().equals(uid))
                 return u;
         }
@@ -132,13 +139,12 @@ public class UserInformation extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             boolean decision = intent.getBooleanExtra("deactivate", false);
-            if (decision){
+            if (decision) {
                 decisionMade = true;
                 loadingDialog.startLoadingDialog();
                 StatusChanger statusChanger = new StatusChanger(selectedUser.getUserID(), false, UserInformation.this);
                 statusChanger.execute();
-            }
-            else {
+            } else {
                 decisionMade = false;
                 disableSw.setChecked(true);
             }
@@ -154,10 +160,9 @@ public class UserInformation extends AppCompatActivity {
             String uid = intent.getStringExtra("uid");
             boolean status = intent.getBooleanExtra("status", true);
 
-            if (code.equals(StatusChanger.SUCCESS)){
+            if (code.equals(StatusChanger.SUCCESS)) {
                 Toast.makeText(UserInformation.this, "Account " + (status ? "activated" : "deactivated"), Toast.LENGTH_SHORT).show();
-            }
-            else if (code.equals(StatusChanger.FAILURE)){
+            } else if (code.equals(StatusChanger.FAILURE)) {
                 disableSw.setChecked(!status);
                 Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();
             }

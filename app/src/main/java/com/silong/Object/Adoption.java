@@ -19,6 +19,12 @@ public class Adoption {
         this.dateReleased = dateReleased;
     }
 
+    public Adoption(int petID, String appointmentDate, int status) {
+        this.petID = petID;
+        this.appointmentDate = appointmentDate;
+        this.status = status;
+    }
+
     public int getPetID() {
         return petID;
     }
