@@ -36,6 +36,7 @@ public class AdminData {
     public static boolean role_editContact = false;
     public static boolean role_editSchedule = false;
     public static boolean role_manageRoles = false;
+    public static boolean role_manageDatabase =  false;
 
     public static ArrayList<User> users = new ArrayList<User>();
     public static ArrayList<String> uidList = new ArrayList<>();
@@ -90,6 +91,7 @@ public class AdminData {
                     case "role_editContact": role_editContact = Boolean.parseBoolean(temp[1]); break;
                     case "role_editSchedule": role_editSchedule = Boolean.parseBoolean(temp[1]); break;
                     case "role_manageRoles": role_manageRoles = Boolean.parseBoolean(temp[1]); break;
+                    case "role_manageDatabase": role_manageDatabase = Boolean.parseBoolean(temp[1]); break;
                 }
 
             }

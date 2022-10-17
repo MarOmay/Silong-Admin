@@ -216,6 +216,7 @@ public class LogIn extends AppCompatActivity {
                         AdminData.role_editContact = (boolean) snapshot.child("roles").child("editContact").getValue();
                         AdminData.role_editSchedule = (boolean) snapshot.child("roles").child("editSchedule").getValue();
                         AdminData.role_manageRoles = (boolean) snapshot.child("roles").child("manageRoles").getValue();
+                        AdminData.role_manageDatabase = (boolean) snapshot.child("roles").child("manageDatabase").getValue();
 
                         Toast.makeText(LogIn.this, "Welcome, " + AdminData.firstName + "!", Toast.LENGTH_SHORT).show();
 
@@ -237,6 +238,7 @@ public class LogIn extends AppCompatActivity {
                         new ImageProcessor().saveToLocal(getApplicationContext(), "role_editContact", String.valueOf(AdminData.role_editContact));
                         new ImageProcessor().saveToLocal(getApplicationContext(), "role_editSchedule", String.valueOf(AdminData.role_editSchedule));
                         new ImageProcessor().saveToLocal(getApplicationContext(), "role_manageRoles", String.valueOf(AdminData.role_manageRoles));
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "role_manageDatabase", String.valueOf(AdminData.role_manageDatabase));
 
                         loadingDialog.dismissLoadingDialog();
                         Intent gotoDashboard = new Intent(LogIn.this, Dashboard.class);

@@ -20,6 +20,7 @@ public class Admin implements Serializable {
     private boolean role_editContact = false;
     private boolean role_editSchedule = false;
     private boolean role_manageRoles = false;
+    private boolean role_manageDatabase =  false;
 
     public Admin(){}
 
@@ -150,5 +151,13 @@ public class Admin implements Serializable {
 
     public void setRole_manageRoles(boolean role_manageRoles) {
         this.role_manageRoles = role_manageRoles;
+    }
+
+    public boolean isRole_manageDatabase() {
+        return role_manageDatabase;
+    }
+
+    public void setRole_manageDatabase(boolean role_manageDatabase) {
+        this.role_manageDatabase = role_manageDatabase;
     }
 }

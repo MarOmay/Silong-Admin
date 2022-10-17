@@ -140,6 +140,7 @@ public class ProcessSignUp extends AppCompatActivity {
         map.put("roles/editContact", false);
         map.put("roles/editSchedule", false);
         map.put("roles/manageRoles", false);
+        map.put("roles/manageDatabase", false);
 
         mDatabase.child(ADMIN.getAdminID()).updateChildren(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
