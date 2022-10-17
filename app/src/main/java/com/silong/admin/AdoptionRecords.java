@@ -218,6 +218,7 @@ public class AdoptionRecords extends AppCompatActivity {
             entries1.add(new BarEntry(3,male3));
             //for 50-60
             entries1.add(new BarEntry(4, male4));
+
             ArrayList<BarEntry> entries2 = new ArrayList<>();
             //for 18-28
             entries2.add(new BarEntry(3,female1));
@@ -227,10 +228,11 @@ public class AdoptionRecords extends AppCompatActivity {
             entries2.add(new BarEntry(5, female3));
             //for 50-60
             entries2.add(new BarEntry(6, female4));
-            BarDataSet barDataSet1 = new BarDataSet(entries1, "Female");
-            barDataSet1.setColor(Color.MAGENTA);
-            BarDataSet barDataSet2 = new BarDataSet(entries2, "Male");
-            barDataSet2.setColor(Color.BLUE);
+
+            BarDataSet barDataSet1 = new BarDataSet(entries1, "Male");
+            barDataSet1.setColor(Color.BLUE);
+            BarDataSet barDataSet2 = new BarDataSet(entries2, "Female");
+            barDataSet2.setColor(Color.MAGENTA);
 
             CustomBarGraph ownerDemogBarChart =  findViewById(R.id.ownerDemogBarChart);
             ownerDemogBarChart.setEntries(xLabels, barDataSet1, barDataSet2).refresh();
