@@ -1,6 +1,8 @@
 package com.silong.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.silong.Object.Admin;
+import com.silong.admin.AdminRoles;
 import com.silong.admin.ManageRoles;
 import com.silong.admin.R;
 
 public class AdminAccountsAdapter extends RecyclerView.Adapter<AdminAccountsAdapter.ViewHolder> {
 
     Admin[] adminAccountsData;
+    Activity activity;
     Context context;
 
-    public AdminAccountsAdapter(Admin[] adminAccountsData, ManageRoles activity){
+    public AdminAccountsAdapter(Admin[] adminAccountsData, Activity activity){
         this. adminAccountsData = adminAccountsData;
+        this.activity = activity;
         this.context = activity;
     }
 
@@ -42,6 +47,9 @@ public class AdminAccountsAdapter extends RecyclerView.Adapter<AdminAccountsAdap
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(activity, AdminRoles.class);
+                intent.putExtra("ADMIN", adminAccountsDataList);
+                activity.startActivity(intent);
             }
         });
     }
