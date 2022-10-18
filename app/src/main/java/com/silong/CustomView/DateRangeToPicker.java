@@ -29,8 +29,12 @@ public class DateRangeToPicker extends DialogFragment implements DatePickerDialo
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
+        final Calendar cx = Calendar.getInstance();
+        cx.set(2022, 0,1);
+        long mini = (cx.getTimeInMillis());
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
         dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+        dialog.getDatePicker().setMinDate(mini);
         return  dialog;
     }
 
