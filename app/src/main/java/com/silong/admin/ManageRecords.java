@@ -74,8 +74,7 @@ public class ManageRecords extends AppCompatActivity {
     }
 
     public void onPressedCreateReports(View view){
-        Intent intent = new Intent(ManageRecords.this, CreateReport.class);
-        startActivity(intent);
+        new Utility().checkPermission(ManageRecords.this, "manageReports", AdminData.adminID, false);
     }
 
     public void loadRecordList(){

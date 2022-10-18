@@ -24,13 +24,29 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.silong.CustomView.LoadingDialog;
+import com.silong.Object.Request;
+import com.silong.admin.AboutTheOffice;
 import com.silong.admin.AdminData;
+import com.silong.admin.AdminRoles;
+import com.silong.admin.AdoptionAgreement;
+import com.silong.admin.AppointmentsList;
+import com.silong.admin.ContactInformation;
+import com.silong.admin.CreateReport;
+import com.silong.admin.ManageRecords;
+import com.silong.admin.ManageRoles;
+import com.silong.admin.OfficeSchedule;
 import com.silong.admin.R;
+import com.silong.admin.RequestList;
 
 
 import java.io.File;
@@ -174,6 +190,74 @@ public class Utility {
 
     public void passwordFieldTransformer(EditText field, boolean visible){
         field.setTransformationMethod(visible ? null : new PasswordTransformationMethod());
+    }
+
+    public void checkPermission(Activity activity, String role, String adminID, boolean killPreviousActivity){
+        //check internet connection
+        if (!Utility.internetConnection(activity)){
+            Toast.makeText(activity, "No internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        LoadingDialog loadingDialog = new LoadingDialog(activity);
+        loadingDialog.startLoadingDialog();
+
+        try {
+            FirebaseDatabase tempDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
+            DatabaseReference tempRef = tempDatabase.getReference("Admins").child(adminID).child("roles").child(role);
+            tempRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    try {
+                        boolean access = (boolean) snapshot.getValue();
+
+                        Class nextClass = activity.getClass();
+
+                        switch (role){
+                            case "manageRequests": nextClass = RequestList.class; break;
+                            case "appointments": nextClass = AppointmentsList.class; break;
+                            case "manageRecords": nextClass = ManageRecords.class; break;
+                            case "manageReports": nextClass = CreateReport.class; break;
+                            case "editAgreement": nextClass = AdoptionAgreement.class; break;
+                            case "editContact": nextClass = ContactInformation.class; break;
+                            case "editSchedule": nextClass = OfficeSchedule.class; break;
+                            case "manageRoles": nextClass = ManageRoles.class; break;
+                            case "manageDatabase": nextClass = null; break;
+                        }
+
+                        loadingDialog.dismissLoadingDialog();
+
+                        if (access){
+                            Intent intentTo = new Intent(activity, nextClass);
+                            activity.startActivity(intentTo);
+                            if (killPreviousActivity){
+                                activity.finish();
+                            }
+                        }
+                        else {
+                            Toast.makeText(activity, "Access Restricted", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    catch (Exception e){
+                        Toast.makeText(activity, "Operation failed", Toast.LENGTH_SHORT).show();
+                        log("Utility.checkPermission: " + e.getMessage());
+                        loadingDialog.dismissLoadingDialog();
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    loadingDialog.dismissLoadingDialog();
+                }
+            });
+        }
+        catch (Exception e){
+            Toast.makeText(activity, "Operation failed", Toast.LENGTH_SHORT).show();
+            log("Utility.checkPermission: " + e.getMessage());
+            loadingDialog.dismissLoadingDialog();
+        }
     }
 
     public static void dbLog(String message){

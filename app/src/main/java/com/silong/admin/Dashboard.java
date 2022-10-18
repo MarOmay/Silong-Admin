@@ -101,16 +101,12 @@ public class Dashboard extends AppCompatActivity {
 
     public void onPressedRequests(View view){
         Utility.animateOnClick(this, view);
-        Intent i = new Intent(Dashboard.this, RequestList.class);
-        startActivity(i);
-        finish();
+        new Utility().checkPermission(Dashboard.this, "manageRequests", AdminData.adminID, true);
     }
 
     public void onPressedAppointment(View view){
         Utility.animateOnClick(this, view);
-        Intent intent = new Intent(Dashboard.this, AppointmentsList.class);
-        startActivity(intent);
-        finish();
+        new Utility().checkPermission(Dashboard.this, "appointments", AdminData.adminID, true);
     }
 
     public void onPressedManageAccounts(View view){
@@ -122,9 +118,7 @@ public class Dashboard extends AppCompatActivity {
 
     public void onPressedManageRecords(View view){
         Utility.animateOnClick(this, view);
-        Intent i = new Intent(Dashboard.this, ManageRecords.class);
-        startActivity(i);
-        finish();
+        new Utility().checkPermission(Dashboard.this, "manageRecords", AdminData.adminID, true);
     }
 
     public void onPressedLogout(View view){

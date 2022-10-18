@@ -225,6 +225,7 @@ public class LogIn extends AppCompatActivity {
                         intent.putExtra("message", AdminData.firstName);
                         LocalBroadcastManager.getInstance(LogIn.this).sendBroadcast(intent);
 
+                        new ImageProcessor().saveToLocal(getApplicationContext(), "userID", AdminData.adminID);
                         new ImageProcessor().saveToLocal(getApplicationContext(), "firstName", AdminData.firstName);
                         new ImageProcessor().saveToLocal(getApplicationContext(), "lastName", AdminData.lastName);
                         new ImageProcessor().saveToLocal(getApplicationContext(), "email", AdminData.adminEmail);
