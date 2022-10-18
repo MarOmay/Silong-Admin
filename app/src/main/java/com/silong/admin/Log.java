@@ -163,7 +163,7 @@ public class Log extends AppCompatActivity {
     }
 
     public void onPressedDownload(View view){
-        if (EXPORTABLE.isEmpty()){
+        if (EXPORTABLE.isEmpty() && LOGDATA.isEmpty()){
             Toast.makeText(this, "Nothing to export", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -188,7 +188,7 @@ public class Log extends AppCompatActivity {
     }
 
     public void onPressedEmail(View view){
-        if (EXPORTABLE.isEmpty()){
+        if (EXPORTABLE.isEmpty() && LOGDATA.isEmpty()){
             Toast.makeText(this, "Nothing to export", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -211,7 +211,7 @@ public class Log extends AppCompatActivity {
             //labels
             entries.add(new Object[]{"Date", "Time", "Email", "Description", "Device Maker", "Device Model"});
 
-            for (LogData data : EXPORTABLE){
+            for (LogData data : customDate ? EXPORTABLE : LOGDATA){
                 String[] entry = new String[6];
 
                 entry[0] = data.getDate();

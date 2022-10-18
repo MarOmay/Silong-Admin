@@ -23,9 +23,35 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder>{
     Activity activity;
 
     public LogAdapter (LogData[] logData, Activity activity){
-        Log.EXPORTABLE.clear();
         this.logData = logData;
         this.activity = activity;
+
+        Log.EXPORTABLE.clear();
+        generateExportable();
+    }
+
+    private void generateExportable(){
+        for (LogData log : logData){
+            if (Log.customDate){
+
+                String[] fromDate = Log.dateFrom.split("/");
+                Calendar from = Calendar.getInstance();
+                from.set(Integer.valueOf(fromDate[2]),Integer.valueOf(fromDate[0]),Integer.valueOf(fromDate[1]));
+
+                String[] toDate = Log.dateTo.split("/");
+                Calendar to = Calendar.getInstance();
+                to.set(Integer.valueOf(toDate[2]),Integer.valueOf(toDate[0]),Integer.valueOf(toDate[1]));
+
+                String[] logDate = log.getDate().split("/");
+                Calendar logg = Calendar.getInstance();
+                logg.set(Integer.valueOf(logDate[2]),Integer.valueOf(logDate[0]),Integer.valueOf(logDate[1]));
+
+                if (!logg.after(to) && !logg.before(from)){
+                    Log.EXPORTABLE.add(log);
+                }
+            }
+
+        }
     }
 
     @NonNull
@@ -62,13 +88,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder>{
                 holder.itemView.setVisibility(View.GONE);
                 holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
             }
-            else {
-                Log.EXPORTABLE.add(logDataList);
-            }
 
-        }
-        else {
-            Log.EXPORTABLE.add(logDataList);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
