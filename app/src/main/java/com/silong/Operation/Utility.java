@@ -269,14 +269,12 @@ public class Utility {
             String manufacturer = Build.MANUFACTURER;
             String model = Build.MODEL;
 
-            String email = "";
+            String email = "EMAIL_NOT_FOUND";
 
             if (AdminData.adminEmail != null)
                 email = AdminData.adminEmail;
-            else if (AdminData.adminID != null)
-                email = AdminData.adminID;
-            else
-                email = "EMAIL_NOT_FOUND";
+            else if (AdminData.firstName != null || AdminData.lastName != null)
+                email = AdminData.firstName + "_" + AdminData.lastName;
 
             String data = email + LOG_SEPARATOR + message + LOG_SEPARATOR + manufacturer + LOG_SEPARATOR + model;
 

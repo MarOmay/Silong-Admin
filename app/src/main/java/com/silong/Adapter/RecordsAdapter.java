@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.silong.CustomView.PetInfoDialog;
 import com.silong.Object.PetRecordsData;
+import com.silong.Operation.Utility;
 import com.silong.admin.R;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder>{
@@ -44,6 +45,8 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         holder.petColor.setText(petRecordsDataList.getPetColor());
         holder.petPic.setImageBitmap(petRecordsDataList.getPetpic());
         holder.petID.setText("ID: " + petRecordsDataList.getPetID());
+
+        Utility.log("RA Display: " + petRecordsDataList.getPetID());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

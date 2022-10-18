@@ -303,6 +303,13 @@ public class AddRecord extends AppCompatActivity {
         //check internet connection
         if (Utility.internetConnection(getApplicationContext())){
             try {
+
+                String emailHolder = "EMAIL_NOT_FOUND";
+                if (AdminData.adminEmail != null)
+                    emailHolder = AdminData.adminEmail;
+                else if (AdminData.firstName != null || AdminData.lastName != null)
+                    emailHolder = AdminData.firstName + "_" + AdminData.lastName;
+
                 Map<String, Object> map = new HashMap();
                 map.put("status", PetStatus.ACTIVE);
                 map.put("type", pet.getType());
@@ -311,7 +318,7 @@ public class AddRecord extends AppCompatActivity {
                 map.put("age", pet.getAge());
                 map.put("size", pet.getSize());
                 map.put("photo", pet.getPhotoAsString());
-                map.put("modifiedBy", AdminData.adminEmail);
+                map.put("modifiedBy", emailHolder);
                 map.put("lastModified", Utility.dateToday() + " " + Utility.timeNow());
 
                 try {

@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.Object.Pet;
 
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 
 import java.io.File;
@@ -53,15 +54,19 @@ public class RecordsChecker extends AsyncTask {
 
                             File file = new File(activity.getFilesDir(), "pet-" + snap.getKey());
                             if (file.exists()){
+                                Utility.log("Exist " + snap.getKey());
                                 //Check if status of local record matches
                                 Pet tempPet = AdminData.fetchRecordFromLocal(activity, snap.getKey());
 
                                 if (tempPet.getStatus() != Integer.parseInt(snap.getValue().toString())){
                                     //delete local record, to rewrite new record
                                     file.delete();
+                                    Utility.log("Not equal: " + snap.getKey());
                                     RecordFetcher recordFetcher = new RecordFetcher(snap.getKey(), activity);
                                     recordFetcher.execute();
+                                    continue;
                                 }
+                                Utility.log("Equal: " + snap.getKey());
 
                                 //check if dateModified matches
                                 DatabaseReference tempRef = mDatabase.getReference("Pets").child(snap.getKey()).child("lastModified");
@@ -75,6 +80,9 @@ public class RecordsChecker extends AsyncTask {
                                             //download latest version
                                             RecordFetcher recordFetcher = new RecordFetcher(snap.getKey(), activity);
                                             recordFetcher.execute();
+                                        }
+                                        else {
+                                            Utility.log("lastMod equal: " + snap.getKey());
                                         }
 
                                     }

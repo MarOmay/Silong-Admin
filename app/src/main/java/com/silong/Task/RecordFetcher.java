@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.Operation.ImageProcessor;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 
 public class RecordFetcher extends AsyncTask {
@@ -36,7 +37,7 @@ public class RecordFetcher extends AsyncTask {
 
             AdminData.writePetToLocal(activity, id, "petID", id);
 
-            Log.d("DEBUGGER>>>", "Fetching Pet: " + id);
+            Utility.log("RecordFetcher.dIB.oDC- Fetching Pet: " + id);
 
             DatabaseReference tempReference = mDatabase.getReference("Pets").child(id);
             tempReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -69,7 +70,7 @@ public class RecordFetcher extends AsyncTask {
                         updateRecordList();
                     }
                     catch (Exception e){
-                        Log.d("DEBUGGER>>>", e.getMessage());
+                        Utility.log("RecordFetcher.dIB.oDC: " + e.getMessage());
                     }
 
                 }
@@ -82,7 +83,7 @@ public class RecordFetcher extends AsyncTask {
 
         }
         catch (Exception e){
-            Log.d("RC-dIB", e.getMessage());
+            Utility.log("RecordFetcher.dIB: " + e.getMessage());
         }
         return null;
     }

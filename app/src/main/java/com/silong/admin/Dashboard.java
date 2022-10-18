@@ -65,7 +65,7 @@ public class Dashboard extends AppCompatActivity {
         AdminData.populateRecords(this);
 
         for (File file : getFilesDir().listFiles()){
-            Log.d("FileInDir", file.getAbsolutePath());
+            Utility.log("Dashboard.oC- FileInDir:" + file.getAbsolutePath());
         }
 
         requestsPad = (LinearLayout) findViewById(R.id.requestsPad);

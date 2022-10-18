@@ -49,8 +49,6 @@ public class ImageProcessor {
         byte[] imageInByte = stream.toByteArray();
         long length = imageInByte.length;
 
-        Log.d("DEBUGGER>>>", "Size: " + length);
-
         return length < FILE_LIMIT_IN_KB;
     }
 
@@ -61,8 +59,7 @@ public class ImageProcessor {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, compress ? COMPRESSION : 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
-            Log.d("DEBUGGER>>>", "Final: " + byteArray.length);
-            //return Base64.encodeToString(byteArray, Base64.DEFAULT);
+
             String source = Base64.encodeToString(byteArray, Base64.DEFAULT);
             try {
                 return new String(source.getBytes("UTF-8"));
@@ -119,8 +116,6 @@ public class ImageProcessor {
             bitmap = getResizedBitmap(bitmap, width, height);
         }
 
-        Log.d("DEBUGGER>>>", "W:" + width + " H:" + height);
-
         return toUTF8(bitmap, compress);
     }
 
@@ -170,7 +165,7 @@ public class ImageProcessor {
                 FileOutputStream fileOuputStream = context.openFileOutput("user.dat", Context.MODE_PRIVATE);
             }
             catch (Exception e){
-                Log.d("USER.DAT", "Error writing " + desc);
+                Utility.log("ImageProcessor.sT: " + e.getMessage());
             }
         }
         //Create local storage copy of user data
@@ -180,7 +175,7 @@ public class ImageProcessor {
             fileOutputStream.flush();
         }
         catch (Exception e){
-            Log.d("LLS", e.getMessage());
+            Utility.log("ImageProcessor.sT: " + e.getMessage());
             Toast.makeText(context, "Can't write user.dat. (LLS)", Toast.LENGTH_SHORT).show();
         }
     }
@@ -207,8 +202,6 @@ public class ImageProcessor {
 
             bitmap = getResizedBitmap(bitmap, width, height);
         }
-
-        Log.d("DEBUGGER>>>", "W:" + width + " H:" + height);
 
         return toBitmap(toUTF8(bitmap, true));
     }

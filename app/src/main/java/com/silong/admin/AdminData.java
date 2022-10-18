@@ -3,7 +3,6 @@ package com.silong.admin;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.silong.CustomView.LoadingDialog;
@@ -12,6 +11,7 @@ import com.silong.Object.AppointmentRecords;
 import com.silong.Object.Pet;
 import com.silong.Object.Request;
 import com.silong.Object.User;
+import com.silong.Operation.Utility;
 
 
 import java.io.BufferedReader;
@@ -39,7 +39,6 @@ public class AdminData {
     public static boolean role_manageDatabase =  false;
 
     public static ArrayList<User> users = new ArrayList<User>();
-    public static ArrayList<String> uidList = new ArrayList<>();
     public static ArrayList<Pet> pets = new ArrayList<>();
 
     public static ArrayList<Request> requests = new ArrayList<>();
@@ -98,12 +97,7 @@ public class AdminData {
             bufferedReader.close();
         }
         catch (Exception e){
-            try{
-                Log.d("AdminData", e.getMessage());
-            }
-            catch (Exception ex){
-                //For some reason this causes the app to crash, so I had to enclose Log in another try-catch
-            }
+            Utility.log("AdminData.p: " + e.getMessage());
         }
     }
 
@@ -161,7 +155,7 @@ public class AdminData {
                     user.setPhoto(BitmapFactory.decodeFile(activity.getFilesDir() + "/avatar-" + user.getUserID()));
                 }
                 catch (Exception e){
-                    Log.d("AdminData", e.getMessage());
+                    Utility.log("AdminData.pA: " + e.getMessage());
                 }
 
                 users.add(user);
@@ -170,7 +164,7 @@ public class AdminData {
 
         }
         catch (Exception e){
-            Log.d("AdminData", e.getMessage());
+            Utility.log("AdminData.pA: " + e.getMessage());
         }
     }
 
@@ -228,7 +222,7 @@ public class AdminData {
                     pet.setPhoto(BitmapFactory.decodeFile(activity.getFilesDir() + "/petpic-" + pet.getPetID()));
                 }
                 catch (Exception e){
-                    Log.d("AdminData-pR", e.getMessage());
+                    Utility.log("AdminData.pR: " + e.getMessage());
                 }
 
                 pets.add(pet);
@@ -236,7 +230,7 @@ public class AdminData {
 
         }
         catch (Exception e){
-            Log.d("AdminData-pR", e.getMessage());
+            Utility.log("AdminData.pR: " + e.getMessage());
         }
     }
 
@@ -256,7 +250,7 @@ public class AdminData {
                 FileOutputStream fileOuputStream = context.openFileOutput("account-" + filename, Context.MODE_PRIVATE);
             }
             catch (Exception e){
-                Log.d("AdminData-writeToLocal0", e.getMessage());
+                Utility.log("AdminData.wTL: " + e.getMessage());
             }
         }
         //Create local storage copy of user data
@@ -266,7 +260,7 @@ public class AdminData {
             fileOutputStream.flush();
         }
         catch (Exception e){
-            Log.d("AdminData-writeToLocal1", e.getMessage());
+            Utility.log("AdminData.wTL: " + e.getMessage());
         }
     }
 
@@ -278,7 +272,7 @@ public class AdminData {
                 FileOutputStream fileOuputStream = context.openFileOutput("pet-" + filename, Context.MODE_PRIVATE);
             }
             catch (Exception e){
-                Log.d("AdminData-wPTL0", e.getMessage());
+                Utility.log("AdminData.wPTL: " + e.getMessage());
             }
         }
         //Create local storage copy of pet profile
@@ -288,7 +282,7 @@ public class AdminData {
             fileOutputStream.flush();
         }
         catch (Exception e){
-            Log.d("AdminData-wPTL1", e.getMessage());
+            Utility.log("AdminData.wPTL: " + e.getMessage());
         }
     }
 
@@ -318,7 +312,7 @@ public class AdminData {
             bufferedReader.close();
         }
         catch (Exception e){
-            Log.d("AdminData", e.getMessage());
+            Utility.log("AdminData.fAFL: " + e.getMessage());
         }
 
         return user;
@@ -351,7 +345,7 @@ public class AdminData {
             bufferedReader.close();
         }
         catch (Exception e){
-            Log.d("AdminData-fRFL", e.getMessage());
+            Utility.log("AdminData.fRFL: " + e.getMessage());
         }
 
         return pet;
