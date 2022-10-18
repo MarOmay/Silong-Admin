@@ -95,7 +95,7 @@ public class Utility {
         return formatter.format(date);
     }
 
-    public static void log(String message){
+    public static void log(@NonNull String message){
         if (message.length() < 1)
             return;
         else
@@ -111,7 +111,7 @@ public class Utility {
                 FileOutputStream fileOuputStream = context.openFileOutput("logs.dat", Context.MODE_PRIVATE);
             }
             catch (Exception e){
-                Log.d("LOGS.DAT", "Error writing logs");
+                log("Utility.log: " + e.getMessage());
             }
         }
         //Create local storage copy of user data
@@ -121,7 +121,7 @@ public class Utility {
             fileOutputStream.flush();
         }
         catch (Exception e){
-            Log.d("Utility-log", e.getMessage());
+            log("Utility.log: " + e.getMessage());
         }
     }
 
@@ -185,7 +185,6 @@ public class Utility {
         }
         notificationManager.notify(reqCode, notificationBuilder.build()); // 0 is the request code, it should be unique id
 
-        Log.d("showNotification", "showNotification: " + reqCode);
     }
 
     public void passwordFieldTransformer(EditText field, boolean visible){

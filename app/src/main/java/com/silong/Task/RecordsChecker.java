@@ -54,19 +54,16 @@ public class RecordsChecker extends AsyncTask {
 
                             File file = new File(activity.getFilesDir(), "pet-" + snap.getKey());
                             if (file.exists()){
-                                Utility.log("Exist " + snap.getKey());
                                 //Check if status of local record matches
                                 Pet tempPet = AdminData.fetchRecordFromLocal(activity, snap.getKey());
 
                                 if (tempPet.getStatus() != Integer.parseInt(snap.getValue().toString())){
                                     //delete local record, to rewrite new record
                                     file.delete();
-                                    Utility.log("Not equal: " + snap.getKey());
                                     RecordFetcher recordFetcher = new RecordFetcher(snap.getKey(), activity);
                                     recordFetcher.execute();
                                     continue;
                                 }
-                                Utility.log("Equal: " + snap.getKey());
 
                                 //check if dateModified matches
                                 DatabaseReference tempRef = mDatabase.getReference("Pets").child(snap.getKey()).child("lastModified");
@@ -81,15 +78,12 @@ public class RecordsChecker extends AsyncTask {
                                             RecordFetcher recordFetcher = new RecordFetcher(snap.getKey(), activity);
                                             recordFetcher.execute();
                                         }
-                                        else {
-                                            Utility.log("lastMod equal: " + snap.getKey());
-                                        }
 
                                     }
 
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
-
+                                        Utility.log("RecordsChecker.dIB: " + error.getMessage());
                                     }
                                 });
                             }
@@ -125,7 +119,7 @@ public class RecordsChecker extends AsyncTask {
                         cleanLocalRecord(list, "pet-");
                     }
                     catch (Exception e){
-                        Log.d("RC-dIB", e.getMessage());
+                        Utility.log("RecordsChecker.dIB: " + e.getMessage());
                     }
                     AdminData.populateRecords(activity);
                     sendBroadcast();
@@ -135,11 +129,12 @@ public class RecordsChecker extends AsyncTask {
                 public void onCancelled(@NonNull DatabaseError error) {
                     AdminData.populateRecords(activity);
                     sendBroadcast();
+                    Utility.log("RecordsChecker.dIB.oC: " + error.getMessage());
                 }
             });
         }
         catch (Exception e){
-            Log.d("RC-dIB", "RTDB error");
+            Utility.log("RecordsChecker.dIB: " + e.getMessage());
         }
         return null;
     }
@@ -172,7 +167,7 @@ public class RecordsChecker extends AsyncTask {
                 file.delete();
             }
             catch (Exception e){
-                Log.d("RC-cLR", e.getMessage());
+                Utility.log("RecordsChecker.cLR: " + e.getMessage());
             }
         }
 

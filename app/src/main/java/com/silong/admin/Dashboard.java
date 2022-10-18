@@ -203,7 +203,7 @@ public class Dashboard extends AppCompatActivity {
                 requestsDot.setVisibility( notify ? View.VISIBLE : View.INVISIBLE);
             }
             catch (Exception e){
-                Log.d("Dashboard-mRN", e.getMessage());
+                Utility.log("Dashboard.mRN: " + e.getMessage());
             }
         }
     };
@@ -216,7 +216,7 @@ public class Dashboard extends AppCompatActivity {
                 appointmentsDot.setVisibility( notify ? View.VISIBLE : View.INVISIBLE);
             }
             catch (Exception e){
-                Log.d("Dashboard-mAN", e.getMessage());
+                Utility.log("Dashboard.mAN: " + e.getMessage());
             }
         }
     };

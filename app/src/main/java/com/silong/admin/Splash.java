@@ -12,6 +12,7 @@ import android.view.View;
 
 import android.view.WindowManager;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.silong.Operation.Utility;
 
 import java.io.File;
@@ -44,6 +45,9 @@ public class Splash extends AppCompatActivity {
         //Initialize Files
         USERDATA = new File(getFilesDir(),"user.dat");
 
+        //sign out if first run
+        checkFirstOpen();
+
         //For delaying, wala naman na sigurong papakilamanan dito ano? hahahaha
         h.postDelayed(new Runnable() {
             @Override
@@ -66,6 +70,22 @@ public class Splash extends AppCompatActivity {
         }, 3000);
     }
 
+    private void checkFirstOpen() {
 
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun",true);
+
+        if (isFirstRun) {
+            AdminData.logout();
+            FirebaseAuth.getInstance().signOut();
+            setNotFirstRun();
+        }
+
+    }
+
+    private void setNotFirstRun(){
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun",
+                false).apply();
+    }
 
 }

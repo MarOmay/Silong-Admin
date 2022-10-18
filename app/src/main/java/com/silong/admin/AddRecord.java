@@ -161,7 +161,7 @@ public class AddRecord extends AppCompatActivity {
             }
         }
         catch (Exception e){
-            Log.d("AddRecord", e.getMessage());
+            Utility.log("AddRecord.uPP: " + e.getMessage());
         }
     }
     
@@ -197,6 +197,7 @@ public class AddRecord extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(AddRecord.this, "Record deletion failed. (oFL)", Toast.LENGTH_SHORT).show();
+                    Utility.log("AddRecord.uPP: " + e.getMessage());
                 }
             });
         }
@@ -327,7 +328,7 @@ public class AddRecord extends AppCompatActivity {
                     }
                 }
                 catch (Exception e){
-                    Log.d("AddRecord", e.getMessage());
+                    Utility.log("AddRecord.uPP: " + e.getMessage());
                 }
 
                 mReference = mDatabase.getReference("Pets").child(String.valueOf(counter));
@@ -360,7 +361,7 @@ public class AddRecord extends AppCompatActivity {
                                     new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "petpic-" + counter);
                                 }
                                 catch (Exception ex){
-                                    Log.d("AddRecord-uPP", ex.getMessage());
+                                    Utility.log("AddRecord.uPP: " + ex.getMessage());
                                 }
 
                                 //update counter
@@ -385,14 +386,14 @@ public class AddRecord extends AppCompatActivity {
                             public void onFailure(@NonNull Exception e) {
                                 loadingDialog.dismissLoadingDialog();
                                 Toast.makeText(getApplicationContext(), "Request failed.", Toast.LENGTH_SHORT).show();
-                                Log.d("AddRecord-uPP", e.getMessage());
+                                Utility.log("AddRecord.uPP: " + e.getMessage());
                             }
                         });
             }
             catch (Exception e){
                 loadingDialog.dismissLoadingDialog();
                 Toast.makeText(this, "Request canceled.", Toast.LENGTH_SHORT).show();
-                Log.d("AddRecord-uPP", e.getMessage());
+                Utility.log("AddRecord.uPP: " + e.getMessage());
             }
         }
         else {
@@ -415,20 +416,20 @@ public class AddRecord extends AppCompatActivity {
                     catch (Exception ex){
                         mReference.setValue(0);
                         counter = 0;
-                        Log.d("AddRecord", ex.getMessage());
+                        Utility.log("AddRecord.uPP: " + ex.getMessage());
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("AddRecord.uPP: " + error.getMessage());
                 }
             });
         }
         catch (Exception e){
             mReference.setValue(0);
             counter = 0;
-            Log.d("AddRecord", e.getMessage());
+            Utility.log("AddRecord.uPP: " + e.getMessage());
         }
     }
 
@@ -466,11 +467,13 @@ public class AddRecord extends AppCompatActivity {
                 }
                 catch (Exception e){
                     Toast.makeText(getApplicationContext(), "Please select a picture less than 5MB.", Toast.LENGTH_SHORT).show();
+                    Utility.log("AddRecord.uPP: " + e.getMessage());
                 }
 
             }
             catch (Exception e){
                 Toast.makeText(getApplicationContext(), "Unable to choose file", Toast.LENGTH_SHORT).show();
+                Utility.log("AddRecord.uPP: " + e.getMessage());
             }
 
         }

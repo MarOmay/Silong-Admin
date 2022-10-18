@@ -1,7 +1,6 @@
 package com.silong.Adapter;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +45,6 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         holder.petPic.setImageBitmap(petRecordsDataList.getPetpic());
         holder.petID.setText("ID: " + petRecordsDataList.getPetID());
 
-        Utility.log("RA Display: " + petRecordsDataList.getPetID());
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +54,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
                 }
                 catch (Exception e){
                     Toast.makeText(activity, "Operation can't be performed.", Toast.LENGTH_SHORT).show();
-                    Log.d("RA-oBVH", e.getMessage());
+                    Utility.log("RecordsAdapter.obVH.oC: " + e.getMessage());
                 }
             }
         });
