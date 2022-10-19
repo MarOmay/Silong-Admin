@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class AdminRoles extends AppCompatActivity {
 
-    private MaterialCheckBox manageReqCb, appointmentsCb, manageRecCb, manageRepCb, editAgreeCb, editContactCb, editSchedCb, manageRolesCb;
+    private MaterialCheckBox manageReqCb, appointmentsCb, manageRecCb, manageRepCb, editAgreeCb, editContactCb, editSchedCb, manageRolesCb, manageDbCb;
     private TextView adminName;
     private Admin admin;
 
@@ -52,6 +52,7 @@ public class AdminRoles extends AppCompatActivity {
         editContactCb = findViewById(R.id.editContactCb);
         editSchedCb = findViewById(R.id.editSchedCb);
         manageRolesCb = findViewById(R.id.manageRolesCb);
+        manageDbCb = findViewById(R.id.manageDbCb);
 
         //extract data
         try {
