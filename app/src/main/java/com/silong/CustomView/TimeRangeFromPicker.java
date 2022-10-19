@@ -49,6 +49,9 @@ public class TimeRangeFromPicker extends DialogFragment implements TimePickerDia
         else
             am_pm = "AM";
 
+        if (hour == 0 )
+            hour = 12;
+
         String selectedTime = hour + ":" + (minute < 10 ? ("0" + minute) : minute) + " " + am_pm;
 
         otad.officeTimeFrom.setText(selectedTime);

@@ -35,7 +35,7 @@ public class EditContactDialog extends MaterialAlertDialogBuilder {
 
         String title = "";
         switch (infoType){
-            case FACEBOOK_PAGE: title = "Facebook Page"; break;
+            case FACEBOOK_PAGE: title = "Facebook Page (ID)"; break;
             case EMAIL_ADDRESS: title = "E-mail Address"; break;
             case MOBILE_NUMBER: title = "Cellphone Number"; break;
             case TELEPHONE_NUMBER: title = "Telephone Number"; break;
