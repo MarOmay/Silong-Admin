@@ -7,9 +7,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -67,4 +69,16 @@ public class CustomPieChart extends PieChart {
         super.setVisibility(View.GONE);
         super.setVisibility(View.VISIBLE);
     }
+
+    private ValueFormatter valueFormatter = new ValueFormatter() {
+        @Override
+        public String getAxisLabel(float value, AxisBase axis) {
+            return super.getAxisLabel(value, axis);
+        }
+
+        @Override
+        public String getPieLabel(float value, PieEntry pieEntry) {
+            return super.getPieLabel(value, pieEntry);
+        }
+    };
 }

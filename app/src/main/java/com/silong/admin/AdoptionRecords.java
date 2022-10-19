@@ -168,9 +168,10 @@ public class AdoptionRecords extends AppCompatActivity {
             //for adult
             entriesTwo.add(new BarEntry(5, oldC));
 
-            BarDataSet barDataSetOne = new BarDataSet(entriesOne, "Cat");
+            BarDataSet barDataSetOne = new BarDataSet(entriesTwo, "Cat");
             barDataSetOne.setColor(getResources().getColor(R.color.pink));
-            BarDataSet barDataSetTwo = new BarDataSet(entriesTwo, "Dog");
+
+            BarDataSet barDataSetTwo = new BarDataSet(entriesOne, "Dog");
             barDataSetTwo.setColor(getResources().getColor(R.color.orange));
 
             CustomBarGraph petDemogBarChart = findViewById(R.id.petDemogBarChart);
