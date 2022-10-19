@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nighty"
+    android:orientation="vertical"
+    tools:context=".ManageDatabase">
+
+    <LinearLayout
+        android:id="@+id/pinkHeader"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/pink"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/manageDbBackIv"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:onClick="back"
+            android:src="@drawable/ic_round_arrow_back_ios_24"
+            app:tint="@color/whitey"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/adminName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:paddingStart="30dp"
+            android:text="Manage Database"
+            android:textColor="@color/whitey"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:alpha="0"
+            android:src="@drawable/ic_round_add_24"
+            app:tint="@color/whitey" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.35"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="25dp">
+
+        <TextView
+            android:layout_marginHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Select only the type of information to be deleted."
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:paddingStart="20dp"
+                android:text="Logs past 1 Month"
+                android:textSize="20sp" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/pastLogsCb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:alpha="0.4"
+            android:background="@color/textgray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:paddingStart="20dp"
+                android:text="Deleted User Accounts"
+                android:textSize="20sp" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/deletedUsersCb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:alpha="0.4"
+            android:background="@color/textgray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:paddingStart="20dp"
+                android:text="Adopted Pets"
+                android:textSize="20sp" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/adoptedPetsCb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.65"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:paddingHorizontal="20dp"
+        android:gravity="center">
+
+        <Button
+            style="@style/pinkButton_style"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="CANCEL"
+            android:layout_marginEnd="5dp"/>
+
+        <Button
+            android:onClick="onPressedDeleteDb"
+            style="@style/pinkButton_style"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/red"
+            android:text="DELETE"
+            android:layout_marginStart="5dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

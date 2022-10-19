@@ -12,4 +12,6 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </string-array>
+
+    <string name="warningDia">This action is final and irreversible. We highly recommend that you download a report of these information before proceeding.</string>
 </resources>
