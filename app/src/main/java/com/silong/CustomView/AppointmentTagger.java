@@ -73,5 +73,12 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
                 //codes here
             }
         });
+
+        super.setNeutralButton(Html.fromHtml("<b>" + "RESCHEDULE" + "</b>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //code here
+            }
+        });
     }
 }
