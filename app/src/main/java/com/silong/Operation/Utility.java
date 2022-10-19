@@ -42,6 +42,7 @@ import com.silong.admin.AdoptionAgreement;
 import com.silong.admin.AppointmentsList;
 import com.silong.admin.ContactInformation;
 import com.silong.admin.CreateReport;
+import com.silong.admin.ManageDatabase;
 import com.silong.admin.ManageRecords;
 import com.silong.admin.ManageRoles;
 import com.silong.admin.OfficeSchedule;
@@ -222,7 +223,7 @@ public class Utility {
                             case "editContact": nextClass = ContactInformation.class; break;
                             case "editSchedule": nextClass = OfficeSchedule.class; break;
                             case "manageRoles": nextClass = ManageRoles.class; break;
-                            case "manageDatabase": nextClass = null; break;
+                            case "manageDatabase": nextClass = ManageDatabase.class; break;
                         }
 
                         loadingDialog.dismissLoadingDialog();

@@ -67,7 +67,7 @@ public class AdminRoles extends AppCompatActivity {
             editContactCb.setChecked(admin.isRole_editContact());
             editSchedCb.setChecked(admin.isRole_editSchedule());
             manageRolesCb.setChecked(admin.isRole_manageRoles());
-            //manageDatabase
+            manageDbCb.setChecked(admin.isRole_manageDatabase());
         }
         catch (Exception e){
             Toast.makeText(this, "Can't process request", Toast.LENGTH_SHORT).show();
@@ -96,7 +96,7 @@ public class AdminRoles extends AppCompatActivity {
             boolean editContact = editContactCb.isChecked();
             boolean editSchedule = editSchedCb.isChecked();
             boolean manageRoles = manageRolesCb.isChecked();
-            boolean manageDatabase = false;
+            boolean manageDatabase = manageDbCb.isChecked();
 
             //prepare data
             Map<String, Object> map = new HashMap<>();

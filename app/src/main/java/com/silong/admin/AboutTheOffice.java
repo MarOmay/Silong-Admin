@@ -52,8 +52,7 @@ public class AboutTheOffice extends AppCompatActivity {
     }
 
     public void onPressedManageDatabase(View view){
-        Intent i = new Intent(AboutTheOffice.this, ManageDatabase.class);
-        startActivity(i);
+        new Utility().checkPermission(AboutTheOffice.this, "manageDatabase", AdminData.adminID, false);
     }
 
 }

@@ -150,7 +150,7 @@ public class AdoptionRecords extends AppCompatActivity {
             }
 
             //Pet Demographics Bar Chart
-            String[] xAxisLables = new String[]{"Puppy/Kitten", "Young", "Adult"};
+            String[] xAxisLables = new String[]{"Kitten/Puppy", "Young", "Adult"};
 
             ArrayList<BarEntry> entriesOne = new ArrayList<>();
             //for puppy/kitten
