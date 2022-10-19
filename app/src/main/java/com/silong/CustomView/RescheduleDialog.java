@@ -22,7 +22,6 @@ public class RescheduleDialog extends MaterialAlertDialogBuilder {
 
     public TextView reschedDate;
     public TextView reschedTime;
-    //hehehe
 
     public RescheduleDialog(@NonNull Activity activity){
         super((Context) activity);
