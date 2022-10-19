@@ -27,6 +27,7 @@ public class RescheduleDialog extends MaterialAlertDialogBuilder {
         super((Context) activity);
         this.activity = activity;
         context = (Context) activity;
+        //hehehehehe
 
         LayoutInflater inflater = activity.getLayoutInflater();
         View content = inflater.inflate(R.layout.reschedule_picker,null);
