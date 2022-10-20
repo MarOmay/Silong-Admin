@@ -68,6 +68,13 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:alpha="0.4"
+            android:background="@color/textgray" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,30 +137,6 @@
             android:alpha="0.4"
             android:background="@color/textgray" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:paddingStart="20dp"
-                android:text="Adopted Pets"
-                android:textSize="20sp" />
-
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/adoptedPetsCb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.6" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -167,6 +150,7 @@
 
         <Button
             style="@style/pinkButton_style"
+            android:onClick="back"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"

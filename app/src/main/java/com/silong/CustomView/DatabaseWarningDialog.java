@@ -62,7 +62,7 @@ public class DatabaseWarningDialog extends MaterialAlertDialogBuilder {
         super.setPositiveButton(Html.fromHtml("<b>"+"DELETE"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //code here
+                LocalBroadcastManager.getInstance(activity).sendBroadcast(new Intent("delete-authorized"));
             }
         });
         super.setNegativeButton(Html.fromHtml("<b>"+"CANCEL"+"</b>"), new DialogInterface.OnClickListener() {
