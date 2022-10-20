@@ -3,10 +3,13 @@ package com.silong.CustomView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.Html;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DatabaseReference;
@@ -16,8 +19,10 @@ import com.silong.Object.AppointmentRecords;
 import com.silong.Operation.EmailNotif;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
+import com.silong.admin.AppointmentsList;
 import com.silong.admin.R;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +82,12 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
         super.setNeutralButton(Html.fromHtml("<b>" + "RESCHEDULE" + "</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //code here
+
+                Intent intent = new Intent("reschedule-trigger");
+                intent.putExtra("userID", userID);
+                intent.putExtra("adoption", (Serializable) adoption);
+                LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+
             }
         });
     }

@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:paddingStart="20dp"
-                android:text="Logs past 1 Month"
+                android:text="Logs"
                 android:textSize="20sp" />
 
             <com.google.android.material.checkbox.MaterialCheckBox

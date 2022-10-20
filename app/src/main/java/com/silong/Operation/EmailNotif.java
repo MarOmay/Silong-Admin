@@ -37,6 +37,7 @@ public class EmailNotif {
     public static final int ADOPTION_SUCCESSFUL = 5;
     public static final int FINISHED = 6;
     public static final int DECLINED = 7;
+    public static final int APPOINTMENT_CHANGED = 8;
 
     private String EMAIL = "silong.sjdm@gmail.com";
     private String PASSWORD = "sfajljaebmquggxs";
@@ -83,6 +84,12 @@ public class EmailNotif {
             case DECLINED:
                 SUBJECT = "Silong | Request Declined";
                 BODY = "Your adoption application for PetID#" + ADOPTION.getPetID() + " has been DECLINED.";
+                BODY += "\nTo know more, please reach out to the City Veterinary Office of San Jose del Monte City.";
+                BODY += "\n\n- Your Silong Team";break;
+            case APPOINTMENT_CHANGED:
+                SUBJECT = "Silong | Rescheduled Appointment";
+                BODY = "Your adoption appointment for PetID#" + ADOPTION.getPetID() + " has been move to " + ADOPTION.getAppointmentDate() + ".";
+                BODY += "\nWe apologize for any inconvenience that this might have caused you.";
                 BODY += "\nTo know more, please reach out to the City Veterinary Office of San Jose del Monte City.";
                 BODY += "\n\n- Your Silong Team";break;
         }

@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.silong.CustomView.DatabaseWarningDialog;
 
 public class ManageDatabase extends AppCompatActivity {
+
+    private MaterialCheckBox pastLogsCb, deletedUsersCb, adoptedPetsCb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +22,10 @@ public class ManageDatabase extends AppCompatActivity {
         Window window = this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.pink));
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+        pastLogsCb = findViewById(R.id.pastLogsCb);
+        deletedUsersCb = findViewById(R.id.deletedUsersCb);
+        adoptedPetsCb = findViewById(R.id.adoptedPetsCb);
     }
 
     public void onPressedDeleteDb(View view){

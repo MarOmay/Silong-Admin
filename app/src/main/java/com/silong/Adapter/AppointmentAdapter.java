@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.silong.CustomView.AppointmentTagger;
 import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
+import com.silong.Operation.Utility;
 import com.silong.admin.R;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ViewHolder> {
@@ -48,6 +49,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             @Override
             public void onClick(View view) {
                 try {
+                    if (!Utility.internetConnection(activity)){
+                        Toast.makeText(activity, "No internet connection", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     Adoption adoption = new Adoption();
                     adoption.setAppointmentDate(appointmentRecordsList.getDateTime());
                     adoption.setPetID(Integer.parseInt(appointmentRecordsList.getPetId()));
@@ -82,4 +88,5 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             userPic = itemView.findViewById(R.id.appointmentUserPic);
         }
     }
+
 }

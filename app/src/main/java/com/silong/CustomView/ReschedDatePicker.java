@@ -22,16 +22,24 @@ public class ReschedDatePicker extends DialogFragment implements DatePickerDialo
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        String[] date = rd.reschedDate.getText().toString().split("/");
+
+        int year = Integer.valueOf(date[2]);
+        int month = Integer.valueOf(date[0]);
+        int day = Integer.valueOf(date[1]);
+
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
         return  dialog;
     }
 
     @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        //code here
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        String selectedDate = month+1 + "/" + day + "/" + year;
+
+        if (selectedDate.equals(rd.reschedDate.getText().toString()))
+            return;
+
+        rd.reschedDate.setText(selectedDate);
     }
 }

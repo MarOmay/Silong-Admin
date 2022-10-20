@@ -35,6 +35,8 @@ public class AppointmentFetcher extends AsyncTask {
         try{
             Log.d("DEBUGGER>>>", "AppointmentFetcher started ");
 
+            AdminData.appointments.clear();
+
             mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
             mReference = mDatabase.getReference().child("adoptionRequest");
 

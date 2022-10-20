@@ -150,7 +150,7 @@ public class AdoptionRecords extends AppCompatActivity {
             }
 
             //Pet Demographics Bar Chart
-            String[] xAxisLables = new String[]{"Kitten/Puppy", "Young", "Adult"};
+            String[] xAxisLables = new String[]{"Kitten/Puppy", "Young", "Old"};
 
             ArrayList<BarEntry> entriesOne = new ArrayList<>();
             //for puppy/kitten
@@ -556,7 +556,7 @@ public class AdoptionRecords extends AppCompatActivity {
                         switch (p.getAge()){
                             case PetAge.PUPPY: entry[4] = p.getType() == PetType.DOG ? "Puppy" : "Kitten"; break;
                             case PetAge.YOUNG: entry[4] = "Young"; break;
-                            case PetAge.OLD: entry[4] = "Adult"; break;
+                            case PetAge.OLD: entry[4] = "Old"; break;
                         }
 
                         for (User u : users){

@@ -1,6 +1,8 @@
 package com.silong.Object;
 
-public class Adoption {
+import java.io.Serializable;
+
+public class Adoption implements Serializable {
 
     private int petID;
     private String dateRequested;
