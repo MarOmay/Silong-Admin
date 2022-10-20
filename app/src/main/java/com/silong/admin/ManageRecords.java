@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,6 +35,7 @@ import java.util.Comparator;
 public class ManageRecords extends AppCompatActivity {
 
     ImageView recordsBackIv;
+    private SwipeRefreshLayout mrecordRefresher;
     LinearLayout recordsAddTile, recordsCreateReportTile;
     RecyclerView recordsRecycler;
 
@@ -52,6 +54,7 @@ public class ManageRecords extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mShowPet, new IntentFilter("show-selected-pet"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mUpdateList, new IntentFilter("update-record-list"));
 
+        mrecordRefresher = findViewById(R.id.mrecordRefresher);
         recordsBackIv = (ImageView) findViewById(R.id.recordsBackIv);
         recordsAddTile = (LinearLayout) findViewById(R.id.recordsAddTile);
         recordsCreateReportTile = (LinearLayout) findViewById(R.id.recordsCreateReportTile);
@@ -61,6 +64,8 @@ public class ManageRecords extends AppCompatActivity {
         recordsRecycler.setLayoutManager(new LinearLayoutManager(ManageRecords.this));
 
         loadRecordList();
+
+        mrecordRefresher.setOnRefreshListener(refreshListener);
     }
 
     public void onPressedAddRecord(View view){
@@ -172,6 +177,14 @@ public class ManageRecords extends AppCompatActivity {
             i.putExtra("id", id);
             startActivity(i);
             finish();
+        }
+    };
+
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            loadRecordList();
+            mrecordRefresher.setRefreshing(false);
         }
     };
 

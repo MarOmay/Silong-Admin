@@ -3,6 +3,7 @@ package com.silong.admin;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 public class Dashboard extends AppCompatActivity {
 
+    private SwipeRefreshLayout dashboardRefresher;
     LinearLayout requestsPad, appointmentsPad, manageRecordsPad, manageAccountsPad;
     MaterialCardView requestsDot, appointmentsDot;
     TextView adminFnameTv, logoutTv;
@@ -68,6 +70,8 @@ public class Dashboard extends AppCompatActivity {
             Utility.log("Dashboard.oC- FileInDir:" + file.getAbsolutePath());
         }
 
+        dashboardRefresher = findViewById(R.id.dashboardRefresher);
+
         requestsPad = (LinearLayout) findViewById(R.id.requestsPad);
         requestsDot = (MaterialCardView) findViewById(R.id.requestsDot);
         requestsDot.setVisibility(View.INVISIBLE);
@@ -88,6 +92,8 @@ public class Dashboard extends AppCompatActivity {
 
         //Update local copies
         startSync();
+
+        dashboardRefresher.setOnRefreshListener(refreshListener);
 
     }
 
@@ -218,6 +224,14 @@ public class Dashboard extends AppCompatActivity {
             catch (Exception e){
                 Utility.log("Dashboard.mAN: " + e.getMessage());
             }
+        }
+    };
+
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            startSync();
+            dashboardRefresher.setRefreshing(false);
         }
     };
 

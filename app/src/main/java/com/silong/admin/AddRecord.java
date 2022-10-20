@@ -375,7 +375,17 @@ public class AddRecord extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Changes may take some time to reflect.", Toast.LENGTH_SHORT).show();
                                 }
 
+                                pet.setStatus(PetStatus.ACTIVE);
+                                pet.setPetID(String.valueOf(counter));
+                                pet.setModifiedBy(AdminData.adminEmail);
+                                pet.setLastModified(Utility.dateToday() + " " + Utility.timeNow());
+                                pet.setPhoto(new ImageProcessor().toBitmap(pet.getPhotoAsString()));
 
+                                for (int i = 0; i < AdminData.pets.size(); i++){
+                                    if (AdminData.pets.get(i).getPetID().equals(pet.getPetID())){
+                                        AdminData.pets.set(i, pet);
+                                    }
+                                }
 
                                 //go back to previous screen
                                 loadingDialog.dismissLoadingDialog();

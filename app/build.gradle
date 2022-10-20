@@ -51,6 +51,9 @@ dependencies {
     implementation 'com.sun.mail:android-mail:1.6.6'
     implementation 'com.sun.mail:android-activation:1.6.7'
 
+    //swipe refresh layout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
     //for gif -jepoy
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
 
