@@ -9,9 +9,17 @@
     android:paddingHorizontal="15dp"
     android:paddingVertical="8dp"
     tools:context=".Header"
-    android:weightSum="2"
+    android:weightSum="3"
     android:gravity="center"
     android:id="@+id/headerLayout">
+
+    <ImageView
+        android:id="@+id/settingsIcon"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="1.35"
+        android:layout_gravity="center"
+        android:src="@drawable/circlelogo_gradient" />
 
     <TextView
         android:gravity="center_vertical"
@@ -31,7 +39,7 @@
         android:onClick="onPressedSettings"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_weight="1.6"
+        android:layout_weight="1.25"
         android:layout_gravity="end"
         android:src="@drawable/settings_icon_2"
         app:tint="@color/darkgrayz"

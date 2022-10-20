@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.LoadingDialog;
+import com.silong.CustomView.RescuedDatePicker;
 import com.silong.EnumClass.Gender;
 import com.silong.EnumClass.PetAge;
 import com.silong.EnumClass.PetColor;
@@ -51,9 +53,10 @@ public class AddRecord extends AppCompatActivity {
 
     private final int PICK_IMAGE = 2;
 
-    ImageView addRecordPicIv, addRecordBackIv, deleteIcon;
+    ImageView addRecordPicIv1, addRecordPicIv2, addRecordPicIv3, addRecordBackIv, deleteIcon;
     Button saveRecordBtn;
     ChipGroup typeToggle, genderToggle, ageToggle, sizeToggle, colorToggle;
+    EditText addMarks, addRescuedDate;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
@@ -80,13 +83,17 @@ public class AddRecord extends AppCompatActivity {
         initializeCounter();
 
         addRecordBackIv = (ImageView) findViewById(R.id.addRecordBackIv);
-        addRecordPicIv = (ImageView) findViewById(R.id.addRecordPicIv);
+        addRecordPicIv1 = (ImageView) findViewById(R.id.addRecordPicIv1);
         typeToggle = findViewById(R.id.typeToggle);
         genderToggle = findViewById(R.id.genderToggle);
         ageToggle = findViewById(R.id.ageToggle);
         sizeToggle = findViewById(R.id.sizeToggle);
         colorToggle = findViewById(R.id.colorToggle);
         saveRecordBtn = (Button) findViewById(R.id.saveRecordBtn);
+        addRecordPicIv2 = (ImageView) findViewById(R.id.addRecordPicIv2);
+        addRecordPicIv3 = (ImageView) findViewById(R.id.addRecordPicIv3);
+        addMarks = findViewById(R.id.addMarks);
+        addRescuedDate = findViewById(R.id.addRescuedDate);
 
         deleteIcon = findViewById(R.id.deleteIcon);
         deleteIcon.setVisibility(View.INVISIBLE);
@@ -110,7 +117,7 @@ public class AddRecord extends AppCompatActivity {
                 deleteIcon.setClickable(true);
                 deleteIcon.setEnabled(true);
 
-                addRecordPicIv.setImageBitmap(selectedPet.getPhoto());
+                addRecordPicIv1.setImageBitmap(selectedPet.getPhoto());
 
                 //set type
                 switch (selectedPet.getType()){
@@ -230,11 +237,11 @@ public class AddRecord extends AppCompatActivity {
         }
 
         //validate input
-        if (addRecordPicIv.getDrawable() == null){
+        if (addRecordPicIv1.getDrawable() == null){
             Toast.makeText(this, "Please select a photo.", Toast.LENGTH_SHORT).show();
             return;
         }
-        else if (new ImageProcessor().checkFileSize(addRecordPicIv.getDrawable(), true) == false){
+        else if (new ImageProcessor().checkFileSize(addRecordPicIv1.getDrawable(), true) == false){
             Toast.makeText(getApplicationContext(), "Please select a picture less than 2MB.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -260,9 +267,9 @@ public class AddRecord extends AppCompatActivity {
         }
         else {
             ImageProcessor imageProcessor = new ImageProcessor();
-            imageProcessor.checkFileSize(addRecordPicIv.getDrawable(), true);
+            imageProcessor.checkFileSize(addRecordPicIv1.getDrawable(), true);
             Pet pet = new Pet();
-            pet.setPhotoAsString(imageProcessor.toUTF8(addRecordPicIv.getDrawable(), true));
+            pet.setPhotoAsString(imageProcessor.toUTF8(addRecordPicIv1.getDrawable(), true));
             //identify selected age
             pet.setAge(PetAge.YOUNG);
             //identify selected type
@@ -474,7 +481,7 @@ public class AddRecord extends AppCompatActivity {
                 bitmap = new ImageProcessor().tempCompress(bitmap);
 
                 try {
-                    addRecordPicIv.setImageBitmap(bitmap);
+                    addRecordPicIv1.setImageBitmap(bitmap);
                 }
                 catch (Exception e){
                     Toast.makeText(getApplicationContext(), "Please select a picture less than 5MB.", Toast.LENGTH_SHORT).show();
@@ -496,5 +503,10 @@ public class AddRecord extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         finish();
+    }
+
+    public void onPressedRescuedDate(View view){
+        RescuedDatePicker rescuedDatePicker = new RescuedDatePicker(AddRecord.this);
+        rescuedDatePicker.show(getSupportFragmentManager(), "rescude_date");
     }
 }
