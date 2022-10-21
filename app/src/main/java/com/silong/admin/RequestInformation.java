@@ -51,6 +51,9 @@ public class RequestInformation extends AppCompatActivity {
         setContentView(R.layout.activity_request_information);
         getSupportActionBar().hide();
 
+        //initialize Firebase objects
+        mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
+
         boolean load_contents = true;
         try {
             String userID = getIntent().getStringExtra("userID");
@@ -199,9 +202,12 @@ public class RequestInformation extends AppCompatActivity {
 
     private void updateStatus(String status){
         //change status of request in RTDB
-        mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        mReference = mDatabase.getReference().child("adoptionRequest").child(USER.getUserID()).child("status");
-        mReference.setValue(status);
+        Map<String, Object> map = new HashMap<>();
+        map.put("dateRequested", DATE);
+        map.put("petID", String.valueOf(PET.getPetID()));
+        map.put("status", status);
+        mReference = mDatabase.getReference().child("adoptionRequest").child(USER.getUserID());
+        mReference.updateChildren(map);
 
         //change status of Pet in RTDB
         mReference = mDatabase.getReference().child("recordSummary").child(PET.getPetID());

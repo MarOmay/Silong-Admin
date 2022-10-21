@@ -47,7 +47,28 @@ public class AdoptionHistoryFetcher extends AsyncTask {
                         adoption.setStatus(status);
                         adoption.setDateRequested(dateReq);
 
-                        UserInformation.ADOPTIONS.add(adoption);
+                        if (status >= 1 && status <= 5){
+                            DatabaseReference tempRef = mDatabase.getReference("adoptionRequest").child(uid).child("status");
+                            tempRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    if (snapshot.getValue() != null){
+                                        if (snapshot.getValue().toString().equals(petID))
+                                            UserInformation.ADOPTIONS.add(adoption);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                        else {
+                            UserInformation.ADOPTIONS.add(adoption);
+                        }
+
                     }
 
                     sendBroadcast();
