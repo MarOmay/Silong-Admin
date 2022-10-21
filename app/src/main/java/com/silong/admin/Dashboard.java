@@ -51,6 +51,7 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         getSupportActionBar().hide();
 
+        //reset to default
         actReqDone = false;
         adopReqDone = false;
         adopSchedDone = false;
@@ -68,7 +69,7 @@ public class Dashboard extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //register receivers
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("update-first-name"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mNameReceiver, new IntentFilter("update-first-name"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mRequestsNotify, new IntentFilter("ARF-sb-notify"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mAppointmentNotify, new IntentFilter("AF-sb-notify"));
 
@@ -195,7 +196,7 @@ public class Dashboard extends AppCompatActivity {
 
     //Broadcast Receivers
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mNameReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
@@ -251,7 +252,7 @@ public class Dashboard extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         // Unregister since the activity is about to be closed.
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mNameReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRequestsNotify);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mAppointmentNotify);
         super.onDestroy();
