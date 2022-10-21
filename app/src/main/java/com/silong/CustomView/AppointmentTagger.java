@@ -138,10 +138,11 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
                 Utility.dbLog("Tagged adoption as done. Client: " + name);
             }
         });
-        super.setNegativeButton(Html.fromHtml("<b>"+"NO"+"</b>"), new DialogInterface.OnClickListener() {
+        super.setNegativeButton(Html.fromHtml("<b>"+"DELETE"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //codes here
+                AppointmentCancel appointmentCancel = new AppointmentCancel(activity, userID, ADOPTION);
+                appointmentCancel.show();
             }
         });
 

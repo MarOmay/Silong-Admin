@@ -60,6 +60,7 @@ public class AppointmentsList extends AppCompatActivity {
         //register receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mRescheduleReceiver, new IntentFilter("reschedule-trigger"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mSetNewSchedReceiver, new IntentFilter("reschedule-set"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mCancelAppointmentReceiver, new IntentFilter("cancel-request"));
 
         //initialize Firebase objects
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
@@ -231,6 +232,47 @@ public class AppointmentsList extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver mCancelAppointmentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            LoadingDialog loadingDialog = new LoadingDialog(AppointmentsList.this);
+            loadingDialog.startLoadingDialog();
+
+            String userID = intent.getStringExtra("userID");
+            String petID = intent.getStringExtra("petID");
+            String date = intent.getStringExtra("date");
+
+            Map<String, Object> multiNodeMap = new HashMap<>();
+            multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+petID+"/dateRequested", date);
+            multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+petID+"/status", 7);
+            multiNodeMap.put("adoptionRequest/"+userID+"/dateRequested", date);
+            multiNodeMap.put("adoptionRequest/"+userID+"/petID", petID);
+            multiNodeMap.put("adoptionRequest/"+userID+"/status", "7");
+            multiNodeMap.put("recordSummary/"+petID, 0);
+            multiNodeMap.put("Pets/"+petID+"/status", 0);
+
+            DatabaseReference mReference = mDatabase.getReference();
+            mReference.updateChildren(multiNodeMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(AppointmentsList.this, "Adoption Request Cancelled", Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
+                            onBackPressed();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AppointmentsList.this, "Operation failed", Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
+                        }
+                    });
+
+        }
+    };
+
     public void onPressedBack(View view){
         onBackPressed();
     }
@@ -247,6 +289,7 @@ public class AppointmentsList extends AppCompatActivity {
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRescheduleReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mSetNewSchedReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mCancelAppointmentReceiver);
         super.onDestroy();
     }
 }
