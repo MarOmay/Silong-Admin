@@ -130,7 +130,8 @@ public class AppointmentsList extends AppCompatActivity {
                     public void onClick(View view) {
                         //ReschedDatePicker reschedDatePicker = new ReschedDatePicker(AppointmentsList.this, rescheduleDialog);
                         //reschedDatePicker.show(getSupportFragmentManager(), null);
-                        DialogFragment newFragment = new RescheduleDatePicker();
+                        RescheduleDatePicker newFragment = new RescheduleDatePicker();
+                        newFragment.setRd(rescheduleDialog);
                         newFragment.show(getSupportFragmentManager(), "datePicker");
                     }
                 });

@@ -18,6 +18,8 @@ public class RescheduleDatePicker extends DialogFragment implements DatePickerDi
 
     private DatePickerDialog dpd;
 
+    private RescheduleDialog rd;
+
     public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -69,7 +71,20 @@ public class RescheduleDatePicker extends DialogFragment implements DatePickerDi
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        //codehere
+        String selectedDate = monthOfYear+1 + "/" + dayOfMonth + "/" + year;
+
+        if (selectedDate.equals(rd.reschedDate.getText().toString()))
+            return;
+
+        rd.reschedDate.setText(selectedDate);
         this.dismiss();
+    }
+
+    public RescheduleDialog getRd() {
+        return rd;
+    }
+
+    public void setRd(RescheduleDialog rd) {
+        this.rd = rd;
     }
 }
