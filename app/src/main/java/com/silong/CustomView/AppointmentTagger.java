@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +35,9 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
     private DatabaseReference mReference;
 
     private Adoption ADOPTION;
+
+    ImageView taggerPetPic;
+    TextView taggerPetId,taggerDateTime;
 
     public AppointmentTagger(@NonNull Activity activity, String userID, String name, Adoption adoption) {
         super((Context) activity);
