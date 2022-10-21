@@ -2,6 +2,8 @@ package com.silong.Object;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+
 public class Pet {
 
     private String petID;
@@ -12,10 +14,13 @@ public class Pet {
     private int age;
     private int size;
     private Bitmap photo;
+    private ArrayList<String> extraPhotosAsString = new ArrayList<>();
     private String photoAsString;
     private String modifiedBy;
     private String lastModified;
     private String owner;
+    private String rescueDate;
+    private String distMark;
 
     public Pet() {
     }
@@ -94,6 +99,14 @@ public class Pet {
         this.photo = photo;
     }
 
+    public ArrayList<String> getExtraPhotosAsString() {
+        return extraPhotosAsString;
+    }
+
+    public void setExtraPhotosAsString(ArrayList<String> extraPhotosAsString) {
+        this.extraPhotosAsString = extraPhotosAsString;
+    }
+
     public String getPhotoAsString() {
         return photoAsString;
     }
@@ -124,5 +137,21 @@ public class Pet {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public String getRescueDate() {
+        return rescueDate;
+    }
+
+    public void setRescueDate(String rescueDate) {
+        this.rescueDate = rescueDate;
+    }
+
+    public String getDistMark() {
+        return distMark;
+    }
+
+    public void setDistMark(String distMark) {
+        this.distMark = distMark;
     }
 }

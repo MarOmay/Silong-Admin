@@ -212,6 +212,8 @@ public class AdminData {
                         case "color" : pet.setColor(temp[1]); break;
                         case "modifiedBy" : pet.setModifiedBy(temp[1]); break;
                         case "lastModified" : pet.setLastModified(temp[1]); break;
+                        case "distMark": pet.setDistMark(temp[1]); break;
+                        case "rescueDate": pet.setRescueDate(temp[1]); break;
                     }
 
                 }
@@ -339,6 +341,8 @@ public class AdminData {
                     case "color" : pet.setColor(temp[1]); break;
                     case "modifiedBy" : pet.setModifiedBy(temp[1]); break;
                     case "lastModified" : pet.setLastModified(temp[1]); break;
+                    case "distMark": pet.setDistMark(temp[1]); break;
+                    case "rescueDate": pet.setRescueDate(temp[1]); break;
                 }
 
             }

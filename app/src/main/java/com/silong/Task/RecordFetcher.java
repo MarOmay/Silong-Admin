@@ -54,6 +54,13 @@ public class RecordFetcher extends AsyncTask {
                         String modifiedBy = snapshot.child("modifiedBy").getValue().toString();
                         String lastModified = snapshot.child("lastModified").getValue().toString();
 
+                        //get optional data
+                        String distMark = snapshot.child("distMark").getValue().toString();
+                        String rescueDate = snapshot.child("rescueDate").getValue().toString();
+                        String extrapic1 = snapshot.child("extraPhoto").child("photo1").getValue().toString();
+                        String extrapic2 = snapshot.child("extraPhoto").child("photo2").getValue().toString();
+
+                        //write to local
                         AdminData.writePetToLocal(activity, id, "status", String.valueOf(status));
                         AdminData.writePetToLocal(activity, id, "type", String.valueOf(type));
                         AdminData.writePetToLocal(activity, id, "gender", String.valueOf(gender));
@@ -66,6 +73,23 @@ public class RecordFetcher extends AsyncTask {
                         String photo = snapshot.child("photo").getValue().toString();
                         Bitmap bitmap = new ImageProcessor().toBitmap(photo);
                         new ImageProcessor().saveToLocal(activity, bitmap, "petpic-" + id);
+
+                        //write extra to local
+                        if (distMark != null){
+                            AdminData.writePetToLocal(activity, id, "distMark", String.valueOf(distMark));
+                        }
+                        if (rescueDate != null){
+                            AdminData.writePetToLocal(activity, id, "rescueDate", String.valueOf(rescueDate));
+                        }
+                        if (extrapic1 != null){
+                            Bitmap bmp = new ImageProcessor().toBitmap(extrapic1);
+                            new ImageProcessor().saveToLocal(activity, bmp, "extrapic-" + id + "-1");
+                        }
+                        if (extrapic2 != null){
+                            Bitmap bmp = new ImageProcessor().toBitmap(extrapic2);
+                            new ImageProcessor().saveToLocal(activity, bmp, "extrapic-" + id + "-2");
+                        }
+
                         AdminData.populateRecords(activity);
                         updateRecordList();
                     }

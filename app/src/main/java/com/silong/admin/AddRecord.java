@@ -51,7 +51,7 @@ import java.util.Map;
 
 public class AddRecord extends AppCompatActivity {
 
-    private final int PICK_IMAGE = 2;
+    private final int PICK_IMAGE_1 = 1, PICK_IMAGE_2 = 2, PICK_IMAGE_3 = 3;
 
     ImageView addRecordPicIv1, addRecordPicIv2, addRecordPicIv3, addRecordBackIv, deleteIcon;
     Button saveRecordBtn;
@@ -84,14 +84,14 @@ public class AddRecord extends AppCompatActivity {
 
         addRecordBackIv = (ImageView) findViewById(R.id.addRecordBackIv);
         addRecordPicIv1 = (ImageView) findViewById(R.id.addRecordPicIv1);
+        addRecordPicIv2 = (ImageView) findViewById(R.id.addRecordPicIv2);
+        addRecordPicIv3 = (ImageView) findViewById(R.id.addRecordPicIv3);
         typeToggle = findViewById(R.id.typeToggle);
         genderToggle = findViewById(R.id.genderToggle);
         ageToggle = findViewById(R.id.ageToggle);
         sizeToggle = findViewById(R.id.sizeToggle);
         colorToggle = findViewById(R.id.colorToggle);
         saveRecordBtn = (Button) findViewById(R.id.saveRecordBtn);
-        addRecordPicIv2 = (ImageView) findViewById(R.id.addRecordPicIv2);
-        addRecordPicIv3 = (ImageView) findViewById(R.id.addRecordPicIv3);
         addMarks = findViewById(R.id.addMarks);
         addRescuedDate = findViewById(R.id.addRescuedDate);
 
@@ -118,6 +118,25 @@ public class AddRecord extends AppCompatActivity {
                 deleteIcon.setEnabled(true);
 
                 addRecordPicIv1.setImageBitmap(selectedPet.getPhoto());
+
+                //load optional data
+                File extrapic1 = new File(getFilesDir(), "extrapic-" + selectedPet.getPetID() + "-1");
+                if (extrapic1.exists()){
+                    Bitmap bmp = BitmapFactory.decodeFile(extrapic1.getAbsolutePath());
+                    addRecordPicIv2.setImageBitmap(bmp);
+                }
+                File extrapic2 = new File(getFilesDir(), "extrapic-" + selectedPet.getPetID() + "-2");
+                if (extrapic2.exists()){
+                    Bitmap bmp = BitmapFactory.decodeFile(extrapic2.getAbsolutePath());
+                    addRecordPicIv3.setImageBitmap(bmp);
+                }
+                if (selectedPet.getDistMark() != null){
+                    addMarks.setText(selectedPet.getDistMark());
+                }
+                if (selectedPet.getRescueDate() != null){
+                    addRescuedDate.setText(selectedPet.getRescueDate());
+                }
+
 
                 //set type
                 switch (selectedPet.getType()){
@@ -216,7 +235,25 @@ public class AddRecord extends AppCompatActivity {
     }
 
     public void onPressedPhoto(View view){
-        new ImagePicker(AddRecord.this, PICK_IMAGE);
+        switch (view.getId()){
+            case R.id.addRecordPicIv1:
+                new ImagePicker(AddRecord.this, PICK_IMAGE_1);
+                break;
+            case R.id.addRecordPicIv2:
+                if (addRecordPicIv1.getDrawable() == null){
+                    Toast.makeText(this, "Pick a primary photo first", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                new ImagePicker(AddRecord.this, PICK_IMAGE_2);
+                break;
+            case R.id.addRecordPicIv3:
+                if (addRecordPicIv2.getDrawable() == null){
+                    Toast.makeText(this, "Pick a secondary photo first", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                new ImagePicker(AddRecord.this, PICK_IMAGE_3);
+                break;
+        }
     }
 
     public void onPressedDog(View view){
@@ -266,10 +303,29 @@ public class AddRecord extends AppCompatActivity {
             return;
         }
         else {
+            //add photos
             ImageProcessor imageProcessor = new ImageProcessor();
             imageProcessor.checkFileSize(addRecordPicIv1.getDrawable(), true);
             Pet pet = new Pet();
             pet.setPhotoAsString(imageProcessor.toUTF8(addRecordPicIv1.getDrawable(), true));
+
+            //add optional data
+            if (addRecordPicIv2.getDrawable() != null){
+                String temp = imageProcessor.toUTF8(addRecordPicIv2.getDrawable(), true);
+                pet.getExtraPhotosAsString().add(temp);
+            }
+            if (addRecordPicIv3.getDrawable() != null){
+                String temp = imageProcessor.toUTF8(addRecordPicIv3.getDrawable(), true);
+                pet.getExtraPhotosAsString().add(temp);
+            }
+            if (!addMarks.getText().toString().isEmpty()){
+                pet.setDistMark(addMarks.getText().toString().replace(":","").replace(";",""));
+            }
+            if (!addRescuedDate.getText().toString().isEmpty()){
+                pet.setRescueDate(addRescuedDate.getText().toString());
+            }
+
+
             //identify selected age
             pet.setAge(PetAge.YOUNG);
             //identify selected type
@@ -330,6 +386,17 @@ public class AddRecord extends AppCompatActivity {
                 map.put("modifiedBy", emailHolder);
                 map.put("lastModified", Utility.dateToday() + " " + Utility.timeNow());
 
+                //optional data
+                for (int i = 0; i < pet.getExtraPhotosAsString().size(); i++){
+                    map.put("extraPhoto/photo"+(i+1), pet.getExtraPhotosAsString().get(i));
+                }
+                if (pet.getDistMark() != null){
+                    map.put("distMark", pet.getDistMark());
+                }
+                if (pet.getRescueDate() != null){
+                    map.put("rescueDate", pet.getRescueDate());
+                }
+
                 try {
                     if (selectedPet != null){
                         counter = Integer.parseInt(selectedPet.getPetID());
@@ -367,6 +434,19 @@ public class AddRecord extends AppCompatActivity {
                                     AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "lastModified", Utility.dateToday() + " " + Utility.timeNow());
                                     Bitmap bitmap = new ImageProcessor().toBitmap(pet.getPhotoAsString());
                                     new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "petpic-" + counter);
+
+                                    //optional data
+                                    for (int i=0; i < pet.getExtraPhotosAsString().size(); i++){
+                                        bitmap = new ImageProcessor().toBitmap(pet.getExtraPhotosAsString().get(i));
+                                        new ImageProcessor().saveToLocal(getApplicationContext(), bitmap, "extrapic-" + counter + "-" + (i+1));
+                                    }
+                                    if (pet.getDistMark() != null){
+                                        AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "distMark", pet.getDistMark());
+                                    }
+                                    if (pet.getRescueDate() != null){
+                                        AdminData.writePetToLocal(getApplicationContext(), String.valueOf(counter), "rescueDate", pet.getRescueDate());
+                                    }
+
                                 }
                                 catch (Exception ex){
                                     Utility.log("AddRecord.uPP: " + ex.getMessage());
@@ -468,7 +548,7 @@ public class AddRecord extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE) {
+        if (requestCode == PICK_IMAGE_1 || requestCode == PICK_IMAGE_2 || requestCode == PICK_IMAGE_3) {
             try{
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(getContentResolver().openInputStream(data.getData()));
                 Bitmap bitmap = BitmapFactory.decodeStream(bufferedInputStream);
@@ -481,7 +561,12 @@ public class AddRecord extends AppCompatActivity {
                 bitmap = new ImageProcessor().tempCompress(bitmap);
 
                 try {
-                    addRecordPicIv1.setImageBitmap(bitmap);
+                    switch (requestCode){
+                        case PICK_IMAGE_1: addRecordPicIv1.setImageBitmap(bitmap); break;
+                        case PICK_IMAGE_2: addRecordPicIv2.setImageBitmap(bitmap); break;
+                        case PICK_IMAGE_3: addRecordPicIv3.setImageBitmap(bitmap); break;
+                    }
+
                 }
                 catch (Exception e){
                     Toast.makeText(getApplicationContext(), "Please select a picture less than 5MB.", Toast.LENGTH_SHORT).show();
@@ -506,7 +591,7 @@ public class AddRecord extends AppCompatActivity {
     }
 
     public void onPressedRescuedDate(View view){
-        RescuedDatePicker rescuedDatePicker = new RescuedDatePicker(AddRecord.this);
+        RescuedDatePicker rescuedDatePicker = new RescuedDatePicker(AddRecord.this, addRescuedDate);
         rescuedDatePicker.show(getSupportFragmentManager(), "rescude_date");
     }
 }
