@@ -1,5 +1,6 @@
 package com.silong.admin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.silong.EnumClass.Gender;
@@ -176,12 +179,13 @@ public class RequestInformation extends AppCompatActivity {
         EmailNotif emailNotif = new EmailNotif(USER.getEmail(), EmailNotif.DECLINED, adoption);
         emailNotif.sendNotif();
 
+        /*
         //archive to user's RTDB
         DatabaseReference tempRef = mDatabase.getReference().child("Users").child(USER.getUserID()).child("adoptionHistory").child(PET.getPetID());
         Map<String, Object> map = new HashMap<>();
         map.put("dateRequested", DATE);
         map.put("status", 7); //7 == DECLINED
-        tempRef.updateChildren(map);
+        tempRef.updateChildren(map);*/
 
         Utility.dbLog("Declined application. User:" + USER.getEmail() + " PetID:" + PET.getPetID());
     }
@@ -201,6 +205,35 @@ public class RequestInformation extends AppCompatActivity {
     }
 
     private void updateStatus(String status){
+
+        Map<String, Object> multiNodeMap = new HashMap<>();
+        multiNodeMap.put("Users/"+USER.getUserID()+"/adoptionHistory/"+PET.getPetID()+"/dateRequested", DATE);
+        multiNodeMap.put("Users/"+USER.getUserID()+"/adoptionHistory/"+PET.getPetID()+"/status", Integer.valueOf(status));
+        multiNodeMap.put("adoptionRequest/"+USER.getUserID()+"/dateRequested", DATE);
+        multiNodeMap.put("adoptionRequest/"+USER.getUserID()+"/petID", String.valueOf(PET.getPetID()));
+        multiNodeMap.put("adoptionRequest/"+USER.getUserID()+"/status", status);
+        multiNodeMap.put("recordSummary/"+PET.getPetID(), status.equals("2") ? null : 0);
+        multiNodeMap.put("Pets/"+PET.getPetID()+"/status", status.equals("2") ? 2 : 0);
+
+        mReference = mDatabase.getReference();
+        mReference.updateChildren(multiNodeMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(RequestInformation.this, "Adoption Request: " + (status.equals("2") ? "Approved" : "Declined"), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RequestInformation.this, Dashboard.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(RequestInformation.this, "Operation failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        /*
         //change status of request in RTDB
         Map<String, Object> map = new HashMap<>();
         map.put("dateRequested", DATE);
@@ -214,12 +247,7 @@ public class RequestInformation extends AppCompatActivity {
         mReference.setValue(status.equals("2") ? null : 0);
 
         mReference = mDatabase.getReference().child("Pets").child(PET.getPetID()).child("status");
-        mReference.setValue(status.equals("2") ? 2 : 0);
-
-        Toast.makeText(this, "Adoption Request: " + (status.equals("2") ? "Approved" : "Declined"), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(RequestInformation.this, Dashboard.class);
-        startActivity(intent);
-        finish();
+        mReference.setValue(status.equals("2") ? 2 : 0);*/
     }
 
     private void gotoDashboard(){
