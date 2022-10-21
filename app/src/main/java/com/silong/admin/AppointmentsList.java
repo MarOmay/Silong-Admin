@@ -203,6 +203,7 @@ public class AppointmentsList extends AppCompatActivity {
                                         AdminData.appointments.set(index, appRec);
 
                                         loadAppointments();
+                                        break;
 
                                     }
                                 }
