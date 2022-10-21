@@ -55,10 +55,31 @@ public class RecordFetcher extends AsyncTask {
                         String lastModified = snapshot.child("lastModified").getValue().toString();
 
                         //get optional data
-                        String distMark = snapshot.child("distMark").getValue().toString();
-                        String rescueDate = snapshot.child("rescueDate").getValue().toString();
-                        String extrapic1 = snapshot.child("extraPhoto").child("photo1").getValue().toString();
-                        String extrapic2 = snapshot.child("extraPhoto").child("photo2").getValue().toString();
+                        String distMark = null, rescueDate = null, extrapic1 = null, extrapic2 = null;
+                        try {
+                            distMark = snapshot.child("distMark").getValue().toString();
+                        }
+                        catch (Exception e){
+                            Utility.log("RecordFetcher: Check if exist distMark - " + e.getMessage());
+                        }
+                        try {
+                            rescueDate = snapshot.child("rescueDate").getValue().toString();
+                        }
+                        catch (Exception e){
+                            Utility.log("RecordFetcher: Check if exist rescueDate - " + e.getMessage());
+                        }
+                        try {
+                            extrapic1 = snapshot.child("extraPhoto").child("photo1").getValue().toString();
+                        }
+                        catch (Exception e){
+                            Utility.log("RecordFetcher: Check if exist extrapic1 - " + e.getMessage());
+                        }
+                        try {
+                            extrapic2 = snapshot.child("extraPhoto").child("photo2").getValue().toString();
+                        }
+                        catch (Exception e){
+                            Utility.log("RecordFetcher: Check if exist extrapic2 - " + e.getMessage());
+                        }
 
                         //write to local
                         AdminData.writePetToLocal(activity, id, "status", String.valueOf(status));
