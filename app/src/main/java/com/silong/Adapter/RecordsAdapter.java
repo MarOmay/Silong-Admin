@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.silong.CustomView.ImageDialog;
 import com.silong.CustomView.PetInfoDialog;
 import com.silong.Object.PetRecordsData;
 import com.silong.Operation.Utility;
@@ -56,6 +57,14 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
                     Toast.makeText(activity, "Operation can't be performed.", Toast.LENGTH_SHORT).show();
                     Utility.log("RecordsAdapter.obVH.oC: " + e.getMessage());
                 }
+            }
+        });
+
+        holder.petPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageDialog imageDialog = new ImageDialog(activity, holder.petPic.getDrawable());
+                imageDialog.show();
             }
         });
     }

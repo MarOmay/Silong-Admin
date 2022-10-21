@@ -3,6 +3,8 @@ package com.silong.CustomView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,7 @@ public class ImageDialog extends MaterialAlertDialogBuilder {
 
     ImageView imageDialogPic;
 
-    public ImageDialog(@NonNull Activity activity) {
+    public ImageDialog(@NonNull Activity activity, Drawable drawable) {
 
         super((Context) activity);
         super.setBackground(getContext().getDrawable(R.drawable.dialog_bg));
@@ -26,7 +28,7 @@ public class ImageDialog extends MaterialAlertDialogBuilder {
         View content = inflater.inflate(R.layout.image_dialog_layout, null);
         imageDialogPic = content.findViewById(R.id.imageDialogPic);
 
-        imageDialogPic.setImageDrawable(getContext().getDrawable(R.drawable.dahyun));
+        imageDialogPic.setImageDrawable(drawable);
 
         super.setView(content);
 

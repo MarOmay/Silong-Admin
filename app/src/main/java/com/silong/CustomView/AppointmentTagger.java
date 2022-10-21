@@ -46,9 +46,13 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
     ImageView taggerPetPic;
     TextView taggerPetId,taggerDateTime;
 
+    private Activity activity;
+
     public AppointmentTagger(@NonNull Activity activity, String userID, String name, Adoption adoption) {
         super((Context) activity);
         Context context = (Context) activity;
+
+        this.activity = activity;
 
         super.setBackground(context.getDrawable(R.drawable.dialog_bg));
         super.setTitle(name);
@@ -72,6 +76,7 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
         if (pic.exists()){
             Bitmap bmp = BitmapFactory.decodeFile(activity.getFilesDir() + "/approved-" + adoption.getPetID());
             taggerPetPic.setImageBitmap(bmp);
+            attachListener();
         }
         else {
             FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
@@ -83,6 +88,7 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
                         String photoAsString = snapshot.getValue().toString();
                         Bitmap bmp = new ImageProcessor().toBitmap(photoAsString);
                         taggerPetPic.setImageBitmap(bmp);
+                        attachListener();
                         new ImageProcessor().saveToLocal(activity, bmp, "approved-" + adoption.getPetID());
                     }
                     catch (Exception e){
@@ -148,6 +154,16 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
                 intent.putExtra("adoption", (Serializable) adoption);
                 LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
 
+            }
+        });
+    }
+
+    private void attachListener(){
+        taggerPetPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageDialog imageDialog = new ImageDialog(activity, taggerPetPic.getDrawable());
+                imageDialog.show();
             }
         });
     }
