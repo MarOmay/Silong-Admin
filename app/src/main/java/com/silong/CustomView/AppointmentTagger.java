@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +17,21 @@ import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
 import com.silong.Operation.EmailNotif;
+import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.AppointmentsList;
 import com.silong.admin.R;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +56,49 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
 
         LayoutInflater inflater = activity.getLayoutInflater();
         View content = inflater.inflate(R.layout.appointment_tagger_info,null);
+        taggerPetPic =  content.findViewById(R.id.taggerPetPic);
+        taggerPetId = content.findViewById(R.id.taggerPetId);
+        taggerDateTime = content.findViewById(R.id.taggerDateTime);
+
+        //display petID
+        taggerPetId.setText("PetID: " + adoption.getPetID());
+
+        //diplay appointment date and time
+        String[] dateTime = adoption.getAppointmentDate().split(" ");
+        taggerDateTime.setText(dateTime[0].replace("-","/") + "\n" + dateTime[1] + " " + dateTime[2]);
+
+        //fetch and display pet photo
+        File pic = new File(activity.getFilesDir(), "approved-"+adoption.getPetID());
+        if (pic.exists()){
+            Bitmap bmp = BitmapFactory.decodeFile(activity.getFilesDir() + "/approved-" + adoption.getPetID());
+            taggerPetPic.setImageBitmap(bmp);
+        }
+        else {
+            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
+            DatabaseReference mRef = mDatabase.getReference("Pets").child(String.valueOf(adoption.getPetID())).child("photo");
+            mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    try {
+                        String photoAsString = snapshot.getValue().toString();
+                        Bitmap bmp = new ImageProcessor().toBitmap(photoAsString);
+                        taggerPetPic.setImageBitmap(bmp);
+                        new ImageProcessor().saveToLocal(activity, bmp, "approved-" + adoption.getPetID());
+                    }
+                    catch (Exception e){
+                        Toast.makeText(activity, "Can't fetch pet photo", Toast.LENGTH_SHORT).show();
+                        Utility.log("AppointmentTagger: " + e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(activity, "Can't fetch pet photo", Toast.LENGTH_SHORT).show();
+                    Utility.log("AppointmentTagger: " + error.getMessage());
+                }
+            });
+        }
+
         super.setView(content);
 
         this.ADOPTION = adoption;
