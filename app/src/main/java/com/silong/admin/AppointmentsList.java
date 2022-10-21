@@ -2,6 +2,7 @@ package com.silong.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import com.silong.Adapter.AppointmentAdapter;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.CustomView.ReschedDatePicker;
 import com.silong.CustomView.ReschedTimePicker;
+import com.silong.CustomView.RescheduleDatePicker;
 import com.silong.CustomView.RescheduleDialog;
 import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
@@ -125,8 +127,10 @@ public class AppointmentsList extends AppCompatActivity {
                 rescheduleDialog.reschedDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ReschedDatePicker reschedDatePicker = new ReschedDatePicker(AppointmentsList.this, rescheduleDialog);
-                        reschedDatePicker.show(getSupportFragmentManager(), null);
+                        //ReschedDatePicker reschedDatePicker = new ReschedDatePicker(AppointmentsList.this, rescheduleDialog);
+                        //reschedDatePicker.show(getSupportFragmentManager(), null);
+                        DialogFragment newFragment = new RescheduleDatePicker();
+                        newFragment.show(getSupportFragmentManager(), "datePicker");
                     }
                 });
 
