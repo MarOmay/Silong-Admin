@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -40,6 +41,10 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
         super.setBackground(context.getDrawable(R.drawable.dialog_bg));
         super.setTitle(name);
         super.setMessage("Tag this application as done?\n");
+
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View content = inflater.inflate(R.layout.appointment_tagger_info,null);
+        super.setView(content);
 
         this.ADOPTION = adoption;
 
