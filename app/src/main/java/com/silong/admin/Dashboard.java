@@ -38,15 +38,27 @@ public class Dashboard extends AppCompatActivity {
     MaterialCardView requestsDot, appointmentsDot;
     TextView adminFnameTv, logoutTv;
 
-    private LoadingDialog loadingDialog;
-
     private FirebaseAuth mAuth;
+
+    public static boolean actReqDone = false, adopReqDone = false, adopSchedDone = false,
+                    appointReqDone = false, actCheckDone = false, recCheckDone = false;
+
+    public static LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         getSupportActionBar().hide();
+
+        actReqDone = false;
+        adopReqDone = false;
+        adopSchedDone = false;
+        appointReqDone = false;
+        actCheckDone = false;
+        recCheckDone = false;
+
+        loadingDialog = new LoadingDialog(this);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.darkerNighty));
@@ -57,12 +69,8 @@ public class Dashboard extends AppCompatActivity {
 
         //register receivers
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("update-first-name"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(mAccountsChecker, new IntentFilter("AC-done"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRecordsChecker, new IntentFilter("RC-done"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mRequestsNotify, new IntentFilter("ARF-sb-notify"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mAppointmentNotify, new IntentFilter("AF-sb-notify"));
-
-        loadingDialog = new LoadingDialog(Dashboard.this);
 
         AdminData.populateRecords(this);
 
@@ -176,6 +184,15 @@ public class Dashboard extends AppCompatActivity {
         }
     }
 
+    public static void checkCompletion(){
+
+        if (actReqDone && adopReqDone && adopSchedDone &&
+                appointReqDone && actCheckDone && recCheckDone){
+            loadingDialog.dismissLoadingDialog();
+        }
+
+    }
+
     //Broadcast Receivers
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -184,20 +201,6 @@ public class Dashboard extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("message");
             adminFnameTv.setText(message);
-        }
-    };
-
-    private BroadcastReceiver mAccountsChecker = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            loadingDialog.dismissLoadingDialog();
-        }
-    };
-
-    private BroadcastReceiver mRecordsChecker = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            loadingDialog.dismissLoadingDialog();
         }
     };
 
@@ -249,8 +252,6 @@ public class Dashboard extends AppCompatActivity {
     protected void onDestroy() {
         // Unregister since the activity is about to be closed.
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mAccountsChecker);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRecordsChecker);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRequestsNotify);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mAppointmentNotify);
         super.onDestroy();

@@ -18,6 +18,7 @@ import com.silong.Object.AppointmentRecords;
 
 import com.silong.Object.User;
 import com.silong.admin.AdminData;
+import com.silong.admin.Dashboard;
 
 public class AppointmentFetcher extends AsyncTask {
 
@@ -99,6 +100,9 @@ public class AppointmentFetcher extends AsyncTask {
                     else {
                         sendBroadcast(true);
                     }
+
+                    Dashboard.appointReqDone = true;
+                    Dashboard.checkCompletion();
 
                 }
 

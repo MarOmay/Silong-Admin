@@ -18,6 +18,7 @@ import com.silong.Object.Pet;
 
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
+import com.silong.admin.Dashboard;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -117,6 +118,9 @@ public class RecordsChecker extends AsyncTask {
 
                         //delete local copy of deleted accounts
                         cleanLocalRecord(list, "pet-");
+
+                        Dashboard.recCheckDone = true;
+                        Dashboard.checkCompletion();
                     }
                     catch (Exception e){
                         Utility.log("RecordsChecker.dIB: " + e.getMessage());

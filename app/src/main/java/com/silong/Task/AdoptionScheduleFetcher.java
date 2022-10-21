@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Request;
 import com.silong.admin.AdminData;
+import com.silong.admin.Dashboard;
 
 public class AdoptionScheduleFetcher extends AsyncTask {
 
@@ -95,6 +96,9 @@ public class AdoptionScheduleFetcher extends AsyncTask {
                     else {
                         sendBroadcast(true);
                     }
+
+                    Dashboard.adopSchedDone = true;
+                    Dashboard.checkCompletion();
 
                 }
 

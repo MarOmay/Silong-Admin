@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.Object.User;
 import com.silong.admin.AdminData;
+import com.silong.admin.Dashboard;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,6 +102,9 @@ public class AccountsChecker extends AsyncTask {
                         }
                         //delete local copy of deleted accounts
                         cleanLocalRecord(list, "account-");
+
+                        Dashboard.actCheckDone = true;
+                        Dashboard.checkCompletion();
                     }
                     catch (Exception e){
                         Log.d("AC-dIB", e.getMessage());

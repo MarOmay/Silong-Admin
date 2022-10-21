@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Request;
 import com.silong.admin.AdminData;
+import com.silong.admin.Dashboard;
 
 public class ActivationRequestFetcher extends AsyncTask {
 
@@ -70,6 +71,8 @@ public class ActivationRequestFetcher extends AsyncTask {
                         sendBroadcast(true);
                     }
 
+                    Dashboard.actReqDone = true;
+                    Dashboard.checkCompletion();
                 }
 
                 @Override

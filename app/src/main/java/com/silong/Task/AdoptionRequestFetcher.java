@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Request;
 import com.silong.admin.AdminData;
+import com.silong.admin.Dashboard;
 
 public class AdoptionRequestFetcher extends AsyncTask {
 
@@ -96,6 +97,9 @@ public class AdoptionRequestFetcher extends AsyncTask {
                         sendBroadcast(true);
                     }
 
+                    Dashboard.adopReqDone = true;
+                    Dashboard.checkCompletion();
+
                 }
 
                 @Override
@@ -107,6 +111,7 @@ public class AdoptionRequestFetcher extends AsyncTask {
         }
         catch (Exception e){
             Log.d("ARF-dIB", e.getMessage());
+
         }
         return null;
     }

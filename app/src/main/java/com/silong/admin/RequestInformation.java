@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.silong.CustomView.LoadingDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.EnumClass.PetAge;
 import com.silong.EnumClass.PetColor;
@@ -206,6 +207,9 @@ public class RequestInformation extends AppCompatActivity {
 
     private void updateStatus(String status){
 
+        LoadingDialog loadingDialog = new LoadingDialog(RequestInformation.this);
+        loadingDialog.startLoadingDialog();
+
         Map<String, Object> multiNodeMap = new HashMap<>();
         multiNodeMap.put("Users/"+USER.getUserID()+"/adoptionHistory/"+PET.getPetID()+"/dateRequested", DATE);
         multiNodeMap.put("Users/"+USER.getUserID()+"/adoptionHistory/"+PET.getPetID()+"/status", Integer.valueOf(status));
@@ -221,6 +225,7 @@ public class RequestInformation extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(RequestInformation.this, "Adoption Request: " + (status.equals("2") ? "Approved" : "Declined"), Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
                         Intent intent = new Intent(RequestInformation.this, Dashboard.class);
                         startActivity(intent);
                         finish();
@@ -230,6 +235,7 @@ public class RequestInformation extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(RequestInformation.this, "Operation failed", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
                     }
                 });
 
