@@ -10,8 +10,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.silong.Operation.Utility;
 
-import java.util.Calendar;
-
 public class ReschedTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     Context context;

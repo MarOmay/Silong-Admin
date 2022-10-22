@@ -3,7 +3,6 @@ package com.silong.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -59,13 +58,13 @@ public class StatusChanger extends AsyncTask {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             sendBroadcast(FAILURE, uid, status);
-                            Log.d("SC-sASIS", e.getMessage());
+                            Utility.log("StatusChanger.dIB.oF: " + e.getMessage());
                         }
                     });
         }
         catch (Exception e){
             sendBroadcast(FAILURE, uid, status);
-            Log.d("SC-sASIS", e.getMessage());
+            Utility.log("StatusChanger.dIB: " + e.getMessage());
         }
         return null;
     }
@@ -91,13 +90,13 @@ public class StatusChanger extends AsyncTask {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             sendBroadcast(FAILURE, uid, status);
-                            Log.d("SC-sASIS", e.getMessage());
+                            Utility.log("StatusChanger.sASIS.oF: " + e.getMessage());
                         }
                     });
         }
         catch (Exception e){
             sendBroadcast(FAILURE, uid, status);
-            Log.d("SC-sASIS", e.getMessage());
+            Utility.log("StatusChanger.dIB.sASIS: " + e.getMessage());
         }
     }
 

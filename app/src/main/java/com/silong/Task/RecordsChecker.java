@@ -3,7 +3,6 @@ package com.silong.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 
 import androidx.annotation.NonNull;

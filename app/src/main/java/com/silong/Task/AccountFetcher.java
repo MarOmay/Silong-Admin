@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -79,19 +78,19 @@ public class AccountFetcher extends AsyncTask {
                         updateAccountList();
                     }
                     catch (Exception e){
-                        Log.d("DEBUGGER>>>", e.getMessage());
+                        Utility.log("AccountFetcher.dIB: " + e.getMessage());
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("AccountFetcher.dIB: " + error.getMessage());
                 }
             });
 
         }
         catch (Exception e){
-            Log.d("AF-dIB", e.getMessage());
+            Utility.log("AccountFetcher.dIB: " + e.getMessage());
         }
         return null;
     }

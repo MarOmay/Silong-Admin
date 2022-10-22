@@ -9,8 +9,6 @@ import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 
-
-
 public class TimeRangeFromPicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     Context context;

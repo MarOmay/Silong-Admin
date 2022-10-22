@@ -405,7 +405,7 @@ public class AdoptionRecords extends AppCompatActivity {
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-
+                                Utility.log("AdoptionRecords.eAH.oC: " + error.getMessage());
                             }
                         });
                     }
@@ -416,7 +416,7 @@ public class AdoptionRecords extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("AdoptionRecords.eAH.oC: " + error.getMessage());
                 }
             });
         }
@@ -440,13 +440,11 @@ public class AdoptionRecords extends AppCompatActivity {
                             Pet p = pets.get(index);
                             p.setType(inf);
                             pets.set(index, p);
-                            //Utility.log("triggered type");
                             break;
                         case "age":
                             Pet pp = pets.get(index);
                             pp.setAge(inf);
                             pets.set(index, pp);
-                            //Utility.log("triggered age");
                             break;
                     }
 
@@ -456,7 +454,7 @@ public class AdoptionRecords extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("AdoptionRecords.ePI.oC: " + error.getMessage());
                 }
             });
 
@@ -521,8 +519,6 @@ public class AdoptionRecords extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            //prepare file
-
             ArrayList<Object[]> entries = new ArrayList<>();
             //labels
             entries.add(new Object[]{"Date", "Status", "PetID", "Pet Type", "Pet Age", "Owner", "Gender", "Birthday"});
@@ -574,27 +570,6 @@ public class AdoptionRecords extends AppCompatActivity {
 
                 entries.add(entry);
             }
-
-            /*
-            for (Adoption adoption : adoptions){
-                Utility.log("Adoption: D " + adoption.getDateRequested());
-                Utility.log("Adoption: S " + adoption.getStatus());
-                Utility.log("Adoption: P " + adoption.getPetID());
-            }
-
-            for (Pet p : pets){
-                Utility.log("Pet: I " + p.getPetID());
-                Utility.log("Pet: T " + p.getType());
-                Utility.log("Pet: G " + p.getGender());
-                Utility.log("Pet: O " + p.getOwner());
-            }
-
-            for (User u : users){
-                Utility.log("User: I " + u.getUserID());
-                Utility.log("User: F " + u.getFirstName());
-                Utility.log("User: L " + u.getLastName());
-                Utility.log("User: B " + u.getBirthday());
-            }*/
 
             Spreadsheet spreadsheet = new Spreadsheet(AdoptionRecords.this);
             spreadsheet.setEntries(entries);

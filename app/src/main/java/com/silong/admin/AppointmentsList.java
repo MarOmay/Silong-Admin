@@ -2,8 +2,6 @@ package com.silong.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -27,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.silong.Adapter.AppointmentAdapter;
 import com.silong.CustomView.LoadingDialog;
-import com.silong.CustomView.ReschedDatePicker;
 import com.silong.CustomView.ReschedTimePicker;
 import com.silong.CustomView.RescheduleDatePicker;
 import com.silong.CustomView.RescheduleDialog;
@@ -128,8 +124,6 @@ public class AppointmentsList extends AppCompatActivity {
                 rescheduleDialog.reschedDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //ReschedDatePicker reschedDatePicker = new ReschedDatePicker(AppointmentsList.this, rescheduleDialog);
-                        //reschedDatePicker.show(getSupportFragmentManager(), null);
                         RescheduleDatePicker newFragment = new RescheduleDatePicker();
                         newFragment.setRd(rescheduleDialog);
                         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -170,8 +164,6 @@ public class AppointmentsList extends AppCompatActivity {
                 Map<String, Object> map = new HashMap<>();
                 map.put("appointmentDate", date);
                 map.put("appointmentTime", time);
-
-                Utility.log("AppointmentsList.mSNSR: PetID-" + petID);
 
                 //upload data
                 DatabaseReference mRef = mDatabase.getReference("adoptionRequest").child(userID);
@@ -272,6 +264,7 @@ public class AppointmentsList extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(AppointmentsList.this, "Operation failed", Toast.LENGTH_SHORT).show();
                             loadingDialog.dismissLoadingDialog();
+                            Utility.log("AppointmentList.mCAR.oF: " + e.getMessage());
                         }
                     });
 

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -25,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.silong.Object.Admin;
 import com.silong.Operation.InputValidator;
+import com.silong.Operation.Utility;
 
 public class CreateAdminAccount extends AppCompatActivity {
 
@@ -153,7 +153,7 @@ public class CreateAdminAccount extends AppCompatActivity {
                             }
                             catch (Exception e){
                                 Toast.makeText(CreateAdminAccount.this, "There is a problem checking your email.", Toast.LENGTH_SHORT).show();
-                                Log.d("CAA", e.getMessage());
+                                Utility.log("CAA.cE: " + e.getMessage());
                             }
                         }
                     })
@@ -161,7 +161,7 @@ public class CreateAdminAccount extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(CreateAdminAccount.this, "There is a problem checking your email.", Toast.LENGTH_SHORT).show();
-                            Log.d("CAA", e.getMessage());
+                            Utility.log("CAA.eC: " + e.getMessage());
                         }
                     });
         }

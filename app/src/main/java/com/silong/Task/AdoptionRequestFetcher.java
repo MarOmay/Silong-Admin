@@ -3,7 +3,6 @@ package com.silong.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -15,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Request;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.Dashboard;
 
@@ -32,7 +32,6 @@ public class AdoptionRequestFetcher extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try{
-            Log.d("DEBUGGER>>>", "ARF started ");
 
             mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
             mReference = mDatabase.getReference().child("adoptionRequest");
@@ -54,7 +53,7 @@ public class AdoptionRequestFetcher extends AsyncTask {
 
                         String status = snap.child("status").getValue().toString();
                         if (status.equals("1"))
-                            Log.d("DEBUGGER>>>", "adoption request");
+                            Utility.log("ARF.dIB: (adoption request)");
                         else
                             continue;
 
@@ -70,10 +69,6 @@ public class AdoptionRequestFetcher extends AsyncTask {
                         else{
                             boolean found = false;
                             for (Request r : AdminData.requests){
-                                Log.d("DEBUGGER>>>", "r-" + r.getUserID());
-                                Log.d("DEBUGGER>>>", "R-" + request.getUserID());
-                                Log.d("DEBUGGER>>>", "r-" + r.getRequestCode());
-                                Log.d("DEBUGGER>>>", "r-" + request.getRequestCode());
 
                                 if (r.getUserID().equals(request.getUserID()) &&
                                         r.getRequestCode() == request.getRequestCode())
@@ -82,11 +77,8 @@ public class AdoptionRequestFetcher extends AsyncTask {
                             if (!found)
                                 AdminData.requests.add(request);
 
-                            Log.d("DEBUGGER>>>", "Found- " + found);
-
                         }
 
-                        Log.d("DEBUGGER>>>", "details " + details);
                     }
 
                     //send broadcast to show/hide red dot
@@ -104,13 +96,13 @@ public class AdoptionRequestFetcher extends AsyncTask {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("ARF.dIB.oC: " + error.getMessage());
                 }
             });
 
         }
         catch (Exception e){
-            Log.d("ARF-dIB", e.getMessage());
+            Utility.log("ARF.dIB: " + e.getMessage());
 
         }
         return null;

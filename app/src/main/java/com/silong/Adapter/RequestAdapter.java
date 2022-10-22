@@ -19,6 +19,7 @@ import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Adoption;
 import com.silong.Object.Request;
 import com.silong.Object.User;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.ManageAccount;
 import com.silong.admin.R;
@@ -117,7 +118,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 }
                 catch (Exception e){
                     Toast.makeText(activity, "Operation can't be performed.", Toast.LENGTH_SHORT).show();
-                    Log.d("ReqA-oBVH", e.getMessage());
+                    Utility.log("RequestAdapter.oBVH: " + e.getMessage());
                 }
 
             }

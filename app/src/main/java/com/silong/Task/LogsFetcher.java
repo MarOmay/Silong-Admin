@@ -16,8 +16,6 @@ import com.silong.Object.LogData;
 import com.silong.Operation.Utility;
 import com.silong.admin.Log;
 
-
-
 public class LogsFetcher extends AsyncTask {
 
     private Activity activity;
@@ -70,7 +68,7 @@ public class LogsFetcher extends AsyncTask {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("LogsFetcher.dIB: " + error.getMessage());
                 }
             });
 

@@ -3,7 +3,6 @@ package com.silong.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -17,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.silong.Object.AppointmentRecords;
 
 import com.silong.Object.User;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.Dashboard;
 
@@ -34,7 +34,6 @@ public class AppointmentFetcher extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try{
-            Log.d("DEBUGGER>>>", "AppointmentFetcher started ");
 
             AdminData.appointments.clear();
 
@@ -58,7 +57,7 @@ public class AppointmentFetcher extends AsyncTask {
 
                         String status = snap.child("status").getValue().toString();
                         if (status.equals("4"))
-                            Log.d("DEBUGGER>>>", "adoption request");
+                            Utility.log("AppointmentFetcher.dIB: (appointment request)");
                         else
                             continue;
 
@@ -77,8 +76,6 @@ public class AppointmentFetcher extends AsyncTask {
                         else{
                             boolean found = false;
                             for (AppointmentRecords ap : AdminData.appointments){
-                                Log.d("DEBUGGER>>>", "a-" + ap.getUserID());
-                                Log.d("DEBUGGER>>>", "A-" + ap.getUserID());
 
                                 if (ap.getUserID().equals(appointment.getUserID()))
                                     found = true;
@@ -86,11 +83,8 @@ public class AppointmentFetcher extends AsyncTask {
                             if (!found)
                                 AdminData.appointments.add(appointment);
 
-                            Log.d("DEBUGGER>>>", "Found- " + found);
-
                         }
 
-                        Log.d("DEBUGGER>>>", "details " + date);
                     }
 
                     //send broadcast to show/hide red dot
@@ -108,13 +102,13 @@ public class AppointmentFetcher extends AsyncTask {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("AppointmentFetcher.dIB.oC: " + error.getMessage());
                 }
             });
 
         }
         catch (Exception e){
-            Log.d("AppointmentF-dIB", e.getMessage());
+            Utility.log("AppointmentFetcher.dIB: " + e.getMessage());
         }
 
         return null;

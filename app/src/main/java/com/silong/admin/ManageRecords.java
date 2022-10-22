@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -152,7 +151,7 @@ public class ManageRecords extends AppCompatActivity {
             recordsRecycler.setAdapter(recordsAdapter);
         }
         catch (Exception e){
-            Log.d("mR-lRL", e.getMessage());
+            Utility.log("ManageRecord.lRL: " + e.getMessage());
         }
 
         loadingDialog.dismissLoadingDialog();

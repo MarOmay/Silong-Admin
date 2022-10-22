@@ -23,7 +23,6 @@ public class ResetLinkNotice extends MaterialAlertDialogBuilder{
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //Codes here
-                //No codes here, no further action needed
             }
         });
     }

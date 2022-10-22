@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -101,7 +100,7 @@ public class UserInformation extends AppCompatActivity {
             emailTv.setText(selectedUser.getEmail());
             contactTv.setText(selectedUser.getContact());
         } catch (Exception e) {
-            Log.d("UserInfo", e.getMessage());
+            Utility.log("RequestList.dAI: " + e.getMessage());
             Toast.makeText(this, "Can't display selected user.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(UserInformation.this, Dashboard.class);
             startActivity(intent);

@@ -64,7 +64,7 @@ public class AdminFetcher extends AsyncTask {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("AdminFetcher.dIB.oC: " + error.getMessage());
                 }
             });
         }

@@ -54,12 +54,10 @@ public class EmailPrompt  extends MaterialAlertDialogBuilder{
                 else if (!InputValidator.checkEmail(email)){
                     Toast.makeText(context, "Please check the format of your email.", Toast.LENGTH_SHORT).show();
                 }else{
-                    //Check if email is registered
                     //send email to next activity
                     Intent intent = new Intent("reset-password-email");
                     intent.putExtra("email", email);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                    //emailChecker(context, email);
 
                 }
             }

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.silong.Object.Admin;
 import com.silong.admin.AdminRoles;
-import com.silong.admin.ManageRoles;
 import com.silong.admin.R;
 
 public class AdminAccountsAdapter extends RecyclerView.Adapter<AdminAccountsAdapter.ViewHolder> {

@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -24,6 +23,7 @@ import com.silong.Adapter.AccountAdapter;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
 import com.silong.Object.UserAccountData;
+import com.silong.Operation.Utility;
 
 import java.util.Comparator;
 
@@ -77,7 +77,7 @@ public class ManageAccount extends AppCompatActivity {
             finish();
         }
         catch (Exception e){
-            Log.d("ManageAccount", "No account forwarded");
+            Utility.log("ManageAccount: (No account forwarded)" + e.getMessage());
         }
 
     }
@@ -127,7 +127,7 @@ public class ManageAccount extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(this, "Preparing resources...", Toast.LENGTH_SHORT).show();
-            Log.d("ManageAccount", e.getMessage());
+            Utility.log("ManageAccount.lAL: " + e.getMessage());
         }
 
         UserAccountData[] accountData = new UserAccountData[AdminData.users.size()];

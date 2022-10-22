@@ -1,8 +1,5 @@
 package com.silong.Operation;
 
-import android.util.Log;
-
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +16,7 @@ public class InputValidator {
             }
         }
         catch (Exception e){
-            Log.d("InputValidator", e.getMessage());
+            Utility.log("InputValidator.cN: " + e.getMessage());
             return false;
         }
 
@@ -36,7 +33,7 @@ public class InputValidator {
             }
         }
         catch (Exception e){
-            Log.d("InputValidator", e.getMessage());
+            Utility.log("InputValidator.cN: " + e.getMessage());
             return false;
         }
 
@@ -58,7 +55,7 @@ public class InputValidator {
                 Integer.parseInt(String.valueOf(s.charAt(i)));
             }
             catch (Exception e){
-                Log.d("SignUp", e.getMessage());
+                Utility.log("InputValidator.cN: " + e.getMessage());
                 return false;
             }
         }

@@ -12,7 +12,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -151,21 +150,21 @@ public class LogIn extends AppCompatActivity {
                                             catch (Exception e){
                                                 Toast.makeText(LogIn.this, "Unauthorized access.", Toast.LENGTH_SHORT).show();
                                                 loadingDialog.dismissLoadingDialog();
-                                                Log.d("LogIn", e.getMessage());
+                                                Utility.log("LogIn.aL: " + e.getMessage());
                                             }
 
                                         }
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
-
+                                            Utility.log("LogIn.aL.oC: " + error.getMessage());
                                         }
                                     });
                                 }
                                 catch (Exception e){
                                     loadingDialog.dismissLoadingDialog();
                                     Toast.makeText(LogIn.this, "Login failed.", Toast.LENGTH_SHORT).show();
-                                    Log.d("LogIn", e.getMessage());
+                                    Utility.log("LogIn.aL: " + e.getMessage());
                                 }
                             }
                         })
@@ -174,12 +173,12 @@ public class LogIn extends AppCompatActivity {
                             public void onFailure(@NonNull Exception e) {
                                 loadingDialog.dismissLoadingDialog();
                                 Toast.makeText(LogIn.this, "Login failed.", Toast.LENGTH_SHORT).show();
-                                Log.d("LogIn", e.getMessage());
+                                Utility.log("LogIn.aL.oF: " + e.getMessage());
                             }
                         });
             }
             catch (Exception e){
-                Log.d("LogIn", e.getMessage());
+                Utility.log("LogIn.aL: " + e.getMessage());
                 loadingDialog.dismissLoadingDialog();
                 Toast.makeText(this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
             }
@@ -250,7 +249,7 @@ public class LogIn extends AppCompatActivity {
                     }
                     catch (Exception e){
                         loadingDialog.dismissLoadingDialog();
-                        Log.d("LogIn", e.getMessage());
+                        Utility.log("LogIn.fAD: " + e.getMessage());
                         Toast.makeText(LogIn.this, "Database error. Please try again.", Toast.LENGTH_SHORT).show();
                     }
 
@@ -258,7 +257,7 @@ public class LogIn extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("LogIn.aL.oC: " + error.getMessage());
                 }
             });
 
@@ -271,8 +270,10 @@ public class LogIn extends AppCompatActivity {
     }
 
     private void emailChecker(Context context, String email){
+
         LoadingDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.startLoadingDialog();
+
         //Check internet connection
         if(Utility.internetConnection(getApplicationContext())){
             //Check if email is registered
@@ -294,7 +295,7 @@ public class LogIn extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(getApplicationContext(), "Can't check your email right now.", Toast.LENGTH_SHORT).show();
-                            Log.d("LogIn", e.getMessage());
+                            Utility.log("LogIn.eC: " + e.getMessage());
                         }
                     });
         }
@@ -326,6 +327,7 @@ public class LogIn extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         loadingDialog.dismissLoadingDialog();
+                        Utility.log("LogIn.rP: " + e.getMessage());
                     }
                 });
     }
@@ -338,7 +340,7 @@ public class LogIn extends AppCompatActivity {
                 emailChecker(getApplicationContext(), email);
             }
             catch (Exception e){
-                Log.d("LogIn", e.getMessage());
+                Utility.log("LogIn.mMR: " + e.getMessage());
             }
         }
     };

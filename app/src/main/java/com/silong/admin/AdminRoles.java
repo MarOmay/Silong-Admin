@@ -136,6 +136,7 @@ public class AdminRoles extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(AdminRoles.this, "Operation cancelled", Toast.LENGTH_SHORT).show();
+                            Utility.log("AdminRoles.oPCB.OF: " + e.getMessage());
                             loadingDialog.dismissLoadingDialog();
                         }
                     });

@@ -3,7 +3,6 @@ package com.silong.Task;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -36,8 +35,6 @@ public class RecordFetcher extends AsyncTask {
             mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
             AdminData.writePetToLocal(activity, id, "petID", id);
-
-            Utility.log("RecordFetcher.dIB.oDC- Fetching Pet: " + id);
 
             DatabaseReference tempReference = mDatabase.getReference("Pets").child(id);
             tempReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -122,7 +119,7 @@ public class RecordFetcher extends AsyncTask {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("RecordFetcher.dIB.oC: " + error.getMessage());
                 }
             });
 

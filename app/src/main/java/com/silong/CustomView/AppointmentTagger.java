@@ -28,13 +28,10 @@ import com.silong.Operation.EmailNotif;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
-import com.silong.admin.AppointmentsList;
 import com.silong.admin.R;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AppointmentTagger extends MaterialAlertDialogBuilder {
 
