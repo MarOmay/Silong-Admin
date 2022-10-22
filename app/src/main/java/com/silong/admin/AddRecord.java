@@ -534,11 +534,6 @@ public class AddRecord extends AppCompatActivity {
         mReference.setValue(n);
     }
 
-    private void updateRecordList(){
-        Intent intent = new Intent("update-record-list");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
-
     public void back(View view){
         onBackPressed();
     }

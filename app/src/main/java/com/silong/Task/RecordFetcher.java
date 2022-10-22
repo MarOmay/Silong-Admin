@@ -21,7 +21,6 @@ public class RecordFetcher extends AsyncTask {
     private Activity activity;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
 
     public RecordFetcher(String id, Activity activity){
         this.activity = activity;
@@ -109,7 +108,6 @@ public class RecordFetcher extends AsyncTask {
                         }
 
                         AdminData.populateRecords(activity);
-                        updateRecordList();
                     }
                     catch (Exception e){
                         Utility.log("RecordFetcher.dIB.oDC: " + e.getMessage());
@@ -130,8 +128,4 @@ public class RecordFetcher extends AsyncTask {
         return null;
     }
 
-    private void updateRecordList(){
-        //Intent intent = new Intent("update-record-list");
-        //LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
 }

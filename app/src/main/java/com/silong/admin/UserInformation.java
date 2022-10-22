@@ -63,7 +63,7 @@ public class UserInformation extends AppCompatActivity {
 
         //Get specific account info
         String uid = getIntent().getStringExtra("uid");
-        selectedUser = getUser(uid);
+        selectedUser = AdminData.getUser(uid);
         if (selectedUser == null)
             onBackPressed();
 
@@ -172,14 +172,6 @@ public class UserInformation extends AppCompatActivity {
             disableSw.setChecked(!disableSw.isChecked());
         }
 
-    }
-
-    private User getUser(String uid) {
-        for (User u : AdminData.users) {
-            if (u.getUserID().equals(uid))
-                return u;
-        }
-        return null;
     }
 
     private BroadcastReceiver mDeactivateAccount = new BroadcastReceiver() {

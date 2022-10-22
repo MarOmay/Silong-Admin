@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.silong.Object.Admin;
@@ -33,7 +32,6 @@ public class CreateAdminAccount extends AppCompatActivity {
             createAdminContactEt, createAdminPasswordEt, createAdminConfirmpassEt;
     Button createAdminCreateBtn;
 
-    private FirebaseAnalytics mAnalytics;
     private FirebaseAuth mAuth;
 
     private Admin admin;
@@ -51,7 +49,6 @@ public class CreateAdminAccount extends AppCompatActivity {
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         //Initialize Firebase objects
-        mAnalytics = FirebaseAnalytics.getInstance(this);
         mAuth = FirebaseAuth.getInstance();
 
         createAdminBackIv = (ImageView) findViewById(R.id.createAdminBackIv);
@@ -132,7 +129,7 @@ public class CreateAdminAccount extends AppCompatActivity {
 
     private void checkEmail(){
         //Check internet connection first
-        if (internetConnection()){
+        if (Utility.internetConnection(CreateAdminAccount.this)){
             //Check if email is already registered
             mAuth.fetchSignInMethodsForEmail(admin.getAdminEmail())
                     .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
@@ -168,15 +165,6 @@ public class CreateAdminAccount extends AppCompatActivity {
         else {
             Toast.makeText(this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean internetConnection(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo!=null){
-            return true;
-        }
-        return false;
     }
 
     public void back(View view){

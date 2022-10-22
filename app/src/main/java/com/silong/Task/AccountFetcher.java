@@ -23,7 +23,6 @@ public class AccountFetcher extends AsyncTask {
     private Activity activity;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
 
     public AccountFetcher(String uid, Activity activity){
         this.activity = activity;
