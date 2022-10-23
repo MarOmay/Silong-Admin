@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.silong.Adapter.AccountAdapter;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
-import com.silong.Object.UserAccountData;
 import com.silong.Operation.Utility;
 
 import java.util.Comparator;
@@ -135,14 +134,7 @@ public class ManageAccount extends AppCompatActivity {
             Utility.log("ManageAccount.lAL: " + e.getMessage());
         }
 
-        UserAccountData[] accountData = new UserAccountData[AdminData.users.size()];
-
-        for (User user : AdminData.users){
-            String name = user.getFirstName() + " " + user.getLastName();
-            accountData[AdminData.users.indexOf(user)] = new UserAccountData(user.getUserID(), name, user.getEmail(), user.getPhoto());
-        }
-
-        AccountAdapter accountAdapter = new AccountAdapter(accountData, ManageAccount.this);
+        AccountAdapter accountAdapter = new AccountAdapter(ManageAccount.this);
         accountsRecycler.setAdapter(accountAdapter);
 
         loadingDialog.dismissLoadingDialog();

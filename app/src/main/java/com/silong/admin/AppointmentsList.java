@@ -93,18 +93,8 @@ public class AppointmentsList extends AppCompatActivity {
             Utility.log("AppointmentsList.lA: " + e.getMessage());
         }
 
-        int listSize = AdminData.appointments.size();
-
-        //make a copy of appointments
-        AppointmentRecords [] appointmentRecords = new AppointmentRecords[listSize];
-        for (int i = 0; i < listSize; i++){
-            AppointmentRecords ar = AdminData.appointments.get(i);
-            appointmentRecords[i] = new AppointmentRecords(ar.getName(), ar.getDateRequested(), ar.getDateTime(), ar.getPetId(), ar.getUserPic(), ar.getUserID());
-            Utility.log("AppointmentsList.lA: Added appointment - " + ar.getName());
-        }
-
         //set appointmentRecycler adapter
-        AppointmentAdapter appointmentAdapter = new AppointmentAdapter(appointmentRecords, AppointmentsList.this);
+        AppointmentAdapter appointmentAdapter = new AppointmentAdapter(AppointmentsList.this);
         appointmentRecycler.setAdapter(appointmentAdapter);
 
         loadingDialog.dismissLoadingDialog();

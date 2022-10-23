@@ -30,13 +30,9 @@ import java.util.ArrayList;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder>{
 
-    ArrayList<Request> requests;
-    Context context;
-    Activity activity;
+    private Activity activity;
 
-    public RequestAdapter(ArrayList<Request> requests, RequestList activity){
-        this.requests = requests;
-        this.context = activity;
+    public RequestAdapter(Activity activity){
         this.activity = activity;
     }
 
@@ -51,7 +47,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Request request = requests.get(position);
+        final Request request = AdminData.requests.get(position);
 
         User user = AdminData.fetchAccountFromLocal(activity, request.getUserID());
 
@@ -128,7 +124,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return requests.size();
+        return AdminData.requests.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

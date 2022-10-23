@@ -15,8 +15,8 @@ import com.silong.admin.UserInformation;
 
 public class AdoptionHistoryAdapter extends RecyclerView.Adapter<AdoptionHistoryAdapter.ViewHolder> {
 
-    Adoption[] adoption;
-    Context context;
+    private Adoption[] adoption;
+    private Context context;
 
     public AdoptionHistoryAdapter(Adoption[] adoption, UserInformation activity){
         this.adoption = adoption;

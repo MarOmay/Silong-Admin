@@ -1,7 +1,6 @@
 package com.silong.Adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +16,12 @@ import com.silong.admin.R;
 
 public class AdminAccountsAdapter extends RecyclerView.Adapter<AdminAccountsAdapter.ViewHolder> {
 
-    Admin[] adminAccountsData;
-    Activity activity;
-    Context context;
+    private Admin[] adminAccountsData;
+    private Activity activity;
 
     public AdminAccountsAdapter(Admin[] adminAccountsData, Activity activity){
         this. adminAccountsData = adminAccountsData;
         this.activity = activity;
-        this.context = activity;
     }
 
     @NonNull
@@ -38,16 +35,16 @@ public class AdminAccountsAdapter extends RecyclerView.Adapter<AdminAccountsAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Admin adminAccountsDataList = adminAccountsData[position];
-        holder.adminAccName.setText(adminAccountsDataList.getFirstName() + " " + adminAccountsDataList.getLastName());
-        holder.adminAccEmail.setText(adminAccountsDataList.getAdminEmail());
+        final Admin adminAccount = adminAccountsData[position];
+        holder.adminAccName.setText(adminAccount.getFirstName() + " " + adminAccount.getLastName());
+        holder.adminAccEmail.setText(adminAccount.getAdminEmail());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent(activity, AdminRoles.class);
-                intent.putExtra("ADMIN", adminAccountsDataList);
+                intent.putExtra("ADMIN", adminAccount);
                 activity.startActivity(intent);
             }
         });

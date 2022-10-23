@@ -16,15 +16,14 @@ import com.silong.CustomView.AppointmentTagger;
 import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
 import com.silong.Operation.Utility;
+import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ViewHolder> {
 
-    AppointmentRecords appointmentRecords[];
-    Activity activity;
+    private Activity activity;
 
-    public AppointmentAdapter(AppointmentRecords[] appointmentRecords, Activity activity){
-        this.appointmentRecords = appointmentRecords;
+    public AppointmentAdapter(Activity activity){
         this.activity = activity;
     }
 
@@ -39,11 +38,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final AppointmentRecords appointmentRecordsList = appointmentRecords[position];
-        holder.name.setText(appointmentRecordsList.getName());
-        holder.dateTime.setText(appointmentRecordsList.getDateTime());
-        holder.petId.setText(appointmentRecordsList.getPetId());
-        holder.userPic.setImageBitmap(appointmentRecordsList.getUserPic());
+        final AppointmentRecords appointmentRecord = AdminData.appointments.get(position);
+        holder.name.setText(appointmentRecord.getName());
+        holder.dateTime.setText(appointmentRecord.getDateTime());
+        holder.petId.setText(appointmentRecord.getPetId());
+        holder.userPic.setImageBitmap(appointmentRecord.getUserPic());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,11 +54,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     }
 
                     Adoption adoption = new Adoption();
-                    adoption.setDateRequested(appointmentRecordsList.getDateRequested());
-                    adoption.setAppointmentDate(appointmentRecordsList.getDateTime());
-                    adoption.setPetID(Integer.parseInt(appointmentRecordsList.getPetId()));
+                    adoption.setDateRequested(appointmentRecord.getDateRequested());
+                    adoption.setAppointmentDate(appointmentRecord.getDateTime());
+                    adoption.setPetID(Integer.parseInt(appointmentRecord.getPetId()));
 
-                    AppointmentTagger appointmentTagger = new AppointmentTagger(activity, appointmentRecordsList.getUserID(), appointmentRecordsList.getName(), adoption);
+                    AppointmentTagger appointmentTagger = new AppointmentTagger(activity, appointmentRecord.getUserID(), appointmentRecord.getName(), adoption);
                     appointmentTagger.show();
                 }
                 catch (Exception e){
@@ -71,7 +70,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     }
 
     @Override
-    public int getItemCount() { return appointmentRecords.length; }
+    public int getItemCount() { return AdminData.appointments.size(); }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 

@@ -1,5 +1,6 @@
 package com.silong.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,18 +13,21 @@ import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.silong.Object.User;
+import com.silong.admin.AdminData;
 import com.silong.admin.ManageAccount;
 import com.silong.admin.R;
-import com.silong.Object.UserAccountData;
+
+import java.util.ArrayList;
 
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
 
-    UserAccountData[] userAccountData;
-    Context context;
+    private Context context;
+    private Activity activity;
 
-    public AccountAdapter(UserAccountData[] userAccountData, ManageAccount activity){
-        this.userAccountData = userAccountData;
+    public AccountAdapter(Activity activity){
         this.context = activity;
+        this.activity = activity;
     }
 
     @NonNull
@@ -37,22 +41,24 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final UserAccountData userAccountDataList = userAccountData[position];
+        final User user = AdminData.users.get(position);
 
-        if (userAccountDataList.getUserAccName().equals("null null")){
+        String name = user.getFirstName() + " " + user.getLastName();
+
+        if (name.equals("null null")){
             holder.userAccName.setText("Loading profile...");
         }
         else {
-            holder.userAccName.setText(userAccountDataList.getUserAccName());
+            holder.userAccName.setText(name);
         }
 
-        holder.userAccEmail.setText(userAccountDataList.getUserAccEmail());
+        holder.userAccEmail.setText(user.getEmail());
 
-        if(userAccountDataList.getUserAvatar() == null){
+        if(user.getPhoto() == null){
             holder.userAccPic.setImageResource(R.drawable.avatar_placeholder);
         }
         else {
-            holder.userAccPic.setImageBitmap(userAccountDataList.getUserAvatar());
+            holder.userAccPic.setImageBitmap(user.getPhoto());
         }
 
         //Filter visibility by search keyword
@@ -60,7 +66,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
             holder.itemView.setVisibility(View.VISIBLE);
             holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-        else if (userAccountDataList.getUserAccName().toLowerCase().contains(ManageAccount.keyword.toLowerCase().trim())){
+        else if (name.toLowerCase().contains(ManageAccount.keyword.toLowerCase().trim())){
             holder.itemView.setVisibility(View.VISIBLE);
             holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
@@ -73,7 +79,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent("show-selected-user");
-                intent.putExtra("uid", userAccountDataList.getUserID());
+                intent.putExtra("uid", user.getUserID());
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
@@ -81,7 +87,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return userAccountData.length;
+        return AdminData.users.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

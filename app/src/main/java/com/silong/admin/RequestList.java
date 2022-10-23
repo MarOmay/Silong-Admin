@@ -98,7 +98,7 @@ public class RequestList extends AppCompatActivity {
             Utility.log("RequestList: " + e.getMessage());
         }
 
-        RequestAdapter requestAdapter = new RequestAdapter(AdminData.requests, RequestList.this);
+        RequestAdapter requestAdapter = new RequestAdapter(RequestList.this);
         requestsRecycler.setAdapter(requestAdapter);
 
         loadingDialog.dismissLoadingDialog();
