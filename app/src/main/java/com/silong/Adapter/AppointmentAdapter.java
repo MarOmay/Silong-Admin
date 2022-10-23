@@ -55,6 +55,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     }
 
                     Adoption adoption = new Adoption();
+                    adoption.setDateRequested(appointmentRecordsList.getDateRequested());
                     adoption.setAppointmentDate(appointmentRecordsList.getDateTime());
                     adoption.setPetID(Integer.parseInt(appointmentRecordsList.getPetId()));
 

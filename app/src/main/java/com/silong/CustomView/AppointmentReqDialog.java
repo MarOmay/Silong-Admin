@@ -17,6 +17,9 @@ import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AppointmentReqDialog extends MaterialAlertDialogBuilder {
 
     private FirebaseDatabase mDatabase;
@@ -34,14 +37,26 @@ public class AppointmentReqDialog extends MaterialAlertDialogBuilder {
 
         this.ADOPTION = adoption;
 
+        Map<String, Object> multiNodeMap = new HashMap<>();
+        multiNodeMap.put("adoptionRequest/"+userID+"/dateRequested", ADOPTION.getDateRequested());
+        multiNodeMap.put("adoptionRequest/"+userID+"/petID", ADOPTION.getPetID());
+        multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+ADOPTION.getPetID()+"/dateRequested", ADOPTION.getDateRequested());
+
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        mReference = mDatabase.getReference().child("adoptionRequest").child(userID).child("status");
+        mReference = mDatabase.getReference();
 
         super.setPositiveButton(Html.fromHtml("<b>"+"ACCEPT"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //update RTDB
-                mReference.setValue("4");
+                String[] dateTime = ADOPTION.getAppointmentDate().split(" ");
+                String appointmentDate = dateTime[0];
+                String appointmentTime = dateTime[1].replace(":","*") + " " + dateTime[2];
+                multiNodeMap.put("adoptionRequest/"+userID+"/appointmentDate", appointmentDate);
+                multiNodeMap.put("adoptionRequest/"+userID+"/appointmentTime", appointmentTime);
+                multiNodeMap.put("adoptionRequest/"+userID+"/status", "4");
+                multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+ADOPTION.getPetID()+"/status", "4");
+                mReference.updateChildren(multiNodeMap);
 
                 //send email notif
                 String email = AdminData.getUser(userID).getEmail();
@@ -57,7 +72,13 @@ public class AppointmentReqDialog extends MaterialAlertDialogBuilder {
         super.setNegativeButton(Html.fromHtml("<b>"+"DECLINE"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mReference.setValue("2");
+                //update RTDB
+                multiNodeMap.put("adoptionRequest/"+userID+"/appointmentDate", null);
+                multiNodeMap.put("adoptionRequest/"+userID+"/appointmentTime", null);
+                multiNodeMap.put("adoptionRequest/"+userID+"/status", "2");
+                multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+ADOPTION.getPetID()+"/status", "2");
+                mReference.updateChildren(multiNodeMap);
+
                 String email = AdminData.getUser(userID).getEmail();
                 Utility.dbLog("Declined appointment for " + email);
                 Toast.makeText(activity, "Appointment declined!", Toast.LENGTH_SHORT).show();

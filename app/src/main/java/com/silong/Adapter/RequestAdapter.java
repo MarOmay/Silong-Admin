@@ -104,7 +104,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                             s += "\nTime: " + dt[1].replace("*",":") + dt[2];
                             Adoption adoption = new Adoption();
                             adoption.setPetID(Integer.parseInt(request.getRequestDetails()));
-                            adoption.setAppointmentDate(dt[0] + " " + dt[1].replace("*",":") + dt[2]);
+                            adoption.setAppointmentDate(dt[0] + " " + dt[1].replace("*",":") + " "+ dt[2]);
+                            adoption.setDateRequested(request.getDate());
                             AppointmentReqDialog appointmentReqDialog = new AppointmentReqDialog(activity, s, user.userID, adoption);
                             appointmentReqDialog.show();
                             break;

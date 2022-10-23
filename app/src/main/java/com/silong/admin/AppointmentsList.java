@@ -99,7 +99,7 @@ public class AppointmentsList extends AppCompatActivity {
         AppointmentRecords [] appointmentRecords = new AppointmentRecords[listSize];
         for (int i = 0; i < listSize; i++){
             AppointmentRecords ar = AdminData.appointments.get(i);
-            appointmentRecords[i] = new AppointmentRecords(ar.getName(), ar.getDateTime(), ar.getPetId(), ar.getUserPic(), ar.getUserID());
+            appointmentRecords[i] = new AppointmentRecords(ar.getName(), ar.getDateRequested(), ar.getDateTime(), ar.getPetId(), ar.getUserPic(), ar.getUserID());
             Utility.log("AppointmentsList.lA: Added appointment - " + ar.getName());
         }
 
@@ -192,6 +192,7 @@ public class AppointmentsList extends AppCompatActivity {
 
                                         int index = AdminData.appointments.indexOf(ar);
                                         AppointmentRecords appRec = new AppointmentRecords();
+                                        appRec.setDateRequested(ar.getDateRequested());
                                         appRec.setName(ar.getName());
                                         appRec.setUserPic(ar.getUserPic());
                                         appRec.setUserID(ar.getUserID());

@@ -64,6 +64,9 @@ public class AppointmentFetcher extends AsyncTask {
                         String petID = snap.child("petID").getValue().toString();
                         appointment.setPetId(petID);
 
+                        String dateRequested = snap.child("dateRequested").getValue().toString();
+                        appointment.setDateRequested(dateRequested);
+
                         String date = snap.child("appointmentDate").getValue().toString();
                         date += " " + snap.child("appointmentTime").getValue().toString().replace("*",":");
                         appointment.setDateTime(date);

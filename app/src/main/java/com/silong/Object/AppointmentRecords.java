@@ -5,18 +5,20 @@ import android.graphics.Bitmap;
 public class AppointmentRecords {
 
     private String name;
+    private String dateRequested;
     private String dateTime;
     private String petId;
     private Bitmap userPic;
 
     private String userID;
 
-    public AppointmentRecords(String name, String dateTime, String petId, Bitmap userPic, String userID) {
+    public AppointmentRecords(String name, String dateRequested, String dateTime, String petId, Bitmap userPic, String userID) {
         this.name = name;
         this.dateTime = dateTime;
         this.petId = petId;
         this.userPic = userPic;
         this.userID = userID;
+        this.dateRequested = dateRequested;
     }
 
     public AppointmentRecords() {
@@ -61,5 +63,13 @@ public class AppointmentRecords {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public String getDateRequested() {
+        return dateRequested;
+    }
+
+    public void setDateRequested(String dateRequested) {
+        this.dateRequested = dateRequested;
     }
 }
