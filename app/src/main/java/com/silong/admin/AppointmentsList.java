@@ -174,7 +174,7 @@ public class AppointmentsList extends AppCompatActivity {
                                 String dateTime = date.replace("-","/") + " " + time.replace("*", ":");
 
                                 try {
-                                    String email = AdminData.getUser(userID).getEmail();
+                                    String email = AdminData.fetchAccountFromLocal(AppointmentsList.this, userID).getEmail();
                                     Adoption adoption = new Adoption();
                                     adoption.setAppointmentDate(dateTime);
                                     adoption.setPetID(Integer.valueOf(petID));

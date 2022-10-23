@@ -71,6 +71,7 @@ public class ActivationRequestFetcher extends AsyncTask {
 
                     Dashboard.actReqDone = true;
                     Dashboard.checkCompletion();
+
                 }
 
                 @Override

@@ -73,7 +73,7 @@ public class AccountFetcher extends AsyncTask {
 
                         Bitmap bitmap = new ImageProcessor().toBitmap(photo);
                         new ImageProcessor().saveToLocal(activity, bitmap, "avatar-" + uid);
-                        AdminData.populateAccounts(activity);
+                        //AdminData.populateAccounts(activity);
                         updateAccountList();
                     }
                     catch (Exception e){

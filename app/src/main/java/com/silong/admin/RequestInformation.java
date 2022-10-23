@@ -63,8 +63,8 @@ public class RequestInformation extends AppCompatActivity {
             String petID = getIntent().getStringExtra("petID");
             DATE = getIntent().getStringExtra("dateRequested");
 
-            USER = AdminData.getUser(userID);
-            PET = AdminData.getPet(petID);
+            USER = AdminData.fetchAccountFromLocal(this, userID);
+            PET = AdminData.fetchRecordFromLocal(this, petID);
 
             if (USER == null){
                 Toast.makeText(this, "Error: Account is invalid", Toast.LENGTH_SHORT).show();

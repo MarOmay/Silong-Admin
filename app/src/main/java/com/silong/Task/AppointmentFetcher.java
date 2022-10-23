@@ -47,7 +47,7 @@ public class AppointmentFetcher extends AsyncTask {
                         AppointmentRecords appointment = new AppointmentRecords();
                         String key = snap.getKey().toString();
 
-                        User user = AdminData.getUser(key);
+                        User user = AdminData.fetchAccountFromLocal(activity, key);
 
                         if (user == null)
                             continue;
@@ -100,7 +100,6 @@ public class AppointmentFetcher extends AsyncTask {
 
                     Dashboard.appointReqDone = true;
                     Dashboard.checkCompletion();
-
                 }
 
                 @Override

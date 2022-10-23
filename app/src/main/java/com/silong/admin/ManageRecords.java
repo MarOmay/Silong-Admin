@@ -62,6 +62,12 @@ public class ManageRecords extends AppCompatActivity {
         recordsRecycler.setHasFixedSize(true);
         recordsRecycler.setLayoutManager(new LinearLayoutManager(ManageRecords.this));
 
+        AdminData.populateRecords(this);
+        AdminData.populate(this);
+        AdminData.requests.clear();
+        AdminData.appointments.clear();
+        AdminData.users.clear();
+
         loadRecordList();
 
         mrecordRefresher.setOnRefreshListener(refreshListener);

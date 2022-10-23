@@ -64,6 +64,11 @@ public class ManageAccount extends AppCompatActivity {
         accountsRecycler.setHasFixedSize(true);
         accountsRecycler.setLayoutManager(new LinearLayoutManager(ManageAccount.this));
 
+        AdminData.populate(this);
+        AdminData.populateAccounts(this);
+        AdminData.requests.clear();
+        AdminData.pets.clear();
+
         loadAccountList();
         manualAddSearchListener();
 

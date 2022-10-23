@@ -63,7 +63,7 @@ public class UserInformation extends AppCompatActivity {
 
         //Get specific account info
         String uid = getIntent().getStringExtra("uid");
-        selectedUser = AdminData.getUser(uid);
+        selectedUser = AdminData.fetchAccountFromLocal(this, uid);
         if (selectedUser == null)
             onBackPressed();
 

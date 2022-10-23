@@ -59,7 +59,7 @@ public class AppointmentReqDialog extends MaterialAlertDialogBuilder {
                 mReference.updateChildren(multiNodeMap);
 
                 //send email notif
-                String email = AdminData.getUser(userID).getEmail();
+                String email = AdminData.fetchAccountFromLocal(activity, userID).getEmail();
                 EmailNotif emailNotif = new EmailNotif(email, EmailNotif.APPOINTMENT_CONFIRMED, ADOPTION);
                 emailNotif.sendNotif();
 
@@ -79,7 +79,7 @@ public class AppointmentReqDialog extends MaterialAlertDialogBuilder {
                 multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+ADOPTION.getPetID()+"/status", "2");
                 mReference.updateChildren(multiNodeMap);
 
-                String email = AdminData.getUser(userID).getEmail();
+                String email = AdminData.fetchAccountFromLocal(activity, userID).getEmail();
                 Utility.dbLog("Declined appointment for " + email);
                 Toast.makeText(activity, "Appointment declined!", Toast.LENGTH_SHORT).show();
                 activity.onBackPressed();

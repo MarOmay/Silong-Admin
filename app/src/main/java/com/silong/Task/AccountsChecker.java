@@ -109,14 +109,14 @@ public class AccountsChecker extends AsyncTask {
                     catch (Exception e){
                         Utility.log("AccountChecker.dIB.: " + e.getMessage());
                     }
-                    AdminData.populateAccounts(activity);
+                    //AdminData.populateAccounts(activity);
                     updateAccountList();
                     sendBroadcast();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    AdminData.populateAccounts(activity);
+                    //AdminData.populateAccounts(activity);
                     sendBroadcast();
                 }
             });

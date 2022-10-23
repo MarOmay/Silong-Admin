@@ -290,7 +290,7 @@ public class AdminData {
 
     public static User fetchAccountFromLocal(Activity activity, String uid){
         User user = new User();
-
+        Address address = new Address();
         try{
             File file = new File(activity.getFilesDir(), "account-" + uid);
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -307,11 +307,23 @@ public class AdminData {
                     case "email": user.setEmail(temp[1]); break;
                     case "contact": user.setContact(temp[1]); break;
                     case "birthday" : user.setBirthday(temp[1]); break;
+                    case "addressLine" : address.setAddressLine(temp[1]); break;
+                    case "barangay" : address.setBarangay(temp[1]); break;
                     case "lastModified" : user.setLastModified(temp[1]); break;
                 }
 
             }
             bufferedReader.close();
+
+            user.setAddress(address);
+
+            //Read avatar
+            try{
+                user.setPhoto(BitmapFactory.decodeFile(activity.getFilesDir() + "/avatar-" + user.getUserID()));
+            }
+            catch (Exception e){
+                Utility.log("AdminData.pA: " + e.getMessage());
+            }
         }
         catch (Exception e){
             Utility.log("AdminData.fAFL: " + e.getMessage());
@@ -347,6 +359,14 @@ public class AdminData {
 
             }
             bufferedReader.close();
+
+            //Read avatar
+            try{
+                pet.setPhoto(BitmapFactory.decodeFile(activity.getFilesDir() + "/petpic-" + pet.getPetID()));
+            }
+            catch (Exception e){
+                Utility.log("AdminData.pR: " + e.getMessage());
+            }
         }
         catch (Exception e){
             Utility.log("AdminData.fRFL: " + e.getMessage());

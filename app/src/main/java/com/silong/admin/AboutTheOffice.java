@@ -12,6 +12,12 @@ public class AboutTheOffice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_the_office);
         getSupportActionBar().hide();
+
+        AdminData.populate(this);
+        AdminData.requests.clear();
+        AdminData.appointments.clear();
+        AdminData.pets.clear();
+        AdminData.users.clear();
     }
 
     public void back(View view) {

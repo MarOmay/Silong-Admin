@@ -139,7 +139,7 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
                             public void onSuccess(Void unused) {
 
                                 //send email notif
-                                String userEmail = AdminData.getUser(userID).getEmail();
+                                String userEmail = AdminData.fetchAccountFromLocal(activity, userID).getEmail();
                                 EmailNotif emailNotif = new EmailNotif(userEmail, EmailNotif.ADOPTION_SUCCESSFUL, ADOPTION);
                                 emailNotif.sendNotif();
 

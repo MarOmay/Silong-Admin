@@ -53,7 +53,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Request request = requests.get(position);
 
-        User user = AdminData.getUser(request.getUserID());
+        User user = AdminData.fetchAccountFromLocal(activity, request.getUserID());
 
         holder.requestUserName.setText(user.getFirstName() + " " + user.getLastName());
         holder.requestDate.setText(request.getDate());

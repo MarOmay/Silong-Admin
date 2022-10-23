@@ -50,6 +50,10 @@ public class RequestList extends AppCompatActivity {
         requestsRecycler.setHasFixedSize(true);
         requestsRecycler.setLayoutManager(new LinearLayoutManager(RequestList.this));
 
+        AdminData.populate(this);
+        AdminData.pets.clear();
+        AdminData.users.clear();
+
         loadRequestList();
         manualAddSearchListener();
 

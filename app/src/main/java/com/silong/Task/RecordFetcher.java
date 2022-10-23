@@ -107,7 +107,8 @@ public class RecordFetcher extends AsyncTask {
                             new ImageProcessor().saveToLocal(activity, bmp, "extrapic-" + id + "-2");
                         }
 
-                        AdminData.populateRecords(activity);
+                        //AdminData.populateRecords(activity);
+                        AdminData.pets.clear();
                     }
                     catch (Exception e){
                         Utility.log("RecordFetcher.dIB.oDC: " + e.getMessage());
