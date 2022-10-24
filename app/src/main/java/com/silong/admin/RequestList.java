@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 import com.silong.Adapter.RequestAdapter;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.Request;
+import com.silong.Operation.Utility;
 
 
 import java.util.Comparator;
@@ -49,6 +49,10 @@ public class RequestList extends AppCompatActivity {
 
         requestsRecycler.setHasFixedSize(true);
         requestsRecycler.setLayoutManager(new LinearLayoutManager(RequestList.this));
+
+        AdminData.populate(this);
+        AdminData.pets.clear();
+        AdminData.users.clear();
 
         loadRequestList();
         manualAddSearchListener();
@@ -91,10 +95,10 @@ public class RequestList extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(this, "Preparing resources...", Toast.LENGTH_SHORT).show();
-            Log.d("RequestList-lRL", e.getMessage());
+            Utility.log("RequestList: " + e.getMessage());
         }
 
-        RequestAdapter requestAdapter = new RequestAdapter(AdminData.requests, RequestList.this);
+        RequestAdapter requestAdapter = new RequestAdapter(RequestList.this);
         requestsRecycler.setAdapter(requestAdapter);
 
         loadingDialog.dismissLoadingDialog();

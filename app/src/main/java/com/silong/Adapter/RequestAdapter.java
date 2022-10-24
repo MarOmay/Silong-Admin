@@ -19,6 +19,7 @@ import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Adoption;
 import com.silong.Object.Request;
 import com.silong.Object.User;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.ManageAccount;
 import com.silong.admin.R;
@@ -29,13 +30,9 @@ import java.util.ArrayList;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder>{
 
-    ArrayList<Request> requests;
-    Context context;
-    Activity activity;
+    private Activity activity;
 
-    public RequestAdapter(ArrayList<Request> requests, RequestList activity){
-        this.requests = requests;
-        this.context = activity;
+    public RequestAdapter(Activity activity){
         this.activity = activity;
     }
 
@@ -50,9 +47,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Request request = requests.get(position);
+        final Request request = AdminData.requests.get(position);
 
-        User user = AdminData.getUser(request.getUserID());
+        User user = AdminData.fetchAccountFromLocal(activity, request.getUserID());
 
         holder.requestUserName.setText(user.getFirstName() + " " + user.getLastName());
         holder.requestDate.setText(request.getDate());
@@ -103,7 +100,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                             s += "\nTime: " + dt[1].replace("*",":") + dt[2];
                             Adoption adoption = new Adoption();
                             adoption.setPetID(Integer.parseInt(request.getRequestDetails()));
-                            adoption.setAppointmentDate(dt[0] + " " + dt[1].replace("*",":") + dt[2]);
+                            adoption.setAppointmentDate(dt[0] + " " + dt[1].replace("*",":") + " "+ dt[2]);
+                            adoption.setDateRequested(request.getDate());
                             AppointmentReqDialog appointmentReqDialog = new AppointmentReqDialog(activity, s, user.userID, adoption);
                             appointmentReqDialog.show();
                             break;
@@ -117,7 +115,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 }
                 catch (Exception e){
                     Toast.makeText(activity, "Operation can't be performed.", Toast.LENGTH_SHORT).show();
-                    Log.d("ReqA-oBVH", e.getMessage());
+                    Utility.log("RequestAdapter.oBVH: " + e.getMessage());
                 }
 
             }
@@ -126,7 +124,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return requests.size();
+        return AdminData.requests.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

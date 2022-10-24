@@ -3,7 +3,6 @@ package com.silong.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -15,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.EnumClass.RequestCode;
 import com.silong.Object.Request;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.Dashboard;
 
@@ -32,7 +32,6 @@ public class ActivationRequestFetcher extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try{
-            Log.d("DEBUGGER>>>", "ARF started ");
 
             mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
             mReference = mDatabase.getReference().child("accountStatusRequests");
@@ -60,7 +59,6 @@ public class ActivationRequestFetcher extends AsyncTask {
 
                         AdminData.requests.add(request);
 
-                        Log.d("DEBUGGER>>>", "details " + details);
                     }
 
                     //send broadcast to show/hide red dot
@@ -73,17 +71,18 @@ public class ActivationRequestFetcher extends AsyncTask {
 
                     Dashboard.actReqDone = true;
                     Dashboard.checkCompletion();
+
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("ARF.dIB.oC: " + error.getMessage());
                 }
             });
 
         }
         catch (Exception e){
-            Log.d("ARF-dIB", e.getMessage());
+            Utility.log("ARF.dIB: " + e.getMessage());
         }
 
         return null;

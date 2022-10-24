@@ -94,12 +94,8 @@ public class Spreadsheet {
 
             FileOutputStream out = new FileOutputStream(new File(dir, filename));
 
-            //Utility.log("out: " + new File(dir, filename).getAbsolutePath());
-
             workbook.write(out);
             out.close();
-
-            //for (File f : activity.getFilesDir().listFiles()) Utility.log("inDir: " + f.getAbsolutePath());
 
             return true;
 
@@ -127,8 +123,6 @@ public class Spreadsheet {
                 emailNotif.sendWithAttachment();
 
             }
-
-            //Utility.log("tempFile: " + tempfile.getAbsolutePath());
 
             Toast.makeText(activity, "You will be notified shortly.", Toast.LENGTH_SHORT).show();
 

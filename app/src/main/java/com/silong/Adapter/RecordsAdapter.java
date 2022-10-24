@@ -13,17 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.silong.CustomView.ImageDialog;
 import com.silong.CustomView.PetInfoDialog;
-import com.silong.Object.PetRecordsData;
+import com.silong.EnumClass.Gender;
+import com.silong.EnumClass.PetAge;
+import com.silong.EnumClass.PetColor;
+import com.silong.EnumClass.PetSize;
+import com.silong.EnumClass.PetType;
+import com.silong.Object.Pet;
 import com.silong.Operation.Utility;
+import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder>{
 
-    PetRecordsData petRecordsData[];
     Activity activity;
 
-    public RecordsAdapter(PetRecordsData[] petRecordsData, Activity activity){
-        this.petRecordsData = petRecordsData;
+    public RecordsAdapter(Activity activity){
         this.activity = activity;
     }
 
@@ -38,19 +42,62 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final PetRecordsData petRecordsDataList = petRecordsData[position];
-        holder.genderType.setText(petRecordsDataList.getGenderType());
-        holder.estAge.setText(petRecordsDataList.getEstAge());
-        holder.estSize.setText(petRecordsDataList.getEstSize());
-        holder.petColor.setText(petRecordsDataList.getPetColor());
-        holder.petPic.setImageBitmap(petRecordsDataList.getPetpic());
-        holder.petID.setText("ID: " + petRecordsDataList.getPetID());
+        final Pet pet = AdminData.pets.get(position);
+
+        //translate gender and type
+        String genderType = "";
+        switch (pet.getGender()){
+            case Gender.MALE: genderType = "Male"; break;
+            case Gender.FEMALE: genderType = "Female"; break;
+        }
+        switch (pet.getType()){
+            case PetType.DOG: genderType += " Dog"; break;
+            case PetType.CAT: genderType += " Cat"; break;
+        }
+
+        //translate age
+        String age = "";
+        switch (pet.getAge()){
+            case PetAge.PUPPY: age = (pet.getType() == PetType.DOG ? "Puppy" : "Kitten"); break;
+            case PetAge.YOUNG: age = "Young"; break;
+            case PetAge.OLD: age = "Old"; break;
+        }
+
+        //translate color
+        String color = "";
+        for (char c : pet.getColor().toCharArray()){
+            switch (Integer.parseInt(c+"")){
+                case PetColor.BLACK: color += "Black "; break;
+                case PetColor.BROWN: color += "Brown "; break;
+                case PetColor.CREAM: color += "Cream "; break;
+                case PetColor.WHITE: color += "White "; break;
+                case PetColor.ORANGE: color += "Orange "; break;
+                case PetColor.GRAY: color += "Gray "; break;
+            }
+        }
+        color.trim();
+        color.replace(" ", " / ");
+
+        //translate size
+        String size = "";
+        switch (pet.getSize()){
+            case PetSize.SMALL: size = "Small"; break;
+            case PetSize.MEDIUM: size = "Medium"; break;
+            case PetSize.LARGE: size = "Large"; break;
+        }
+
+        holder.genderType.setText(genderType);
+        holder.estAge.setText(age);
+        holder.estSize.setText(size);
+        holder.petColor.setText(color);
+        holder.petPic.setImageBitmap(pet.getPhoto());
+        holder.petID.setText("ID: " + pet.getPetID());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    PetInfoDialog petInfoDialog = new PetInfoDialog(activity, petRecordsDataList.getPetID());
+                    PetInfoDialog petInfoDialog = new PetInfoDialog(activity, pet.getPetID());
                     petInfoDialog.show();
                 }
                 catch (Exception e){
@@ -71,7 +118,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return petRecordsData.length;
+        return AdminData.pets.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

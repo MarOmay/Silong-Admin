@@ -61,7 +61,7 @@ public class AdoptionHistoryFetcher extends AsyncTask {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-
+                                    Utility.log("AHF.dIB.oC: " + error.getMessage());
                                 }
                             });
                         }
@@ -77,7 +77,7 @@ public class AdoptionHistoryFetcher extends AsyncTask {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("AHF.dIB.oC: " + error.getMessage());
                 }
             });
         }

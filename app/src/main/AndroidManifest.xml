@@ -92,10 +92,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Messages"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".RequestList"
             android:exported="false"
             android:screenOrientation="portrait" />

@@ -109,6 +109,7 @@ public class ContactInformation extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     loadingDialog.dismissLoadingDialog();
+                    Utility.log("ContactInfo.fCIFC.oC: " + error.getMessage());
                 }
             });
 
@@ -190,6 +191,7 @@ public class ContactInformation extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception e) {
                                     Toast.makeText(getApplicationContext(), "Failed to update", Toast.LENGTH_SHORT).show();
                                     loadingDialog.dismissLoadingDialog();
+                                    Utility.log("ContactInfo.mCR.oC: " + e.getMessage());
                                 }
                             });
                 }

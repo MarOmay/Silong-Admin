@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -24,7 +23,6 @@ public class AccountFetcher extends AsyncTask {
     private Activity activity;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
 
     public AccountFetcher(String uid, Activity activity){
         this.activity = activity;
@@ -75,23 +73,23 @@ public class AccountFetcher extends AsyncTask {
 
                         Bitmap bitmap = new ImageProcessor().toBitmap(photo);
                         new ImageProcessor().saveToLocal(activity, bitmap, "avatar-" + uid);
-                        AdminData.populateAccounts(activity);
+                        //AdminData.populateAccounts(activity);
                         updateAccountList();
                     }
                     catch (Exception e){
-                        Log.d("DEBUGGER>>>", e.getMessage());
+                        Utility.log("AccountFetcher.dIB: " + e.getMessage());
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("AccountFetcher.dIB: " + error.getMessage());
                 }
             });
 
         }
         catch (Exception e){
-            Log.d("AF-dIB", e.getMessage());
+            Utility.log("AccountFetcher.dIB: " + e.getMessage());
         }
         return null;
     }

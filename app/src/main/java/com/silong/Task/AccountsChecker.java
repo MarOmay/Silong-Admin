@@ -3,7 +3,6 @@ package com.silong.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -14,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.Object.User;
+import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.Dashboard;
 
@@ -88,7 +88,7 @@ public class AccountsChecker extends AsyncTask {
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
-
+                                            Utility.log("AccountChecker.dIB.oC: " + error.getMessage());
                                         }
                                     });
                                 }
@@ -107,22 +107,22 @@ public class AccountsChecker extends AsyncTask {
                         Dashboard.checkCompletion();
                     }
                     catch (Exception e){
-                        Log.d("AC-dIB", e.getMessage());
+                        Utility.log("AccountChecker.dIB.: " + e.getMessage());
                     }
-                    AdminData.populateAccounts(activity);
+                    //AdminData.populateAccounts(activity);
                     updateAccountList();
                     sendBroadcast();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    AdminData.populateAccounts(activity);
+                    //AdminData.populateAccounts(activity);
                     sendBroadcast();
                 }
             });
         }
         catch (Exception e){
-            Log.d("AC-dIB", "RTDB error");
+            Utility.log("AccountChecker.dIB.: " + e.getMessage());
         }
         return null;
     }
@@ -155,7 +155,7 @@ public class AccountsChecker extends AsyncTask {
                 file.delete();
             }
             catch (Exception e){
-                Log.d("AC-cLR", e.getMessage());
+                Utility.log("AccountChecker.cLR.: " + e.getMessage());
             }
         }
 

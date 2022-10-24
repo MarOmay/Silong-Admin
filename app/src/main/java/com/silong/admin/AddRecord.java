@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -70,7 +69,6 @@ public class AddRecord extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_record);
         getSupportActionBar().hide();
-        //heheheh testing lang
 
         //Initialize Firebase objects
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
@@ -534,11 +532,6 @@ public class AddRecord extends AppCompatActivity {
     private void incrementCounter(int n){
         mReference = mDatabase.getReference("Pets").child("counter");
         mReference.setValue(n);
-    }
-
-    private void updateRecordList(){
-        Intent intent = new Intent("update-record-list");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     public void back(View view){

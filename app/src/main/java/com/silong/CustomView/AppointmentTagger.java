@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +30,6 @@ import com.silong.Operation.EmailNotif;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
-import com.silong.admin.AppointmentsList;
 import com.silong.admin.R;
 
 import java.io.File;
@@ -109,39 +110,65 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
 
         this.ADOPTION = adoption;
 
+        //prepare data
+        String appointmentDate = dateTime[0];
+        String appointmentTime = dateTime[1].replace(":","*") + " " + dateTime[2];
+        Map<String, Object> multiNodeMap = new HashMap<>();
+        multiNodeMap.put("adoptionRequest/"+userID+"/dateRequested", ADOPTION.getDateRequested());
+        Utility.log("AppointmentTagger: dateRequested - " + ADOPTION.getDateRequested());
+        multiNodeMap.put("adoptionRequest/"+userID+"/petID", ADOPTION.getPetID());
+        multiNodeMap.put("adoptionRequest/"+userID+"/appointmentDate", appointmentDate);
+        multiNodeMap.put("adoptionRequest/"+userID+"/appointmentTime", appointmentTime);
+        multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+ADOPTION.getPetID()+"/dateRequested", ADOPTION.getDateRequested());
+
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         super.setPositiveButton(Html.fromHtml("<b>"+"YES"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                //update adoptionRequest
-                DatabaseReference sRef = mDatabase.getReference().child("adoptionRequest").child(userID).child("status");
-                sRef.setValue("5");
+                //update RTDB
+                multiNodeMap.put("Users/"+userID+"/cancellation/", 0);
+                multiNodeMap.put("adoptionRequest/"+userID+"/status", "5");
+                multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+ADOPTION.getPetID()+"/status", 5);
 
-                //reset cancellation counter
-                DatabaseReference cRef = mDatabase.getReference().child("Users").child(userID).child("cancellation");
-                cRef.setValue(0);
+                DatabaseReference mRef = mDatabase.getReference();
+                mRef.updateChildren(multiNodeMap)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
 
-                //send email notif
-                String userEmail = AdminData.getUser(userID).getEmail();
-                EmailNotif emailNotif = new EmailNotif(userEmail, EmailNotif.ADOPTION_SUCCESSFUL, ADOPTION);
-                emailNotif.sendNotif();
+                                //send email notif
+                                String userEmail = AdminData.fetchAccountFromLocal(activity, userID).getEmail();
+                                EmailNotif emailNotif = new EmailNotif(userEmail, EmailNotif.ADOPTION_SUCCESSFUL, ADOPTION);
+                                emailNotif.sendNotif();
 
-                Toast.makeText(activity, "Appointment confirmed!", Toast.LENGTH_SHORT).show();
-                for (AppointmentRecords ap : AdminData.appointments){
-                    if (ap.getUserID().equals(userID))
-                        AdminData.appointments.remove(ap);
-                }
-                activity.onBackPressed();
+                                Toast.makeText(activity, "Appointment confirmed!", Toast.LENGTH_SHORT).show();
+                                for (AppointmentRecords ap : AdminData.appointments){
+                                    if (ap.getUserID().equals(userID))
+                                        AdminData.appointments.remove(ap);
+                                }
+                                activity.onBackPressed();
 
-                Utility.dbLog("Tagged adoption as done. Client: " + name);
+                                Utility.dbLog("Tagged adoption as done. Client: " + name);
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(activity, "Failed to process request", Toast.LENGTH_SHORT).show();
+                                Utility.log("AppointmentTagger: " + e.getMessage());
+                            }
+                        });
+
             }
         });
-        super.setNegativeButton(Html.fromHtml("<b>"+"NO"+"</b>"), new DialogInterface.OnClickListener() {
+        super.setNegativeButton(Html.fromHtml("<b>"+"DELETE"+"</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //codes here
+                AppointmentCancel appointmentCancel = new AppointmentCancel(activity, userID, ADOPTION);
+                appointmentCancel.show();
             }
         });
 

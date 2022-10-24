@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -23,7 +22,7 @@ import android.widget.Toast;
 import com.silong.Adapter.AccountAdapter;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.Object.User;
-import com.silong.Object.UserAccountData;
+import com.silong.Operation.Utility;
 
 import java.util.Comparator;
 
@@ -64,6 +63,11 @@ public class ManageAccount extends AppCompatActivity {
         accountsRecycler.setHasFixedSize(true);
         accountsRecycler.setLayoutManager(new LinearLayoutManager(ManageAccount.this));
 
+        AdminData.populate(this);
+        AdminData.populateAccounts(this);
+        AdminData.requests.clear();
+        AdminData.pets.clear();
+
         loadAccountList();
         manualAddSearchListener();
 
@@ -77,7 +81,7 @@ public class ManageAccount extends AppCompatActivity {
             finish();
         }
         catch (Exception e){
-            Log.d("ManageAccount", "No account forwarded");
+            Utility.log("ManageAccount: (No account forwarded)" + e.getMessage());
         }
 
     }
@@ -127,17 +131,10 @@ public class ManageAccount extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(this, "Preparing resources...", Toast.LENGTH_SHORT).show();
-            Log.d("ManageAccount", e.getMessage());
+            Utility.log("ManageAccount.lAL: " + e.getMessage());
         }
 
-        UserAccountData[] accountData = new UserAccountData[AdminData.users.size()];
-
-        for (User user : AdminData.users){
-            String name = user.getFirstName() + " " + user.getLastName();
-            accountData[AdminData.users.indexOf(user)] = new UserAccountData(user.getUserID(), name, user.getEmail(), user.getPhoto());
-        }
-
-        AccountAdapter accountAdapter = new AccountAdapter(accountData, ManageAccount.this);
+        AccountAdapter accountAdapter = new AccountAdapter(ManageAccount.this);
         accountsRecycler.setAdapter(accountAdapter);
 
         loadingDialog.dismissLoadingDialog();

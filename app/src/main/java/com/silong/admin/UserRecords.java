@@ -292,7 +292,7 @@ public class UserRecords extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("UserRecords.extractUsers: " + error.getMessage());
                 }
             });
 
@@ -354,13 +354,13 @@ public class UserRecords extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Utility.log("UserRecords.eUI: " + error.getMessage());
                 }
             });
 
         }
         catch (Exception e){
-            Utility.log("AdoptionRecords.ePI: " + e.getMessage());
+            Utility.log("UserRecords.eUI: " + e.getMessage());
         }
     }
 

@@ -75,11 +75,11 @@ public class Splash extends AppCompatActivity {
         Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isFirstRun",true);
 
-        if (isFirstRun) {
-            AdminData.logout();
-            FirebaseAuth.getInstance().signOut();
-            setNotFirstRun();
-        }
+            if (isFirstRun) {
+                AdminData.logout();
+                FirebaseAuth.getInstance().signOut();
+                setNotFirstRun();
+            }
 
     }
 

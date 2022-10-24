@@ -1,10 +1,8 @@
 package com.silong.admin;
 
-
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,7 +54,7 @@ public class ProcessSignUp extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(ProcessSignUp.this, "There is a problem registering your email.", Toast.LENGTH_SHORT).show();
-            Log.d("ProcessSignUp", e.getMessage());
+            Utility.log("PSU: " + e.getMessage());
             backToSignUp();
         }
     }
@@ -83,7 +81,7 @@ public class ProcessSignUp extends AppCompatActivity {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
                                                     Toast.makeText(ProcessSignUp.this, "Database error. PSU", Toast.LENGTH_SHORT).show();
-                                                    Log.d("PSU", e.getMessage());
+                                                    Utility.log("PSU: " + e.getMessage());
                                                     //Bring admin back to sign up page, and autofill the data
                                                     backToSignUp();
                                                 }
@@ -91,7 +89,7 @@ public class ProcessSignUp extends AppCompatActivity {
                                 }
                                 catch (Exception e){
                                     Toast.makeText(ProcessSignUp.this, "There is a problem getting you signed up.", Toast.LENGTH_SHORT).show();
-                                    Log.d("ProcessSignUp", e.getMessage());
+                                    Utility.log("PSU: " + e.getMessage());
                                     backToSignUp();
                                 }
 
@@ -104,6 +102,9 @@ public class ProcessSignUp extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+
+                            Utility.log("PSU: " + e.getMessage());
+
                             if (!Utility.internetConnection(getApplicationContext())){
                                 Toast.makeText(ProcessSignUp.this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
                             }
@@ -121,6 +122,7 @@ public class ProcessSignUp extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(this, "Something went wrong. (PSU)", Toast.LENGTH_SHORT).show();
+            Utility.log("PSU: " + e.getMessage());
             onBackPressed();
         }
     }
@@ -147,8 +149,6 @@ public class ProcessSignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Utility.dbLog("Create new Admin account: " + ADMIN.getAdminEmail());
-
-                        //mAuth.signOut();
                         Toast.makeText(ProcessSignUp.this, "New Admin account created for " + ADMIN.getAdminEmail(), Toast.LENGTH_LONG).show();
                         finish();
                     }
@@ -156,6 +156,9 @@ public class ProcessSignUp extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+
+                        Utility.log("PSU: " + e.getMessage());
+
                         if (!Utility.internetConnection(getApplicationContext())){
                             Toast.makeText(ProcessSignUp.this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
                         }

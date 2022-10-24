@@ -24,7 +24,6 @@ public class LoadingDialog {
     //loading dialog for short waiting screens
     public void startLoadingDialog(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme);
-        //builder.setBackground(getDrawable(activity, R.drawable.dialog_bg));
         builder.setCancelable(false);
 
         ProgressBar pBar = new ProgressBar(activity);

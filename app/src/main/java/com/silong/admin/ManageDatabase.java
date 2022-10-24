@@ -40,6 +40,7 @@ public class ManageDatabase extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_database);
         getSupportActionBar().hide();
+
         //to adopt status bar to the pink header
         Window window = this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.pink));

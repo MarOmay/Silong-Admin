@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.Html;
-import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 

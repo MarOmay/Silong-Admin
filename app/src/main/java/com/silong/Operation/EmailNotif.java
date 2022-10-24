@@ -2,7 +2,6 @@ package com.silong.Operation;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.util.Log;
 import com.silong.Object.Adoption;
 import com.silong.admin.AdminData;
 
@@ -98,8 +97,6 @@ public class EmailNotif {
     boolean sent = false;
     public boolean sendNotif(){
 
-        Log.d("DEBUGGER>>>", "Sending email");
-
         //try sending the email
         try{
             //set properties
@@ -137,7 +134,7 @@ public class EmailNotif {
                     }
                     catch (Exception ex){
                         sent = false;
-                        Log.d("DEBUGGER>>>", "EmailNotif - thread: " + ex.getMessage());
+                        Utility.log("EmailNotif.sEA: " + ex.getMessage());
                     }
                 }
             });
@@ -152,7 +149,6 @@ public class EmailNotif {
     }
 
     public void sendEmailApproval(){
-        Log.d("DEBUGGER>>>", "Sending email sendEmailApproval");
 
         //try sending the email
         try{
@@ -213,7 +209,7 @@ public class EmailNotif {
                     }
                     catch (Exception ex){
                         sent = false;
-                        Log.d("DEBUGGER>>>", "EmaiLNotif.sEA: " + ex.getMessage());
+                        Utility.log("EmailNotif.sEA: " + ex.getMessage());
                     }
                 }
             });
@@ -222,7 +218,7 @@ public class EmailNotif {
 
         }
         catch (Exception e){
-            Log.d("DEBUGGER>>>", "EmaiLNotif.sEA: " + e.getMessage());
+            Utility.log("EmailNotif.sEA: " + e.getMessage());
         }
     }
 

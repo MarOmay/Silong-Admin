@@ -8,8 +8,6 @@ import android.widget.DatePicker;
 
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Calendar;
-
 public class ReschedDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private Context context;
@@ -30,6 +28,7 @@ public class ReschedDatePicker extends DialogFragment implements DatePickerDialo
         int day = Integer.valueOf(date[1]);
 
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
+
         return  dialog;
     }
 

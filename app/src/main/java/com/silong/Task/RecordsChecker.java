@@ -3,7 +3,6 @@ package com.silong.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 
 import androidx.annotation.NonNull;
@@ -125,13 +124,15 @@ public class RecordsChecker extends AsyncTask {
                     catch (Exception e){
                         Utility.log("RecordsChecker.dIB: " + e.getMessage());
                     }
-                    AdminData.populateRecords(activity);
+                    //AdminData.populateRecords(activity);
                     sendBroadcast();
+
+                    AdminData.pets.clear();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    AdminData.populateRecords(activity);
+                    //AdminData.populateRecords(activity);
                     sendBroadcast();
                     Utility.log("RecordsChecker.dIB.oC: " + error.getMessage());
                 }

@@ -9,9 +9,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -73,7 +73,7 @@ public class Dashboard extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mRequestsNotify, new IntentFilter("ARF-sb-notify"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mAppointmentNotify, new IntentFilter("AF-sb-notify"));
 
-        AdminData.populateRecords(this);
+        //AdminData.populateRecords(this);
 
         for (File file : getFilesDir().listFiles()){
             Utility.log("Dashboard.oC- FileInDir:" + file.getAbsolutePath());
@@ -98,6 +98,8 @@ public class Dashboard extends AppCompatActivity {
         logoutTv = findViewById(R.id.logoutTv);
 
         AdminData.populate(this);
+        AdminData.users.clear();
+        AdminData.pets.clear();
 
         //Update local copies
         startSync();
@@ -234,6 +236,10 @@ public class Dashboard extends AppCompatActivity {
     private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
+            AdminData.populate(Dashboard.this);
+            AdminData.users.clear();
+            AdminData.pets.clear();
+
             startSync();
             dashboardRefresher.setRefreshing(false);
         }

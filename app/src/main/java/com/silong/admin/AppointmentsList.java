@@ -2,8 +2,6 @@ package com.silong.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -27,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.silong.Adapter.AppointmentAdapter;
 import com.silong.CustomView.LoadingDialog;
-import com.silong.CustomView.ReschedDatePicker;
 import com.silong.CustomView.ReschedTimePicker;
 import com.silong.CustomView.RescheduleDatePicker;
 import com.silong.CustomView.RescheduleDialog;
@@ -62,6 +58,7 @@ public class AppointmentsList extends AppCompatActivity {
         //register receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mRescheduleReceiver, new IntentFilter("reschedule-trigger"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mSetNewSchedReceiver, new IntentFilter("reschedule-set"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mCancelAppointmentReceiver, new IntentFilter("cancel-request"));
 
         //initialize Firebase objects
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
@@ -96,18 +93,8 @@ public class AppointmentsList extends AppCompatActivity {
             Utility.log("AppointmentsList.lA: " + e.getMessage());
         }
 
-        int listSize = AdminData.appointments.size();
-
-        //make a copy of appointments
-        AppointmentRecords [] appointmentRecords = new AppointmentRecords[listSize];
-        for (int i = 0; i < listSize; i++){
-            AppointmentRecords ar = AdminData.appointments.get(i);
-            appointmentRecords[i] = new AppointmentRecords(ar.getName(), ar.getDateTime(), ar.getPetId(), ar.getUserPic(), ar.getUserID());
-            Utility.log("AppointmentsList.lA: Added appointment - " + ar.getName());
-        }
-
         //set appointmentRecycler adapter
-        AppointmentAdapter appointmentAdapter = new AppointmentAdapter(appointmentRecords, AppointmentsList.this);
+        AppointmentAdapter appointmentAdapter = new AppointmentAdapter(AppointmentsList.this);
         appointmentRecycler.setAdapter(appointmentAdapter);
 
         loadingDialog.dismissLoadingDialog();
@@ -127,9 +114,8 @@ public class AppointmentsList extends AppCompatActivity {
                 rescheduleDialog.reschedDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //ReschedDatePicker reschedDatePicker = new ReschedDatePicker(AppointmentsList.this, rescheduleDialog);
-                        //reschedDatePicker.show(getSupportFragmentManager(), null);
-                        DialogFragment newFragment = new RescheduleDatePicker();
+                        RescheduleDatePicker newFragment = new RescheduleDatePicker();
+                        newFragment.setRd(rescheduleDialog);
                         newFragment.show(getSupportFragmentManager(), "datePicker");
                     }
                 });
@@ -169,8 +155,6 @@ public class AppointmentsList extends AppCompatActivity {
                 map.put("appointmentDate", date);
                 map.put("appointmentTime", time);
 
-                Utility.log("AppointmentsList.mSNSR: PetID-" + petID);
-
                 //upload data
                 DatabaseReference mRef = mDatabase.getReference("adoptionRequest").child(userID);
                 mRef.updateChildren(map)
@@ -180,7 +164,7 @@ public class AppointmentsList extends AppCompatActivity {
                                 String dateTime = date.replace("-","/") + " " + time.replace("*", ":");
 
                                 try {
-                                    String email = AdminData.getUser(userID).getEmail();
+                                    String email = AdminData.fetchAccountFromLocal(AppointmentsList.this, userID).getEmail();
                                     Adoption adoption = new Adoption();
                                     adoption.setAppointmentDate(dateTime);
                                     adoption.setPetID(Integer.valueOf(petID));
@@ -198,6 +182,7 @@ public class AppointmentsList extends AppCompatActivity {
 
                                         int index = AdminData.appointments.indexOf(ar);
                                         AppointmentRecords appRec = new AppointmentRecords();
+                                        appRec.setDateRequested(ar.getDateRequested());
                                         appRec.setName(ar.getName());
                                         appRec.setUserPic(ar.getUserPic());
                                         appRec.setUserID(ar.getUserID());
@@ -235,6 +220,48 @@ public class AppointmentsList extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver mCancelAppointmentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            LoadingDialog loadingDialog = new LoadingDialog(AppointmentsList.this);
+            loadingDialog.startLoadingDialog();
+
+            String userID = intent.getStringExtra("userID");
+            String petID = intent.getStringExtra("petID");
+            String date = intent.getStringExtra("date");
+
+            Map<String, Object> multiNodeMap = new HashMap<>();
+            multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+petID+"/dateRequested", date);
+            multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+petID+"/status", 7);
+            multiNodeMap.put("adoptionRequest/"+userID+"/dateRequested", date);
+            multiNodeMap.put("adoptionRequest/"+userID+"/petID", petID);
+            multiNodeMap.put("adoptionRequest/"+userID+"/status", "7");
+            multiNodeMap.put("recordSummary/"+petID, 0);
+            multiNodeMap.put("Pets/"+petID+"/status", 0);
+
+            DatabaseReference mReference = mDatabase.getReference();
+            mReference.updateChildren(multiNodeMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(AppointmentsList.this, "Adoption Request Cancelled", Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
+                            onBackPressed();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AppointmentsList.this, "Operation failed", Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
+                            Utility.log("AppointmentList.mCAR.oF: " + e.getMessage());
+                        }
+                    });
+
+        }
+    };
+
     public void onPressedBack(View view){
         onBackPressed();
     }
@@ -251,6 +278,7 @@ public class AppointmentsList extends AppCompatActivity {
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRescheduleReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mSetNewSchedReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mCancelAppointmentReceiver);
         super.onDestroy();
     }
 }

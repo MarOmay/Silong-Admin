@@ -14,9 +14,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.silong.Adapter.AgreementAdapter;
 import com.silong.Object.AgreementData;
 import com.silong.Operation.Utility;
@@ -29,9 +26,6 @@ public class AdoptionAgreement extends AppCompatActivity {
 
     RecyclerView adoptionAgreementRecycler;
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
-
     public static ArrayList<AgreementData> AGREEMENT_DATA = new ArrayList<>();
 
     @Override
@@ -39,9 +33,6 @@ public class AdoptionAgreement extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adoption_agreement);
         getSupportActionBar().hide();
-
-        //initialize Firebase objects
-        mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         //register receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mReloadReceiver, new IntentFilter("refresh-agreement"));

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
@@ -64,8 +63,8 @@ public class RequestInformation extends AppCompatActivity {
             String petID = getIntent().getStringExtra("petID");
             DATE = getIntent().getStringExtra("dateRequested");
 
-            USER = AdminData.getUser(userID);
-            PET = AdminData.getPet(petID);
+            USER = AdminData.fetchAccountFromLocal(this, userID);
+            PET = AdminData.fetchRecordFromLocal(this, petID);
 
             if (USER == null){
                 Toast.makeText(this, "Error: Account is invalid", Toast.LENGTH_SHORT).show();
@@ -80,7 +79,7 @@ public class RequestInformation extends AppCompatActivity {
 
         }
         catch (Exception e){
-            Log.d("DEBUGGER>>>", "Failed to get userID or petID");
+            Utility.log("RequestInfo: " + e.getMessage());
             gotoDashboard();
         }
 
@@ -167,7 +166,7 @@ public class RequestInformation extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(this, "Action can't be performed.", Toast.LENGTH_SHORT).show();
-            Log.d("ReqInfo", e.getMessage());
+            Utility.log("RequestInfo: " + e.getMessage());
         }
     }
 
@@ -179,14 +178,6 @@ public class RequestInformation extends AppCompatActivity {
         adoption.setPetID(Integer.parseInt(PET.getPetID()));
         EmailNotif emailNotif = new EmailNotif(USER.getEmail(), EmailNotif.DECLINED, adoption);
         emailNotif.sendNotif();
-
-        /*
-        //archive to user's RTDB
-        DatabaseReference tempRef = mDatabase.getReference().child("Users").child(USER.getUserID()).child("adoptionHistory").child(PET.getPetID());
-        Map<String, Object> map = new HashMap<>();
-        map.put("dateRequested", DATE);
-        map.put("status", 7); //7 == DECLINED
-        tempRef.updateChildren(map);*/
 
         Utility.dbLog("Declined application. User:" + USER.getEmail() + " PetID:" + PET.getPetID());
     }
@@ -239,21 +230,6 @@ public class RequestInformation extends AppCompatActivity {
                     }
                 });
 
-        /*
-        //change status of request in RTDB
-        Map<String, Object> map = new HashMap<>();
-        map.put("dateRequested", DATE);
-        map.put("petID", String.valueOf(PET.getPetID()));
-        map.put("status", status);
-        mReference = mDatabase.getReference().child("adoptionRequest").child(USER.getUserID());
-        mReference.updateChildren(map);
-
-        //change status of Pet in RTDB
-        mReference = mDatabase.getReference().child("recordSummary").child(PET.getPetID());
-        mReference.setValue(status.equals("2") ? null : 0);
-
-        mReference = mDatabase.getReference().child("Pets").child(PET.getPetID()).child("status");
-        mReference.setValue(status.equals("2") ? 2 : 0);*/
     }
 
     private void gotoDashboard(){

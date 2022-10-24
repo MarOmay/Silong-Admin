@@ -9,7 +9,6 @@ import android.graphics.Matrix;
 
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;

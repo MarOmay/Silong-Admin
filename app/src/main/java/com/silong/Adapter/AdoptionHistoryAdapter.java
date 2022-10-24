@@ -9,17 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.silong.Object.Admin;
 import com.silong.Object.Adoption;
 import com.silong.admin.R;
 import com.silong.admin.UserInformation;
 
-import org.w3c.dom.Text;
-
 public class AdoptionHistoryAdapter extends RecyclerView.Adapter<AdoptionHistoryAdapter.ViewHolder> {
 
-    Adoption[] adoption;
-    Context context;
+    private Adoption[] adoption;
+    private Context context;
 
     public AdoptionHistoryAdapter(Adoption[] adoption, UserInformation activity){
         this.adoption = adoption;
