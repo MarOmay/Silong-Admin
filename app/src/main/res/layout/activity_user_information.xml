@@ -43,6 +43,7 @@
             android:layout_height="30dp"
             android:layout_weight="1.35"
             android:src="@drawable/reset_counter"
+            android:alpha="0"
             app:tint="@color/whitey" />
 
     </LinearLayout>
@@ -178,6 +179,16 @@
                                 android:textSize="17sp" />
 
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/resetCancelCounter"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Reset Cancellation Counter"
+                            android:textAlignment="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/pink"/>
 
                     </LinearLayout>
 

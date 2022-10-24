@@ -35,8 +35,8 @@ import java.util.Comparator;
 public class UserInformation extends AppCompatActivity {
 
     SwitchMaterial disableSw;
-    ImageView profileIv, genderIv, accountBackIv, resetCounter;
-    TextView nameTv, emailTv, contactTv;
+    ImageView profileIv, genderIv, accountBackIv;
+    TextView nameTv, emailTv, contactTv, resetCancelCounter;
     RecyclerView adoptionHistoryRecycler;
 
     public static ArrayList<Adoption> ADOPTIONS = new ArrayList<>();
@@ -75,7 +75,7 @@ public class UserInformation extends AppCompatActivity {
         emailTv = (TextView) findViewById(R.id.emailTv);
         contactTv = (TextView) findViewById(R.id.contactTv);
         adoptionHistoryRecycler = findViewById(R.id.adoptionHistoryRecycler);
-        resetCounter = findViewById(R.id.resetCounter);
+        resetCancelCounter = findViewById(R.id.resetCancelCounter);
 
         adoptionHistoryRecycler.setHasFixedSize(true);
         adoptionHistoryRecycler.setLayoutManager(new LinearLayoutManager(UserInformation.this));
