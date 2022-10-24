@@ -38,12 +38,11 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/accountCreateIv"
+            android:id="@+id/resetCounter"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1.35"
-            android:alpha="0"
-            android:src="@drawable/ic_round_add_24"
+            android:src="@drawable/reset_counter"
             app:tint="@color/whitey" />
 
     </LinearLayout>
