@@ -78,8 +78,14 @@ public class AdminData {
                     case "userID": adminID = temp[1]; break;
                     case "email": adminEmail = temp[1]; break;
                     case "firstName": firstName = temp[1];
-                        TextView tv = activity.findViewById(R.id.adminFnameTv);
-                        tv.setText(AdminData.firstName); break;
+                        try{
+                            TextView tv = activity.findViewById(R.id.adminFnameTv);
+                            tv.setText(AdminData.firstName);
+                        }
+                        catch (Exception e){
+                            Utility.log("AdminData.populate: " + e.getMessage());
+                        }
+                        break;
                     case "lastName": lastName = temp[1]; break;
                     case "contact": contact = temp[1]; break;
                     case "role_manageRequests": role_manageRequests = Boolean.parseBoolean(temp[1]); break;
