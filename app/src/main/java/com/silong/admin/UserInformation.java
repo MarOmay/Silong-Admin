@@ -1,5 +1,6 @@
 package com.silong.admin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,10 +19,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.silong.Adapter.AdoptionHistoryAdapter;
 import com.silong.CustomView.DeactivationDialog;
 import com.silong.CustomView.LoadingDialog;
+import com.silong.CustomView.ResetCounterDialog;
 import com.silong.EnumClass.Gender;
 import com.silong.Object.Adoption;
 import com.silong.Object.User;
@@ -60,6 +66,7 @@ public class UserInformation extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mDeactivateAccount, new IntentFilter("deactivate-user"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mStatusChanger, new IntentFilter("SC-coded"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mHistoryReceiver, new IntentFilter("refresh-history"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mResetReceiver, new IntentFilter("reset-cancel-counter"));
 
         //Get specific account info
         String uid = getIntent().getStringExtra("uid");
@@ -144,6 +151,11 @@ public class UserInformation extends AppCompatActivity {
         }
     }
 
+    public void onPressedReset(View view){
+        ResetCounterDialog resetCounterDialog = new ResetCounterDialog(this);
+        resetCounterDialog.show();
+    }
+
     public void onPressedBack(View view) {
         onBackPressed();
     }
@@ -219,6 +231,34 @@ public class UserInformation extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver mResetReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!Utility.internetConnection(UserInformation.this)){
+                Toast.makeText(UserInformation.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            FirebaseDatabase mDb = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
+            DatabaseReference mRef = mDb.getReference("Users").child(selectedUser.getUserID()).child("cancellation");
+            mRef.setValue(0)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(UserInformation.this, "Reset successful", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(UserInformation.this, "Reset failed", Toast.LENGTH_SHORT).show();
+                            Utility.log("UserInfo: " + e.getMessage());
+                        }
+                    });
+
+        }
+    };
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(UserInformation.this, ManageAccount.class);
@@ -233,5 +273,6 @@ public class UserInformation extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mDeactivateAccount);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mStatusChanger);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mHistoryReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mResetReceiver);
     }
 }

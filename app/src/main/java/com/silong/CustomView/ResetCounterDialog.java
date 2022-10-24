@@ -2,9 +2,11 @@ package com.silong.CustomView;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.Html;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.silong.admin.R;
@@ -19,7 +21,7 @@ public class ResetCounterDialog extends MaterialAlertDialogBuilder {
         super.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent("reset-cancel-counter"));
             }
         });
 

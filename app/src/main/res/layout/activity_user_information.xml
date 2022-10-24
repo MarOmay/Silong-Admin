@@ -182,6 +182,7 @@
 
                         <TextView
                             android:id="@+id/resetCancelCounter"
+                            android:onClick="onPressedReset"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
