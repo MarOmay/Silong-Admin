@@ -104,7 +104,6 @@ public class CreateAdminAccount extends AppCompatActivity {
                 admin.setDesignation(createAdminDesignation.getText().toString().trim());
 
                 password = admin.getFirstName().substring(0,1) + admin.getLastName().substring(0,1) + admin.getContact().substring(5, 11);
-                Utility.log("CAA: password - " + password);
 
                 checkEmail();
 

@@ -2,6 +2,8 @@ package com.silong.Operation;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.silong.Object.Adoption;
 import com.silong.admin.AdminData;
 
@@ -161,11 +163,11 @@ public class EmailNotif {
         }
         catch (Exception e){
             Utility.log("EmailNotif.sendNotif: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
 
+    private Bitmap PET_PIC;
     public void sendEmailApproval(){
 
         //try sending the email
@@ -203,10 +205,8 @@ public class EmailNotif {
             messageBodyPart.setContent(HTML_BODY, "text/html");
             multipart.addBodyPart(messageBodyPart);
 
-            Bitmap bitmap = AdminData.getPet(String.valueOf(ADOPTION.getPetID())).getPhoto();
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            PET_PIC.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] imageInByte = baos.toByteArray();
 
             MimeBodyPart imageBodyPart = new MimeBodyPart();
@@ -242,6 +242,9 @@ public class EmailNotif {
 
     private String HTML_BODY = "<html><head><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Montserrat\"><style>.resize_fit_center { width: 100px; height:100px; vertical-align: middle; object-fit: cover; }</style></head><body style=\"font-family: Montserrat;\"><p>Your adoption request has been <b>approved</b>!</p><table><tr><td><img src=\"cid:petphoto\" alt=\"Pet Photo\" class=\"resize_fit_center\"></td><td style=\"padding-left: 10px;vertical-align: top;\"><p>Date: #DATE_TODAY#</p><p>Pet ID: #PET_ID#</p></td></tr></table><p>Kindly <b>set an appointment</b> using the Silong app.</p><p>Please present this email on your visit to the City Veterinary Office.</p><br><p>- Your Silong Team</p><img src=\"https://drive.google.com/uc?export=view&id=1F7k71GFicdhU2F4BUymmfox_QFNkTvEq\" alt=\"Header\" style=\"width: 150px;height: 50px;\"></body></html>";
 
+    public void setPET_PIC(Bitmap PET_PIC) {
+        this.PET_PIC = PET_PIC;
+    }
 
     /*
     *       DIFFERENT FORM, VERY DIFFERENT USE

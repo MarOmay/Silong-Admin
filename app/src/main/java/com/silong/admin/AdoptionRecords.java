@@ -52,6 +52,13 @@ public class AdoptionRecords extends AppCompatActivity {
     private ArrayList<Pet> pets = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
 
+    private ArrayList<Adoption> EXPORTABLE = new ArrayList<>();
+
+    public static String dateFrom = Utility.dateToday().replace("-","/");
+    public static String dateTo = Utility.dateToday().replace("-","/");
+
+    public static boolean customDate = false;
+
     ImageView adoptionExport;
 
     @Override
@@ -73,6 +80,10 @@ public class AdoptionRecords extends AppCompatActivity {
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         adoptionExport = findViewById(R.id.adoptionExport);
+
+        dateFrom = Utility.dateToday().replace("-","/");
+        dateTo = Utility.dateToday().replace("-","/");
+        customDate = false;
 
         extractAdoptionRequest();
 
