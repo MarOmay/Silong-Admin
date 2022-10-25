@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import com.silong.Object.Admin;
 
+import com.silong.Operation.EmailNotif;
 import com.silong.Operation.Utility;
 
 import java.util.HashMap;
@@ -133,6 +134,7 @@ public class ProcessSignUp extends AppCompatActivity {
         map.put("lastName",ADMIN.getLastName());
         map.put("email", ADMIN.getAdminEmail());
         map.put("contact", ADMIN.getContact());
+        map.put("designation", ADMIN.getDesignation());
         map.put("accountStatus", true);
         map.put("roles/manageRequests", false);
         map.put("roles/appointments", false);
@@ -148,6 +150,10 @@ public class ProcessSignUp extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        //notify via email
+                        EmailNotif emailNotif = new EmailNotif(ADMIN.getAdminEmail(), EmailNotif.ADMIN_CREATED, PASSWORD);
+                        emailNotif.sendNotif();
+
                         Utility.dbLog("Create new Admin account: " + ADMIN.getAdminEmail());
                         Toast.makeText(ProcessSignUp.this, "New Admin account created for " + ADMIN.getAdminEmail(), Toast.LENGTH_LONG).show();
                         finish();

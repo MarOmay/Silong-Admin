@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
                 android:paddingStart="30dp"
-                android:text="Pet Records (Active)"
+                android:text="Pet Records"
                 android:textColor="@color/whitey"
                 android:textSize="25sp"
                 android:textStyle="bold" />

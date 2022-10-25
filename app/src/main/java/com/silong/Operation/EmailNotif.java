@@ -37,6 +37,7 @@ public class EmailNotif {
     public static final int FINISHED = 6;
     public static final int DECLINED = 7;
     public static final int APPOINTMENT_CHANGED = 8;
+    public static final int ADMIN_CREATED = 9;
 
     private String EMAIL = "silong.sjdm@gmail.com";
     private String PASSWORD = "sfajljaebmquggxs";
@@ -55,6 +56,15 @@ public class EmailNotif {
         this.RECEIVER = email;
         this.STATUS = status;
         this.ADOPTION = adoption;
+        setContent(this.STATUS);
+    }
+
+    private String SUBMITTED_PASSWORD;
+
+    public EmailNotif(String email, int status, String password){
+        this.RECEIVER = email;
+        this.STATUS = status;
+        this.SUBMITTED_PASSWORD = password;
         setContent(this.STATUS);
     }
 
@@ -90,6 +100,12 @@ public class EmailNotif {
                 BODY = "Your adoption appointment for PetID#" + ADOPTION.getPetID() + " has been move to " + ADOPTION.getAppointmentDate() + ".";
                 BODY += "\nWe apologize for any inconvenience that this might have caused you.";
                 BODY += "\nTo know more, please reach out to the City Veterinary Office of San Jose del Monte City.";
+                BODY += "\n\n- Your Silong Team";break;
+            case ADMIN_CREATED:
+                SUBJECT = "Silong | Employee Account";
+                BODY = "Your Silong-Admin account is ready to use.";
+                BODY += "\nThe account's default password is " + SUBMITTED_PASSWORD;
+                BODY += "\nWe recommend changing your password immediately.";
                 BODY += "\n\n- Your Silong Team";break;
         }
     }
@@ -144,6 +160,8 @@ public class EmailNotif {
 
         }
         catch (Exception e){
+            Utility.log("EmailNotif.sendNotif: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }

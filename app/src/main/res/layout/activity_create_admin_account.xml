@@ -107,22 +107,12 @@
             android:inputType="phone" />
 
         <EditText
-            android:id="@+id/createAdminPasswordEt"
+            android:id="@+id/createAdminDesignation"
             style="@style/textField_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:hint="Password"
-            android:inputType="textPassword" />
-
-        <EditText
-            android:id="@+id/createAdminConfirmpassEt"
-            style="@style/textField_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:hint="Confirm Password"
-            android:inputType="textPassword" />
+            android:hint="Designation"/>
 
         <Button
             android:id="@+id/createAdminCreateBtn"

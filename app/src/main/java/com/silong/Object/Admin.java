@@ -9,6 +9,7 @@ public class Admin implements Serializable {
     private String firstName;
     private String lastName;
     private String contact;
+    private String designation;
     private boolean accountStatus;
     private String [] userInteraction; //userid of users
 
@@ -71,6 +72,14 @@ public class Admin implements Serializable {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
     public boolean isAccountStatus() {

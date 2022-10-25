@@ -43,6 +43,7 @@ public class AdminFetcher extends AsyncTask {
                         admin.setContact(snap.child("contact").getValue().toString());
                         admin.setFirstName(snap.child("firstName").getValue().toString());
                         admin.setLastName(snap.child("lastName").getValue().toString());
+                        admin.setDesignation(snap.child("designation").getValue().toString());
 
                         admin.setRole_manageRequests((boolean) snap.child("roles").child("manageRequests").getValue());
                         admin.setRole_appointments((boolean) snap.child("roles").child("appointments").getValue());

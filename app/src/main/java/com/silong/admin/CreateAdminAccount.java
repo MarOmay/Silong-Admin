@@ -29,7 +29,7 @@ public class CreateAdminAccount extends AppCompatActivity {
 
     ImageView createAdminBackIv;
     EditText createAdminFnameEt, createAdminLnameEt, createAdminEmailEt,
-            createAdminContactEt, createAdminPasswordEt, createAdminConfirmpassEt;
+            createAdminContactEt, createAdminDesignation;
     Button createAdminCreateBtn;
 
     private FirebaseAuth mAuth;
@@ -56,8 +56,7 @@ public class CreateAdminAccount extends AppCompatActivity {
         createAdminLnameEt = (EditText) findViewById(R.id.createAdminLnameEt);
         createAdminEmailEt = (EditText) findViewById(R.id.createAdminEmailEt);
         createAdminContactEt = (EditText) findViewById(R.id.createAdminContactEt);
-        createAdminPasswordEt = (EditText) findViewById(R.id.createAdminPasswordEt);
-        createAdminConfirmpassEt = (EditText) findViewById(R.id.createAdminConfirmpassEt);
+        createAdminDesignation = (EditText) findViewById(R.id.createAdminDesignation);
         createAdminCreateBtn = (Button) findViewById(R.id.createAdminCreateBtn);
 
         createAdminCreateBtn.setOnClickListener(new View.OnClickListener() {
@@ -66,20 +65,11 @@ public class CreateAdminAccount extends AppCompatActivity {
                 //Validate entries before accepting response
                 if(createAdminFnameEt.getText().toString().trim().length() < 1||
                         createAdminLnameEt.getText().toString().trim().length() < 1 ||
-                        createAdminPasswordEt.getText().toString().trim().length() < 1 ||
-                        createAdminConfirmpassEt.getText().toString().trim().length() < 1 ||
+                        createAdminDesignation.getText().toString().trim().length() < 1 ||
                         createAdminEmailEt.getText().toString().trim().length() < 1 ||
                         createAdminContactEt.getText().toString().trim().length() < 1
                 ){
                     Toast.makeText(getApplicationContext(), "Please answer all fields.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (createAdminPasswordEt.getText().length() < 8){
-                    Toast.makeText(getApplicationContext(), "Password must be at least 8 characters.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (!createAdminPasswordEt.getText().toString().equals(createAdminConfirmpassEt.getText().toString())){
-                    Toast.makeText(getApplicationContext(), "Password does not match.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -111,8 +101,10 @@ public class CreateAdminAccount extends AppCompatActivity {
                 admin.setLastName(createAdminLnameEt.getText().toString().trim());
                 admin.setAdminEmail(createAdminEmailEt.getText().toString().trim());
                 admin.setContact(createAdminContactEt.getText().toString().trim());
+                admin.setDesignation(createAdminDesignation.getText().toString().trim());
 
-                password = createAdminPasswordEt.getText().toString();
+                password = admin.getFirstName().substring(0,1) + admin.getLastName().substring(0,1) + admin.getContact().substring(5, 11);
+                Utility.log("CAA: password - " + password);
 
                 checkEmail();
 
