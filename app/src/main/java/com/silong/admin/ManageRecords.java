@@ -99,7 +99,15 @@ public class ManageRecords extends AppCompatActivity {
                 });
             }
 
-            RecordsAdapter recordsAdapter = new RecordsAdapter(ManageRecords.this);
+            int listSize = AdminData.pets.size();
+
+            Pet[] pets = new Pet[listSize];
+
+            for (int i=0; i<listSize; i++){
+                pets[i] = AdminData.pets.get(i);
+            }
+
+            RecordsAdapter recordsAdapter = new RecordsAdapter(ManageRecords.this, pets);
             recordsRecycler.setAdapter(recordsAdapter);
         }
         catch (Exception e){

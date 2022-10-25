@@ -134,7 +134,15 @@ public class ManageAccount extends AppCompatActivity {
             Utility.log("ManageAccount.lAL: " + e.getMessage());
         }
 
-        AccountAdapter accountAdapter = new AccountAdapter(ManageAccount.this);
+        int listSize = AdminData.users.size();
+
+        User[] users = new User[listSize];
+
+        for (int i=0; i < listSize; i++){
+            users[i] = AdminData.users.get(i);
+        }
+
+        AccountAdapter accountAdapter = new AccountAdapter(ManageAccount.this, users);
         accountsRecycler.setAdapter(accountAdapter);
 
         loadingDialog.dismissLoadingDialog();

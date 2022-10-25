@@ -14,20 +14,17 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.silong.Object.User;
-import com.silong.admin.AdminData;
 import com.silong.admin.ManageAccount;
 import com.silong.admin.R;
-
-import java.util.ArrayList;
 
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
 
     private Context context;
-    private Activity activity;
+    private User[] users;
 
-    public AccountAdapter(Activity activity){
+    public AccountAdapter(Activity activity, User[] users){
         this.context = activity;
-        this.activity = activity;
+        this.users = users;
     }
 
     @NonNull
@@ -41,7 +38,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final User user = AdminData.users.get(position);
+        final User user = users[position];
 
         String name = user.getFirstName() + " " + user.getLastName();
 
@@ -87,7 +84,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return AdminData.users.size();
+        return users.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

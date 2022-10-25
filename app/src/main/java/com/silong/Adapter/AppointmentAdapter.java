@@ -16,15 +16,16 @@ import com.silong.CustomView.AppointmentTagger;
 import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
 import com.silong.Operation.Utility;
-import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ViewHolder> {
 
     private Activity activity;
+    private AppointmentRecords[] appointmentRecords;
 
-    public AppointmentAdapter(Activity activity){
+    public AppointmentAdapter(Activity activity, AppointmentRecords[] appointmentRecords){
         this.activity = activity;
+        this.appointmentRecords = appointmentRecords;
     }
 
     @NonNull
@@ -38,7 +39,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final AppointmentRecords appointmentRecord = AdminData.appointments.get(position);
+        final AppointmentRecords appointmentRecord = appointmentRecords[position];
         holder.name.setText(appointmentRecord.getName());
         holder.dateTime.setText(appointmentRecord.getDateTime());
         holder.petId.setText(appointmentRecord.getPetId());
@@ -70,7 +71,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     }
 
     @Override
-    public int getItemCount() { return AdminData.appointments.size(); }
+    public int getItemCount() { return appointmentRecords.length; }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 

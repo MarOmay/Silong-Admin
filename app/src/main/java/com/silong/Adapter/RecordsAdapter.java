@@ -20,15 +20,16 @@ import com.silong.EnumClass.PetSize;
 import com.silong.EnumClass.PetType;
 import com.silong.Object.Pet;
 import com.silong.Operation.Utility;
-import com.silong.admin.AdminData;
 import com.silong.admin.R;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder>{
 
-    Activity activity;
+    private Activity activity;
+    private Pet[] pets;
 
-    public RecordsAdapter(Activity activity){
+    public RecordsAdapter(Activity activity, Pet[] pets){
         this.activity = activity;
+        this.pets = pets;
     }
 
     @NonNull
@@ -42,7 +43,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Pet pet = AdminData.pets.get(position);
+        final Pet pet = pets[position];
 
         //translate gender and type
         String genderType = "";
@@ -118,7 +119,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return AdminData.pets.size();
+        return pets.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

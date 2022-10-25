@@ -1,9 +1,7 @@
 package com.silong.Adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +24,14 @@ import com.silong.admin.R;
 import com.silong.admin.RequestInformation;
 import com.silong.admin.RequestList;
 
-import java.util.ArrayList;
-
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder>{
 
     private Activity activity;
+    private Request[] requests;
 
-    public RequestAdapter(Activity activity){
+    public RequestAdapter(Activity activity, Request[] requests){
         this.activity = activity;
+        this.requests = requests;
     }
 
     @NonNull
@@ -47,7 +45,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Request request = AdminData.requests.get(position);
+        final Request request = requests[position];
 
         User user = AdminData.fetchAccountFromLocal(activity, request.getUserID());
 
@@ -124,7 +122,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return AdminData.requests.size();
+        return requests.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
