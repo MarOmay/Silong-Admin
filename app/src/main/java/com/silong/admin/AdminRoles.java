@@ -25,7 +25,7 @@ import java.util.Map;
 public class AdminRoles extends AppCompatActivity {
 
     private MaterialCheckBox manageReqCb, appointmentsCb, manageRecCb, manageRepCb, editAgreeCb, editContactCb, editSchedCb, manageRolesCb, manageDbCb;
-    private TextView adminName;
+    private TextView adminName, roleTv;
     private Admin admin;
 
     private FirebaseDatabase mDatabase;
@@ -44,6 +44,7 @@ public class AdminRoles extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance("https://silongdb-1-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         adminName = findViewById(R.id.adminName);
+        roleTv = findViewById(R.id.roleTv);
         manageReqCb = findViewById(R.id.manageReqCb);
         appointmentsCb = findViewById(R.id.appointmentsCb);
         manageRecCb = findViewById(R.id.manageRecCb);
@@ -59,6 +60,7 @@ public class AdminRoles extends AppCompatActivity {
             admin = (Admin) getIntent().getSerializableExtra("ADMIN");
             //update UI
             adminName.setText(admin.getFirstName() + " " + admin.getLastName());
+            roleTv.setText("Role: " + admin.getDesignation());
             manageReqCb.setChecked(admin.isRole_manageRequests());
             appointmentsCb.setChecked(admin.isRole_appointments());
             manageRecCb.setChecked(admin.isRole_manageRecords());
