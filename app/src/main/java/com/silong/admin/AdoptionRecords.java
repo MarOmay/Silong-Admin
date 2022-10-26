@@ -531,6 +531,7 @@ public class AdoptionRecords extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 
             ArrayList<Object[]> entries = new ArrayList<>();
+
             //labels
             entries.add(new Object[]{"Date", "Status", "PetID", "Pet Type", "Pet Age", "Owner", "Gender", "Birthday"});
 
@@ -584,6 +585,7 @@ public class AdoptionRecords extends AppCompatActivity {
 
             Spreadsheet spreadsheet = new Spreadsheet(AdoptionRecords.this);
             spreadsheet.setEntries(entries);
+            spreadsheet.setTitle("Adoption Records");
 
             Workbook workbook = spreadsheet.create();
 

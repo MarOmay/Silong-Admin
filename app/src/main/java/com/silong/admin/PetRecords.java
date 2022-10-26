@@ -288,6 +288,7 @@ public class PetRecords extends AppCompatActivity {
 
             Spreadsheet spreadsheet = new Spreadsheet(PetRecords.this);
             spreadsheet.setEntries(entries);
+            spreadsheet.setTitle("Pet Records");
 
             Workbook workbook = spreadsheet.create();
 

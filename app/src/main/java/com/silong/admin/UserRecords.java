@@ -387,6 +387,7 @@ public class UserRecords extends AppCompatActivity {
 
             Spreadsheet spreadsheet = new Spreadsheet(UserRecords.this);
             spreadsheet.setEntries(entries);
+            spreadsheet.setTitle("User Records");
 
             Workbook workbook = spreadsheet.create();
 
