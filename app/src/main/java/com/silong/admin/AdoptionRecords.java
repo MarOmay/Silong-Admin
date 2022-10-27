@@ -29,6 +29,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.CustomBarGraph;
 import com.silong.CustomView.CustomPieChart;
+import com.silong.CustomView.DateRangeFromPicker;
+import com.silong.CustomView.DateRangePickerDialog;
+import com.silong.CustomView.DateRangePickerReport;
+import com.silong.CustomView.DateRangeToPicker;
 import com.silong.CustomView.ExportDialog;
 import com.silong.CustomView.LoadingDialog;
 import com.silong.EnumClass.Gender;
@@ -43,6 +47,7 @@ import com.silong.Operation.Utility;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 
 public class AdoptionRecords extends AppCompatActivity {
@@ -75,6 +80,7 @@ public class AdoptionRecords extends AppCompatActivity {
 
         //initialize receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mExportDialogReceiver, new IntentFilter("export-requested"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReloadReceiver, new IntentFilter("refresh-records"));
 
         //to adopt status bar to the pink header
         Window window = this.getWindow();
@@ -100,11 +106,49 @@ public class AdoptionRecords extends AppCompatActivity {
         exportDialog.show();
     }
 
-    private void showRequests(){
+    public void onDateRangePressed(View view){
+        DateRangePickerReport drpd = new DateRangePickerReport(AdoptionRecords.this);
+        drpd.show();
+
+        DateRangeFromPicker drfp = new DateRangeFromPicker(AdoptionRecords.this, drpd);
+        DateRangeToPicker drtp = new DateRangeToPicker(AdoptionRecords.this, drpd);
+
+        drpd.fromET.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                drfp.show(getSupportFragmentManager(), null);
+
+            }
+        });
+
+        drpd.toET.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                drtp.show(getSupportFragmentManager(), null);
+
+            }
+        });
+
+    }
+
+    private void showRequests(ArrayList<Adoption> adoptionsList){
+
+        EXPORTABLE = adoptionsList;
+
+        if (adoptionsList.size() == 0){
+            ArrayList<PieEntry> requests = new ArrayList<>();
+            requests.add(new PieEntry(0, "No result"));
+            CustomPieChart requestsPieChart = findViewById(R.id.requestsPieChart);
+            requestsPieChart.setEntries(requests).refresh();
+            return;
+        }
+
         int processing = 0, successful = 0;
 
         try {
-            for (Adoption adoption : adoptions){
+            for (Adoption adoption : adoptionsList){
                 switch (adoption.getStatus()){
                     case 1:
                     case 2:
@@ -409,7 +453,7 @@ public class AdoptionRecords extends AppCompatActivity {
 
                                     }
 
-                                    showRequests();
+                                    showRequests(adoptions);
                                 }
                                 catch (Exception ex){
                                     Utility.log("AdoptionRecords.eAH: " + ex.getMessage());
@@ -532,6 +576,11 @@ public class AdoptionRecords extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            if (EXPORTABLE.size() == 0){
+                Toast.makeText(AdoptionRecords.this, "Nothing to export", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             ArrayList<Object[]> entries = new ArrayList<>();
 
             //labels
@@ -539,7 +588,7 @@ public class AdoptionRecords extends AppCompatActivity {
 
             //sort
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                adoptions.sort(new Comparator<Adoption>() {
+                EXPORTABLE.sort(new Comparator<Adoption>() {
                     @Override
                     public int compare(Adoption a1, Adoption a2) {
                         return a1.getDateRequested().compareTo(a2.getDateRequested());
@@ -547,7 +596,7 @@ public class AdoptionRecords extends AppCompatActivity {
                 });
             }
 
-            for (Adoption adoption : adoptions){
+            for (Adoption adoption : EXPORTABLE){
 
                 String[] entry = new String[8];
                 entry[0] = adoption.getDateRequested();
@@ -621,6 +670,44 @@ public class AdoptionRecords extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver mReloadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            try {
+                ArrayList<Adoption> tempList = new ArrayList<>();
+
+                for (Adoption adoption : adoptions){
+                    if (AdoptionRecords.customDate){
+
+                        String[] fromDate = AdoptionRecords.dateFrom.split("/");
+                        Calendar from = Calendar.getInstance();
+                        from.set(Integer.valueOf(fromDate[2]),Integer.valueOf(fromDate[0]),Integer.valueOf(fromDate[1]));
+
+                        String[] toDate = AdoptionRecords.dateTo.split("/");
+                        Calendar to = Calendar.getInstance();
+                        to.set(Integer.valueOf(toDate[2]),Integer.valueOf(toDate[0]),Integer.valueOf(toDate[1]));
+
+                        String[] adDate = adoption.getDateRequested().split("-");
+                        Calendar adCal = Calendar.getInstance();
+                        adCal.set(Integer.valueOf(adDate[2]),Integer.valueOf(adDate[0]),Integer.valueOf(adDate[1]));
+
+                        if (!adCal.after(to) && !adCal.before(from)){
+                            tempList.add(adoption);
+                        }
+                    }
+                }
+
+                showRequests(tempList);
+
+            }
+            catch (Exception e){
+                Utility.log("AdoptionRecords.mRR: " + e.getMessage());
+            }
+
+        }
+    };
+
     public void back(View view){
         onBackPressed();
     }
@@ -634,6 +721,7 @@ public class AdoptionRecords extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReloadReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mExportDialogReceiver);
     }
 }

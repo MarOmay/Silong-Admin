@@ -22,13 +22,13 @@
             android:orientation="horizontal"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
-            android:weightSum="3">
+            android:weightSum="4">
 
             <ImageView
                 android:id="@+id/createReportBackIv"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_weight="1.35"
+                android:layout_weight="1.2"
                 android:onClick="back"
                 android:src="@drawable/ic_round_arrow_back_ios_24"
                 app:tint="@color/whitey"
@@ -37,7 +37,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
+                android:layout_weight="0.4"
                 android:paddingStart="30dp"
                 android:text="Adoption Records"
                 android:textColor="@color/whitey"
@@ -45,11 +45,21 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/logDateRange"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1.2"
+                android:src="@drawable/date_range"
+                android:onClick="onDateRangePressed"
+                app:tint="@color/whitey"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <ImageView
                 android:onClick="onPressedExport"
                 android:id="@+id/adoptionExport"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:layout_weight="1.35"
+                android:layout_weight="1.2"
                 android:src="@drawable/export_icon"
                 app:tint="@color/whitey" />
 

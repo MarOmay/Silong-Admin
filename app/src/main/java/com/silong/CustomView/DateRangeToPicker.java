@@ -15,10 +15,16 @@ public class DateRangeToPicker extends DialogFragment implements DatePickerDialo
 
     private Context context;
     private DateRangePickerDialog drpd;
+    private DateRangePickerReport drpr;
 
     public DateRangeToPicker(Context context, DateRangePickerDialog drpd){
         this.context = context;
         this.drpd = drpd;
+    }
+
+    public DateRangeToPicker(Context context, DateRangePickerReport drpr){
+        this.context = context;
+        this.drpr = drpr;
     }
 
     @Override
@@ -40,11 +46,21 @@ public class DateRangeToPicker extends DialogFragment implements DatePickerDialo
 
         String selectedDate = month+1 + "/" + day + "/" + year;
 
-        if (selectedDate.equals(drpd.newToDate))
-            return;
+        if (drpd != null){
+            if (selectedDate.equals(drpd.newToDate))
+                return;
+            drpd.setNewToDate(selectedDate);
+            drpd.refresh();
+            drpd.setChanged(true);
+        }
 
-        drpd.setNewToDate(selectedDate);
-        drpd.refresh();
-        drpd.setChanged(true);
+        if (drpr != null){
+            if (selectedDate.equals(drpr.newToDate))
+                return;
+            drpr.setNewToDate(selectedDate);
+            drpr.refresh();
+            drpr.setChanged(true);
+        }
+
     }
 }
