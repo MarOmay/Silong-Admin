@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -32,6 +33,7 @@ import com.silong.Operation.Utility;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class PetRecords extends AppCompatActivity {
 
@@ -238,6 +240,18 @@ public class PetRecords extends AppCompatActivity {
             ArrayList<Object[]> entries = new ArrayList<>();
             //labels
             entries.add(new Object[]{"PetID", "Type", "Gender", "Age", "Size", "Color"});
+
+            //sort
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                AdminData.pets.sort(new Comparator<Pet>() {
+                    @Override
+                    public int compare(Pet p1, Pet p2) {
+                        int i1 = Integer.parseInt(p1.getPetID());
+                        int i2 = Integer.parseInt(p2.getPetID());
+                        return i1 < i2 ? i1 : i2;
+                    }
+                });
+            }
 
             for (Pet pet: AdminData.pets){
 

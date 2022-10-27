@@ -211,6 +211,18 @@ public class Log extends AppCompatActivity {
             //labels
             entries.add(new Object[]{"Date", "Time", "Email", "Description", "Device Maker", "Device Model"});
 
+            //sort
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                (customDate ? EXPORTABLE : LOGDATA).sort(new Comparator<LogData>() {
+                    @Override
+                    public int compare(LogData l1, LogData l2) {
+                        String dt1 = l1.getDate()+l1.getTime();
+                        String dt2 = l2.getDate()+l2.getTime();
+                        return dt1.compareTo(dt2);
+                    }
+                });
+            }
+
             for (LogData data : customDate ? EXPORTABLE : LOGDATA){
                 String[] entry = new String[6];
 
@@ -226,6 +238,7 @@ public class Log extends AppCompatActivity {
 
             Spreadsheet spreadsheet = new Spreadsheet(Log.this);
             spreadsheet.setEntries(entries);
+            spreadsheet.setTitle("Logs");
 
             Workbook workbook = spreadsheet.create();
 

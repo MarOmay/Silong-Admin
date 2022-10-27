@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -42,6 +43,7 @@ import com.silong.Operation.Utility;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class AdoptionRecords extends AppCompatActivity {
 
@@ -534,6 +536,16 @@ public class AdoptionRecords extends AppCompatActivity {
 
             //labels
             entries.add(new Object[]{"Date", "Status", "PetID", "Pet Type", "Pet Age", "Owner", "Gender", "Birthday"});
+
+            //sort
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                adoptions.sort(new Comparator<Adoption>() {
+                    @Override
+                    public int compare(Adoption a1, Adoption a2) {
+                        return a1.getDateRequested().compareTo(a2.getDateRequested());
+                    }
+                });
+            }
 
             for (Adoption adoption : adoptions){
 

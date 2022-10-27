@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -43,6 +44,7 @@ import com.silong.Operation.Utility;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class UserRecords extends AppCompatActivity {
 
@@ -373,6 +375,18 @@ public class UserRecords extends AppCompatActivity {
             ArrayList<Object[]> entries = new ArrayList<>();
             //labels
             entries.add(new Object[]{"Account Status", "First Name", "Last Name", "Gender", "Age", "Birthday"});
+
+            //sort
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                users.sort(new Comparator<User>() {
+                    @Override
+                    public int compare(User u1, User u2) {
+                        String s1 = u1.getAccountStatus() ? "Active" : u1.isDeleted() ? "Deleted" : "Deactivated";
+                        String s2 = u2.getAccountStatus() ? "Active" : u2.isDeleted() ? "Deleted" : "Deactivated";
+                        return s1.compareTo(s2);
+                    }
+                });
+            }
 
             for (User user : users){
                 entries.add(new Object[]{

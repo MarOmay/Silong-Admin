@@ -4,6 +4,7 @@ import static com.silong.Operation.Utility.dateToday;
 import static com.silong.Operation.Utility.timeNow;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Environment;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import com.silong.admin.AdminData;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -91,12 +93,11 @@ public class Spreadsheet {
 
             Set<String> keyid = formData.keySet();
 
-            for (String key : keyid){
+            for (Object[] object : entries){
                 row = spreadsheet.createRow(rowid++);
-                Object[] objArr = formData.get(key);
                 int cellid = 0;
 
-                for (Object obj : objArr) {
+                for (Object obj : object) {
                     Cell cell = row.createCell(cellid++);
                     cell.setCellValue((String)obj);
                 }
@@ -114,7 +115,7 @@ public class Spreadsheet {
 
             Row dateRow = spreadsheet.createRow(rowid++);
             Cell dateCell = dateRow.createCell(0);
-            dateCell.setCellValue("Generated on: " + Utility.dateToday() + " " + Utility.timeNow().replace("*",":"));
+            dateCell.setCellValue("Generated on: " + dateToday() + " " + timeNow().replace("*",":"));
 
             Row genRow = spreadsheet.createRow(rowid++);
             Cell genCell = genRow.createCell(0);
