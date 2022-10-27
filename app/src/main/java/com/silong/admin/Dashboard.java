@@ -26,6 +26,7 @@ import com.silong.Task.ActivationRequestFetcher;
 import com.silong.Task.AdoptionRequestFetcher;
 import com.silong.Task.AdoptionScheduleFetcher;
 import com.silong.Task.AppointmentFetcher;
+import com.silong.Task.ManageLogsReminder;
 import com.silong.Task.RecordsChecker;
 
 import java.io.File;
@@ -179,6 +180,10 @@ public class Dashboard extends AppCompatActivity {
             //sync account copies
             RecordsChecker recordsChecker = new RecordsChecker(Dashboard.this);
             recordsChecker.execute();
+
+            //check database maintenance schedule
+            ManageLogsReminder manageLogsReminder = new ManageLogsReminder(Dashboard.this);
+            manageLogsReminder.execute();
 
         }
         else {
