@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nighty"
+    android:orientation="vertical"
+    android:weightSum="2"
+    tools:context=".Memo">
+
+    <LinearLayout
+        android:id="@+id/pinkHeader"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/pink"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/addRecordBackIv"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:onClick="back"
+            android:src="@drawable/ic_round_arrow_back_ios_24"
+            app:tint="@color/whitey"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/headerTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:paddingStart="30dp"
+            android:text="Memo"
+            android:textColor="@color/whitey"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/deleteIcon"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1.35"
+            android:alpha="0"
+            android:src="@drawable/ic_baseline_delete_forever_24"
+            app:tint="@color/whitey"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.35"
+        android:orientation="vertical"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="30dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actual Adoption Date"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="5dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/memoDate"
+            style="@style/textField_style"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="00/00/0000"
+            android:inputType="date"
+            android:textSize="16sp"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Other Details"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="5dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/memoDetails"
+            style="@style/textField_style"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:textSize="16sp"
+            android:gravity="start"
+            android:hint="Type here..."
+            android:inputType="textMultiLine"
+            android:paddingVertical="20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.65"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="15dp">
+
+        <Button
+            android:id="@+id/memoCompleteBtn"
+            style="@style/pinkButton_style"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Complete Adoption"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -14,8 +14,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.silong.Adapter.RecordsAdapter;
@@ -31,6 +33,7 @@ public class ManageRecords extends AppCompatActivity {
     private SwipeRefreshLayout mrecordRefresher;
     LinearLayout recordsAddTile, recordsCreateReportTile;
     RecyclerView recordsRecycler;
+    Spinner filterTypeSp, filterGenderSp, filterAgeSp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,9 @@ public class ManageRecords extends AppCompatActivity {
         recordsAddTile = (LinearLayout) findViewById(R.id.recordsAddTile);
         recordsCreateReportTile = (LinearLayout) findViewById(R.id.recordsCreateReportTile);
         recordsRecycler = (RecyclerView) findViewById(R.id.recordsRecycler);
+        filterTypeSp = findViewById(R.id.filterTypeSp);
+        filterGenderSp = findViewById(R.id.filterGenderSp);
+        filterAgeSp = findViewById(R.id.filterAgeSp);
 
         recordsRecycler.setHasFixedSize(true);
         recordsRecycler.setLayoutManager(new LinearLayoutManager(ManageRecords.this));
@@ -65,6 +71,22 @@ public class ManageRecords extends AppCompatActivity {
         loadRecordList();
 
         mrecordRefresher.setOnRefreshListener(refreshListener);
+
+        //filter spinner temp adapter
+        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.type, android.R.layout.simple_spinner_item);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterTypeSp.setAdapter(typeAdapter);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
+                R.array.gender, android.R.layout.simple_spinner_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterGenderSp.setAdapter(genderAdapter);
+
+        ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this,
+                R.array.age, android.R.layout.simple_spinner_item);
+        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterAgeSp.setAdapter(ageAdapter);
     }
 
     public void onPressedAddRecord(View view){

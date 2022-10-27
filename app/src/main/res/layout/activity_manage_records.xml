@@ -49,8 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_weight="1.35"
-                android:alpha="0"
-                android:src="@drawable/ic_round_add_24"
+                android:src="@drawable/ic_baseline_filter_alt_24"
                 app:tint="@color/whitey" />
 
         </LinearLayout>
@@ -146,6 +145,60 @@
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/darkerNighty"
+            app:cardCornerRadius="12dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="5dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/lightgray"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="5dp"
+                android:weightSum="3">
+
+                <Spinner
+                    android:id="@+id/filterTypeSp"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"
+                    android:alpha="0.2"/>
+
+                <Spinner
+                    android:id="@+id/filterGenderSp"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"
+                    android:alpha="0.2"/>
+
+
+                <Spinner
+                    android:id="@+id/filterAgeSp"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recordsRecycler"

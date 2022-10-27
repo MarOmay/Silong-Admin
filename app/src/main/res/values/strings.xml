@@ -14,4 +14,23 @@
     </string-array>
 
     <string name="warningDia">This action is final and irreversible. We highly recommend that you download a report of these information before proceeding.</string>
+
+    <string-array name="type">
+        <item>Type</item>
+        <item>Dog</item>
+        <item>Cat</item>
+    </string-array>
+
+    <string-array name="gender">
+        <item>Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="age">
+        <item>Age</item>
+        <item>Puppy/Kitten</item>
+        <item>Young</item>
+        <item>Adult</item>
+    </string-array>
 </resources>
