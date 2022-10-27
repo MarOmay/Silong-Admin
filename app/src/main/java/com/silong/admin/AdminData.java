@@ -28,6 +28,8 @@ public class AdminData {
     public static String adminEmail;
     public static String contact;
 
+    public static boolean DATABASE_MAINTENANCE = false;
+
     public static boolean role_manageRequests = false;
     public static boolean role_appointments = false;
     public static boolean role_manageRecords = false;

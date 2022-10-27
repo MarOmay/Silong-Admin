@@ -42,7 +42,7 @@ public class Dashboard extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     public static boolean actReqDone = false, adopReqDone = false, adopSchedDone = false,
-                    appointReqDone = false, actCheckDone = false, recCheckDone = false;
+                    appointReqDone = false, actCheckDone = false, recCheckDone = false, mlReminder = false;
 
     public static LoadingDialog loadingDialog;
 
@@ -119,16 +119,28 @@ public class Dashboard extends AppCompatActivity {
 
     public void onPressedRequests(View view){
         Utility.animateOnClick(this, view);
+        if (AdminData.DATABASE_MAINTENANCE){
+            Toast.makeText(this, "This feature is disabled until maintenance is done.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         new Utility().checkPermission(Dashboard.this, "manageRequests", AdminData.adminID, true);
     }
 
     public void onPressedAppointment(View view){
         Utility.animateOnClick(this, view);
+        if (AdminData.DATABASE_MAINTENANCE){
+            Toast.makeText(this, "This feature is disabled until maintenance is done.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         new Utility().checkPermission(Dashboard.this, "appointments", AdminData.adminID, true);
     }
 
     public void onPressedManageAccounts(View view){
         Utility.animateOnClick(this, view);
+        if (AdminData.DATABASE_MAINTENANCE){
+            Toast.makeText(this, "This feature is disabled until maintenance is done.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent i = new Intent (Dashboard.this, ManageAccount.class);
         startActivity(i);
         finish();
@@ -195,7 +207,7 @@ public class Dashboard extends AppCompatActivity {
     public static void checkCompletion(){
 
         if (actReqDone && adopReqDone && adopSchedDone &&
-                appointReqDone && actCheckDone && recCheckDone){
+                appointReqDone && actCheckDone && recCheckDone && mlReminder){
             loadingDialog.dismissLoadingDialog();
         }
 

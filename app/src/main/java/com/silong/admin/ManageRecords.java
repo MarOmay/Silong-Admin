@@ -69,6 +69,10 @@ public class ManageRecords extends AppCompatActivity {
 
     public void onPressedAddRecord(View view){
         if (Utility.internetConnection(getApplicationContext())){
+            if (AdminData.DATABASE_MAINTENANCE){
+                Toast.makeText(this, "This feature is disabled until maintenance is done.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent i = new Intent(ManageRecords.this, AddRecord.class);
             startActivity(i);
         }

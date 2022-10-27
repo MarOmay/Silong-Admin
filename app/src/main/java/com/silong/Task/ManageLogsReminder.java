@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
+import com.silong.admin.Dashboard;
 
 public class ManageLogsReminder extends AsyncTask {
 
@@ -37,14 +38,23 @@ public class ManageLogsReminder extends AsyncTask {
                             String sched = snapshot.getValue().toString();
 
                             if (!today.equals(sched)){
+                                Dashboard.mlReminder = true;
+                                Dashboard.checkCompletion();
+                                AdminData.DATABASE_MAINTENANCE = false;
                                 return;
                             }
+
+                            AdminData.DATABASE_MAINTENANCE = true;
 
                             //check permission
                             DatabaseReference permission = mDatabase.getReference("Admins").child(AdminData.adminID).child("roles").child("manageDatabase");
                             permission.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    Dashboard.mlReminder = true;
+                                    Dashboard.checkCompletion();
+
                                     if (snapshot.getValue() != null){
                                         boolean allowed = (boolean) snapshot.getValue();
                                         if (allowed){
@@ -56,23 +66,31 @@ public class ManageLogsReminder extends AsyncTask {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
+                                    Dashboard.mlReminder = true;
+                                    Dashboard.checkCompletion();
                                     Utility.log("MLR.dIB.oDC.oC: " + error.getMessage());
                                 }
                             });
                         }
                     }
                     catch (Exception e){
+                        Dashboard.mlReminder = true;
+                        Dashboard.checkCompletion();
                         Utility.log("MLR.dIB:.oDC " + e.getMessage());
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
+                    Dashboard.mlReminder = true;
+                    Dashboard.checkCompletion();
                     Utility.log("MLR.dIB.oc: " + error.getMessage());
                 }
             });
         }
         catch (Exception e){
+            Dashboard.mlReminder = true;
+            Dashboard.checkCompletion();
             Utility.log("MLR.dIB: " + e.getMessage());
         }
 

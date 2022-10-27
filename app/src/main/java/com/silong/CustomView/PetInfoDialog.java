@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -35,6 +36,10 @@ public class PetInfoDialog extends MaterialAlertDialogBuilder {
         super.setPositiveButton(Html.fromHtml("<b>" + "EDIT" + "</b>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                if (AdminData.DATABASE_MAINTENANCE){
+                    Toast.makeText(activity, "This feature is disabled until maintenance is done.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent("show-selected-pet");
                 intent.putExtra("id", petID);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
