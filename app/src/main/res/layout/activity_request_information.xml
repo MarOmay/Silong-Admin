@@ -289,7 +289,7 @@
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="50dp"
-            app:cardCornerRadius="100dp"
+            app:cardCornerRadius="25dp"
             android:layout_marginEnd="7.5dp"
             android:backgroundTint="@color/red">
 
@@ -318,7 +318,7 @@
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="50dp"
-            app:cardCornerRadius="100dp"
+            app:cardCornerRadius="25dp"
             android:layout_marginStart="7.5dp"
             android:backgroundTint="@color/green">
 

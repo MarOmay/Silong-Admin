@@ -33,6 +33,7 @@
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/records_item_list.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/reminder_dialog.xml" value="0.25" />
         <entry key="..\:/Users/Alex/StudioProjects/Silong-Admin/app/src/main/res/layout/requests_item_list.xml" value="0.25" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/accounts_item_list.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_about_the_office.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_add_record.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_admin_roles.xml" value="0.23114035087719298" />
@@ -41,12 +42,16 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_manage_database.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_manage_roles.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_pet_records.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_request_information.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/activity_user_information.xml" value="0.2564814814814815" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/admin_accounts_item_list.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/adoption_history_item_list.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/appointment_tagger_info.xml" value="0.23114035087719298" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/appointments_item_list.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/image_dialog_layout.xml" value="0.2734375" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/record_temp.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/records_item_list.xml" value="0.23114035087719298" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/requests_item_list.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Silong-Admin/app/src/main/res/layout/reschedule_picker.xml" value="0.23114035087719298" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/drawable-v24/gradient_bg.xml" value="0.1" />
         <entry key="..\:/Users/cnbelano/AndroidStudioProjects/Silong-Admin/app/src/main/res/drawable-v24/ic_round_arrow_back_ios_24.xml" value="0.1" />
