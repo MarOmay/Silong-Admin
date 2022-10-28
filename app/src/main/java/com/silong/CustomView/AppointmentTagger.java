@@ -30,6 +30,7 @@ import com.silong.Operation.EmailNotif;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
+import com.silong.admin.Memo;
 import com.silong.admin.R;
 
 import java.io.File;
@@ -132,35 +133,13 @@ public class AppointmentTagger extends MaterialAlertDialogBuilder {
                 multiNodeMap.put("adoptionRequest/"+userID+"/status", "5");
                 multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+ADOPTION.getPetID()+"/status", 5);
 
-                DatabaseReference mRef = mDatabase.getReference();
-                mRef.updateChildren(multiNodeMap)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-
-                                //send email notif
-                                String userEmail = AdminData.fetchAccountFromLocal(activity, userID).getEmail();
-                                EmailNotif emailNotif = new EmailNotif(userEmail, EmailNotif.ADOPTION_SUCCESSFUL, ADOPTION);
-                                emailNotif.sendNotif();
-
-                                Toast.makeText(activity, "Appointment confirmed!", Toast.LENGTH_SHORT).show();
-                                for (AppointmentRecords ap : AdminData.appointments){
-                                    if (ap.getUserID().equals(userID))
-                                        AdminData.appointments.remove(ap);
-                                }
-                                activity.onBackPressed();
-
-                                Utility.dbLog("Tagged adoption as done. Client: " + name);
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(activity, "Failed to process request", Toast.LENGTH_SHORT).show();
-                                Utility.log("AppointmentTagger: " + e.getMessage());
-                            }
-                        });
+                Intent intent = new Intent(activity, Memo.class);
+                intent.putExtra("name", name);
+                intent.putExtra("userID", userID);
+                intent.putExtra("map", (Serializable) multiNodeMap);
+                intent.putExtra("adoption", ADOPTION);
+                activity.startActivity(intent);
+                activity.finish();
 
             }
         });

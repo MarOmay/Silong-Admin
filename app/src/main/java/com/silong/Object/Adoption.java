@@ -10,6 +10,10 @@ public class Adoption implements Serializable {
     private int status;
     private String dateReleased;
 
+    //extra attributes
+    private String actualAdoptionDate;
+    private String memo;
+
     public Adoption() {
     }
 
@@ -65,5 +69,21 @@ public class Adoption implements Serializable {
 
     public void setDateReleased(String dateReleased) {
         this.dateReleased = dateReleased;
+    }
+
+    public String getActualAdoptionDate() {
+        return actualAdoptionDate;
+    }
+
+    public void setActualAdoptionDate(String actualAdoptionDate) {
+        this.actualAdoptionDate = actualAdoptionDate;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 }

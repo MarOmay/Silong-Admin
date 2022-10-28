@@ -394,6 +394,21 @@ public class AdoptionRecords extends AppCompatActivity {
                                         adoption.setStatus(Integer.parseInt(ds.child("status").getValue().toString()));
                                         adoption.setDateRequested(ds.child("dateRequested").getValue().toString());
 
+                                        //check if this data exists
+                                        if (ds.child("actualAdotionDate").getValue() != null){
+                                            adoption.setActualAdoptionDate(ds.child("actualAdotionDate").getValue().toString());
+                                        }
+                                        else {
+                                            adoption.setActualAdoptionDate("N/A");
+                                        }
+
+                                        if (ds.child("memo").getValue() != null){
+                                            adoption.setMemo(ds.child("memo").getValue().toString());
+                                        }
+                                        else {
+                                            adoption.setMemo("N/A");
+                                        }
+
                                         boolean found = false;
                                         for (Adoption ad : adoptions_cc)
                                             if (ad.getPetID() == adoption.getPetID()) found = true;
@@ -584,7 +599,7 @@ public class AdoptionRecords extends AppCompatActivity {
             ArrayList<Object[]> entries = new ArrayList<>();
 
             //labels
-            entries.add(new Object[]{"Date", "Status", "PetID", "Pet Type", "Pet Age", "Owner", "Gender", "Birthday"});
+            entries.add(new Object[]{"Date", "Status", "PetID", "Pet Type", "Pet Age", "Owner", "Gender", "Birthday", "Actual Adoption Date", "Memo"});
 
             //sort
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -598,7 +613,7 @@ public class AdoptionRecords extends AppCompatActivity {
 
             for (Adoption adoption : EXPORTABLE){
 
-                String[] entry = new String[8];
+                String[] entry = new String[10];
                 entry[0] = adoption.getDateRequested();
 
                 switch (adoption.getStatus()){
@@ -640,6 +655,9 @@ public class AdoptionRecords extends AppCompatActivity {
                     }
 
                 }
+
+                entry[8] = adoption.getActualAdoptionDate();
+                entry[9] = adoption.getMemo();
 
                 entries.add(entry);
             }

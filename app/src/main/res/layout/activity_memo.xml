@@ -73,6 +73,7 @@
         <EditText
             android:id="@+id/memoDate"
             style="@style/textField_style"
+            android:onClick="onPressedDate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:hint="00/00/0000"
@@ -117,6 +118,7 @@
         <Button
             android:id="@+id/memoCompleteBtn"
             style="@style/pinkButton_style"
+            android:onClick="onPressedComplete"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Complete Adoption"/>
