@@ -129,7 +129,7 @@ public class Memo extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        startActivity(new Intent(Memo.this, Dashboard.class));
         this.finish();
     }
 }
