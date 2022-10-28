@@ -23,7 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.DatabaseWarningDialog;
 import com.silong.CustomView.LoadingDialog;
+import com.silong.CustomView.ReminderDialog;
 import com.silong.Operation.Utility;
+import com.silong.Task.ManageLogsReminder;
 
 public class ManageDatabase extends AppCompatActivity {
 
@@ -51,9 +53,15 @@ public class ManageDatabase extends AppCompatActivity {
 
         //registered receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mDeleteReceiver, new IntentFilter("delete-authorized"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mSetReminderReceiver, new IntentFilter("reminder-set"));
 
         pastLogsCb = findViewById(R.id.pastLogsCb);
         deletedUsersCb = findViewById(R.id.deletedUsersCb);
+    }
+
+    public void onPressedReminder(View view){
+        ReminderDialog reminderDialog = new ReminderDialog(ManageDatabase.this, getSupportFragmentManager());
+        reminderDialog.show();
     }
 
     public void onPressedDeleteDb(View view){
@@ -155,6 +163,42 @@ public class ManageDatabase extends AppCompatActivity {
         }
     }
 
+    private BroadcastReceiver mSetReminderReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LoadingDialog loadingDialog = new LoadingDialog(ManageDatabase.this);
+            loadingDialog.startLoadingDialog();
+
+            try {
+                String date = intent.getStringExtra("date");
+                DatabaseReference mRef = mDatabase.getReference("publicInformation").child("databaseMaintenanceSchedule");
+                mRef.setValue(date)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(ManageDatabase.this, "Reminder set successfully", Toast.LENGTH_SHORT).show();
+                                ManageLogsReminder manageLogsReminder = new ManageLogsReminder(ManageDatabase.this);
+                                manageLogsReminder.execute();
+                                loadingDialog.dismissLoadingDialog();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(ManageDatabase.this, "Failed to update database", Toast.LENGTH_SHORT).show();
+                                Utility.log("ManageDatabase.mSRR: " + e.getMessage());
+                                loadingDialog.dismissLoadingDialog();
+                            }
+                        });
+            }
+            catch (Exception e){
+                Toast.makeText(ManageDatabase.this, "Operation failed", Toast.LENGTH_SHORT).show();
+                Utility.log("ManageDatabase.mSRR: " + e.getMessage());
+                loadingDialog.dismissLoadingDialog();
+            }
+        }
+    };
+
     private BroadcastReceiver mDeleteReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -194,6 +238,7 @@ public class ManageDatabase extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mDeleteReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mSetReminderReceiver);
         super.onDestroy();
     }
 }

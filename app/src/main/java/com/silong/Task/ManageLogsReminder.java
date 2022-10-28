@@ -41,10 +41,12 @@ public class ManageLogsReminder extends AsyncTask {
                                 Dashboard.mlReminder = true;
                                 Dashboard.checkCompletion();
                                 AdminData.DATABASE_MAINTENANCE = false;
+                                AdminData.DATABASE_MAINTENANCE_DATE = sched;
                                 return;
                             }
 
                             AdminData.DATABASE_MAINTENANCE = true;
+                            AdminData.DATABASE_MAINTENANCE_DATE = sched;
 
                             //check permission
                             DatabaseReference permission = mDatabase.getReference("Admins").child(AdminData.adminID).child("roles").child("manageDatabase");
