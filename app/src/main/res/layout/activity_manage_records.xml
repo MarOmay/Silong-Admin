@@ -46,6 +46,8 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/filterIv"
+                android:onClick="onPressedFilter"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_weight="1.35"
@@ -158,9 +160,10 @@
             app:strokeWidth="1dp">
 
             <LinearLayout
+                android:id="@+id/filterLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:paddingVertical="5dp"
                 android:paddingHorizontal="5dp"
                 android:weightSum="3">
@@ -172,8 +175,8 @@
                     android:layout_weight="1" />
 
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
                     android:background="@color/gray"
                     android:alpha="0.2"/>
 
@@ -184,8 +187,8 @@
                     android:layout_weight="1" />
 
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
                     android:background="@color/gray"
                     android:alpha="0.2"/>
 

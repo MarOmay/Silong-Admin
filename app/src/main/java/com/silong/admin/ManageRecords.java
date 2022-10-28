@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,16 +23,24 @@ import android.widget.Toast;
 
 import com.silong.Adapter.RecordsAdapter;
 import com.silong.CustomView.LoadingDialog;
+import com.silong.EnumClass.Gender;
+import com.silong.EnumClass.PetAge;
+import com.silong.EnumClass.PetType;
 import com.silong.Object.Pet;
 import com.silong.Operation.Utility;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class ManageRecords extends AppCompatActivity {
 
-    ImageView recordsBackIv;
+    private boolean fDog = true, fCat = true;
+    private boolean fMale = true, fFemale = true;
+    private boolean fPuppy = true, fYoung = true, fOld = true;
+
+    ImageView recordsBackIv, filterIv;
     private SwipeRefreshLayout mrecordRefresher;
-    LinearLayout recordsAddTile, recordsCreateReportTile;
+    LinearLayout recordsAddTile, recordsCreateReportTile, filterLl;
     RecyclerView recordsRecycler;
     Spinner filterTypeSp, filterGenderSp, filterAgeSp;
 
@@ -55,6 +64,8 @@ public class ManageRecords extends AppCompatActivity {
         recordsAddTile = (LinearLayout) findViewById(R.id.recordsAddTile);
         recordsCreateReportTile = (LinearLayout) findViewById(R.id.recordsCreateReportTile);
         recordsRecycler = (RecyclerView) findViewById(R.id.recordsRecycler);
+        filterIv = findViewById(R.id.filterIv);
+        filterLl = findViewById(R.id.filterLl);
         filterTypeSp = findViewById(R.id.filterTypeSp);
         filterGenderSp = findViewById(R.id.filterGenderSp);
         filterAgeSp = findViewById(R.id.filterAgeSp);
@@ -73,20 +84,30 @@ public class ManageRecords extends AppCompatActivity {
         mrecordRefresher.setOnRefreshListener(refreshListener);
 
         //filter spinner temp adapter
-        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.type, android.R.layout.simple_spinner_item);
-        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterTypeSp.setAdapter(typeAdapter);
+        prepareFilterLayout();
+        filterLl.setVisibility(View.GONE);
+    }
 
-        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
-                R.array.gender, android.R.layout.simple_spinner_item);
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterGenderSp.setAdapter(genderAdapter);
-
-        ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this,
-                R.array.age, android.R.layout.simple_spinner_item);
-        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterAgeSp.setAdapter(ageAdapter);
+    public void onPressedFilter(View view){
+        if (filterLl.getVisibility() == View.GONE){
+            filterLl.setVisibility(View.VISIBLE);
+            //reset filter
+            filterTypeSp.setSelection(0);
+            filterGenderSp.setSelection(0);
+            filterAgeSp.setSelection(0);
+        }
+        else {
+            filterLl.setVisibility(View.GONE);
+            //show all
+            fDog = true;
+            fCat = true;
+            fMale = true;
+            fFemale = true;
+            fPuppy = true;
+            fYoung = true;
+            fOld = true;
+            loadRecordList();
+        }
     }
 
     public void onPressedAddRecord(View view){
@@ -113,9 +134,11 @@ public class ManageRecords extends AppCompatActivity {
 
         try {
 
+            ArrayList<Pet> filtered = filterList();
+
             //sort
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                AdminData.pets.sort(new Comparator<Pet>() {
+                filtered.sort(new Comparator<Pet>() {
                     @Override
                     public int compare(Pet pet, Pet t1) {
                         int id1 = Integer.parseInt(pet.getPetID());
@@ -125,12 +148,12 @@ public class ManageRecords extends AppCompatActivity {
                 });
             }
 
-            int listSize = AdminData.pets.size();
+            int listSize = filtered.size();
 
             Pet[] pets = new Pet[listSize];
 
             for (int i=0; i<listSize; i++){
-                pets[i] = AdminData.pets.get(i);
+                pets[i] = filtered.get(i);
             }
 
             RecordsAdapter recordsAdapter = new RecordsAdapter(ManageRecords.this, pets);
@@ -141,6 +164,142 @@ public class ManageRecords extends AppCompatActivity {
         }
 
         loadingDialog.dismissLoadingDialog();
+    }
+
+    private ArrayList<Pet> filterList(){
+        ArrayList<Pet> filteredList = new ArrayList<>();
+
+        for (Pet pet : AdminData.pets){
+
+            if (pet.getType() == PetType.DOG && !fDog)
+                continue;
+            else if (pet.getType() == PetType.CAT && !fCat)
+                continue;
+
+            if (pet.getGender() == Gender.MALE && !fMale)
+                continue;
+            else if (pet.getGender() == Gender.FEMALE && !fFemale)
+                continue;
+
+            if (!fPuppy && pet.getAge() == PetAge.PUPPY)
+                continue;
+            if (!fYoung && pet.getAge() == PetAge.YOUNG)
+                continue;
+            if (!fOld && pet.getAge() == PetAge.OLD)
+                continue;
+
+            filteredList.add(pet);
+        }
+
+        return filteredList;
+    }
+
+    private void prepareFilterLayout(){
+        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.type, android.R.layout.simple_spinner_item);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterTypeSp.setAdapter(typeAdapter);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
+                R.array.gender, android.R.layout.simple_spinner_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterGenderSp.setAdapter(genderAdapter);
+
+        ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this,
+                R.array.age, android.R.layout.simple_spinner_item);
+        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterAgeSp.setAdapter(ageAdapter);
+
+        //onItemSelected
+        filterTypeSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selected = filterTypeSp.getSelectedItem().toString();
+                switch (selected.toLowerCase()){
+                    case "all":
+                        fDog = true;
+                        fCat = true;
+                        break;
+                    case "dog":
+                        fDog = true;
+                        fCat = false;
+                        break;
+                    case "cat":
+                        fDog = false;
+                        fCat = true;
+                        break;
+                }
+                loadRecordList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        filterGenderSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selected = filterGenderSp.getSelectedItem().toString();
+                switch (selected.toLowerCase()){
+                    case "all":
+                        fMale = true;
+                        fFemale = true;
+                        break;
+                    case "male":
+                        fMale = true;
+                        fFemale = false;
+                        break;
+                    case "female":
+                        fMale = false;
+                        fFemale = true;
+                        break;
+                }
+                loadRecordList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        filterAgeSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selected = filterAgeSp.getSelectedItem().toString();
+                switch (selected.toLowerCase()){
+                    case "all":
+                        fPuppy = true;
+                        fYoung = true;
+                        fOld = true;
+                        break;
+                    case "puppy/kitten":
+                        fPuppy = true;
+                        fYoung = false;
+                        fOld = false;
+                        break;
+                    case "young":
+                        fPuppy = false;
+                        fYoung = true;
+                        fOld = false;
+                        break;
+                    case "old":
+                        fPuppy = false;
+                        fYoung = false;
+                        fOld = true;
+                        break;
+                }
+                loadRecordList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
     public void back(View view){
