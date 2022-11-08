@@ -706,7 +706,7 @@ public class AdoptionRecords extends AppCompatActivity {
                         Calendar to = Calendar.getInstance();
                         to.set(Integer.valueOf(toDate[2]),Integer.valueOf(toDate[0]),Integer.valueOf(toDate[1]));
 
-                        String[] adDate = adoption.getDateRequested().split("-");
+                        String[] adDate = adoption.getDateRequested().split(" ")[0].split("-");
                         Calendar adCal = Calendar.getInstance();
                         adCal.set(Integer.valueOf(adDate[2]),Integer.valueOf(adDate[0]),Integer.valueOf(adDate[1]));
 
@@ -721,6 +721,7 @@ public class AdoptionRecords extends AppCompatActivity {
             }
             catch (Exception e){
                 Utility.log("AdoptionRecords.mRR: " + e.getMessage());
+                Toast.makeText(AdoptionRecords.this, "Unable to process request", Toast.LENGTH_SHORT).show();
             }
 
         }
