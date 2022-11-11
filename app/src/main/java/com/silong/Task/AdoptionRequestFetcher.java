@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,6 +19,9 @@ import com.silong.Object.Request;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.Dashboard;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdoptionRequestFetcher extends AsyncTask {
 
@@ -48,6 +53,11 @@ public class AdoptionRequestFetcher extends AsyncTask {
                         if (snap.child("petID").getValue() == null ||
                                 snap.child("dateRequested").getValue() == null ||
                                 snap.child("status").getValue() == null){
+                            continue;
+                        }
+
+                        if (snap.getKey().equals("null")){
+                            cleanUpNull();
                             continue;
                         }
 
@@ -106,6 +116,27 @@ public class AdoptionRequestFetcher extends AsyncTask {
 
         }
         return null;
+    }
+
+    private void cleanUpNull(){
+        try{
+
+            //clear known occurrence of null
+            Map<String, Object> multiNodeMap = new HashMap<>();
+            multiNodeMap.put("adoptionRequest/null", null);
+            multiNodeMap.put("Users/null", null);
+
+            DatabaseReference nullRef = mDatabase.getReference();
+            nullRef.updateChildren(multiNodeMap).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Utility.log("Adp.Req.cUN.oF: " + e.getMessage());
+                }
+            });
+        }
+        catch (Exception e){
+            Utility.log("Adp.Req: " + e.getMessage());
+        }
     }
 
     private void sendBroadcast(boolean notify){
