@@ -45,19 +45,19 @@ public class AccountFetcher extends AsyncTask {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     try {
                         String status = (Boolean) snapshot.child("accountStatus").getValue() ? "true" : "false";
-                        String fname = snapshot.child("firstName").getValue().toString();
-                        String lname = snapshot.child("lastName").getValue().toString();
-                        String email = snapshot.child("email").getValue().toString();
-                        String contact = snapshot.child("contact").getValue().toString();
-                        String birthday = snapshot.child("birthday").getValue().toString();
+                        String fname = snapshot.child("firstName").getValue().toString().trim();
+                        String lname = snapshot.child("lastName").getValue().toString().trim();
+                        String email = snapshot.child("email").getValue().toString().trim();
+                        String contact = snapshot.child("contact").getValue().toString().trim();
+                        String birthday = snapshot.child("birthday").getValue().toString().trim();
 
                         String lastModified = "no data";
                         if (snapshot.child("lastModified").getValue() != null)
                             lastModified = snapshot.child("lastModified").getValue().toString();
 
                         String gender = snapshot.child("gender").getValue().toString();
-                        String addressLine = snapshot.child("address").child("addressLine").getValue().toString();
-                        String barangay = snapshot.child("address").child("barangay").getValue().toString();
+                        String addressLine = snapshot.child("address").child("addressLine").getValue().toString().trim();
+                        String barangay = snapshot.child("address").child("barangay").getValue().toString().trim();
                         String photo = snapshot.child("photo").getValue().toString();
 
                         AdminData.writeToLocal(activity, uid, "accountStatus", status);
