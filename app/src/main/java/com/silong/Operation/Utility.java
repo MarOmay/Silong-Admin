@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.silong.CustomView.LoadingDialog;
+import com.silong.CustomView.RelaunchNotifier;
 import com.silong.admin.AdminData;
 import com.silong.admin.AdoptionAgreement;
 import com.silong.admin.AppointmentsList;
@@ -192,6 +193,17 @@ public class Utility {
         //check internet connection
         if (!Utility.internetConnection(activity)){
             Toast.makeText(activity, "No internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (adminID == null){
+            RelaunchNotifier relaunchNotifier = new RelaunchNotifier(activity);
+            relaunchNotifier.show();
+            return;
+        }
+        if (adminID.equals("null")){
+            RelaunchNotifier relaunchNotifier = new RelaunchNotifier(activity);
+            relaunchNotifier.show();
             return;
         }
 

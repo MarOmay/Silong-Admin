@@ -254,6 +254,7 @@ public class Dashboard extends AppCompatActivity {
         @Override
         public void onRefresh() {
             AdminData.populate(Dashboard.this);
+            adminFnameTv.setText(AdminData.firstName);
             AdminData.users.clear();
             AdminData.pets.clear();
 
