@@ -165,9 +165,9 @@ public class PetRecords extends AppCompatActivity {
             if (youngC > 0)
                 age.add(new PieEntry(youngC, "Young Cat"));
             if (oldD > 0)
-                age.add(new PieEntry(oldD, "Old Dog"));
+                age.add(new PieEntry(oldD, "Adult Dog"));
             if (oldC > 0)
-                age.add(new PieEntry(oldC, "Old Cat"));
+                age.add(new PieEntry(oldC, "Adult Cat"));
 
 
             CustomPieChart customPieChart = findViewById(R.id.dogAgePieChart);
@@ -271,7 +271,7 @@ public class PetRecords extends AppCompatActivity {
                 switch (pet.getAge()){
                     case PetAge.PUPPY: age = (pet.getType() == PetType.DOG ? "Puppy" : "Kitten"); break;
                     case PetAge.YOUNG: age = "Young"; break;
-                    case PetAge.OLD: age = "Old"; break;
+                    case PetAge.OLD: age = "Adult"; break;
                 }
 
                 //translate color

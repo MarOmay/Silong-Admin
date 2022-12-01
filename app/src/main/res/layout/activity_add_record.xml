@@ -308,7 +308,7 @@
                             android:layout_width="100dp"
                             android:layout_height="50dp"
                             android:clickable="true"
-                            android:text="OLD"
+                            android:text="ADULT"
                             android:textAlignment="center"
                             android:textSize="14sp"
                             android:textStyle="bold" />

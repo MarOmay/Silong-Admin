@@ -285,7 +285,7 @@ public class ManageRecords extends AppCompatActivity {
                         fYoung = true;
                         fOld = false;
                         break;
-                    case "old":
+                    case "adult":
                         fPuppy = false;
                         fYoung = false;
                         fOld = true;

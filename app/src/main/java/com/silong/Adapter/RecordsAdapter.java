@@ -61,7 +61,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         switch (pet.getAge()){
             case PetAge.PUPPY: age = (pet.getType() == PetType.DOG ? "Puppy" : "Kitten"); break;
             case PetAge.YOUNG: age = "Young"; break;
-            case PetAge.OLD: age = "Old"; break;
+            case PetAge.OLD: age = "Adult"; break;
         }
 
         //translate color
