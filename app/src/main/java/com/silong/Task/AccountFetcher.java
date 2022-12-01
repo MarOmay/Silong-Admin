@@ -3,6 +3,8 @@ package com.silong.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
+import com.silong.admin.R;
 
 public class AccountFetcher extends AsyncTask {
 
@@ -58,7 +61,7 @@ public class AccountFetcher extends AsyncTask {
                         String gender = snapshot.child("gender").getValue().toString();
                         String addressLine = snapshot.child("address").child("addressLine").getValue().toString().trim();
                         String barangay = snapshot.child("address").child("barangay").getValue().toString().trim();
-                        String photo = snapshot.child("photo").getValue().toString();
+                        Object photo = snapshot.child("photo").getValue();
 
                         AdminData.writeToLocal(activity, uid, "accountStatus", status);
                         AdminData.writeToLocal(activity, uid, "firstName", fname);
@@ -71,8 +74,15 @@ public class AccountFetcher extends AsyncTask {
                         AdminData.writeToLocal(activity, uid, "addressLine", addressLine);
                         AdminData.writeToLocal(activity, uid, "barangay", barangay);
 
-                        Bitmap bitmap = new ImageProcessor().toBitmap(photo);
-                        new ImageProcessor().saveToLocal(activity, bitmap, "avatar-" + uid);
+                        if (photo != null){
+                            Bitmap bitmap = new ImageProcessor().toBitmap(photo.toString());
+                            new ImageProcessor().saveToLocal(activity, bitmap, "avatar-" + uid);
+                        }
+                        else {
+                            Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.user_icon);
+                            new ImageProcessor().saveToLocal(activity, bitmap, "avatar-" + uid);
+                        }
+
                         //AdminData.populateAccounts(activity);
                         updateAccountList();
                     }
