@@ -136,6 +136,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/lightgray"
                     android:clickable="true"
+                    android:onClick="onPressedSelectCertificate"
                     android:scaleType="centerCrop"
                     tools:ignore="SpeakableTextPresentCheck" />
 

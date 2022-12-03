@@ -61,6 +61,7 @@ public class Memo extends AppCompatActivity {
 
         memoDate = findViewById(R.id.memoDate);
         memoDetails = findViewById(R.id.memoDetails);
+        proofAdoptionPic = findViewById(R.id.proofAdoptionPic);
 
         memoDate.setText(Utility.dateToday().replace("-","/"));
 
@@ -106,6 +107,16 @@ public class Memo extends AppCompatActivity {
         multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+adoption.getPetID()+"/actualAdotionDate", memoDate.getText().toString());
         multiNodeMap.put("Users/"+userID+"/adoptionHistory/"+adoption.getPetID()+"/memo", memoDetails.getText().toString());
 
+        if (proofAdoptionPic.getDrawable() != null){
+            try {
+                String certAsString = new ImageProcessor().toUTF8(proofAdoptionPic.getDrawable(), true);
+                multiNodeMap.put("Users/"+userID+"/proofOfAdoption/"+adoption.getPetID(), certAsString);
+            }
+            catch (Exception e){
+                Utility.log("Memo.uTC: " + e.getMessage());
+            }
+        }
+
         DatabaseReference mRef = mDatabase.getReference();
         mRef.updateChildren(multiNodeMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -142,7 +153,7 @@ public class Memo extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == PICK_CERT){
+        if (requestCode == PICK_CERT){
             try {
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(getContentResolver().openInputStream(data.getData()));
                 Bitmap bitmap = BitmapFactory.decodeStream(bufferedInputStream);
@@ -155,13 +166,7 @@ public class Memo extends AppCompatActivity {
                 bitmap = new ImageProcessor().tempCompress(bitmap);
 
                 try {
-                    /*
-                    switch (requestCode){
-                        case PICK_IMAGE_1: addRecordPicIv1.setImageBitmap(bitmap); break;
-                        case PICK_IMAGE_2: addRecordPicIv2.setImageBitmap(bitmap); break;
-                        case PICK_IMAGE_3: addRecordPicIv3.setImageBitmap(bitmap); break;
-                    }*/
-
+                    proofAdoptionPic.setImageBitmap(bitmap);
                 }
                 catch (Exception e){
                     Toast.makeText(getApplicationContext(), "Please select a picture less than 5MB.", Toast.LENGTH_SHORT).show();
