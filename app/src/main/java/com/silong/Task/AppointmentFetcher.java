@@ -20,6 +20,10 @@ import com.silong.Operation.Utility;
 import com.silong.admin.AdminData;
 import com.silong.admin.Dashboard;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class AppointmentFetcher extends AsyncTask {
 
     private FirebaseDatabase mDatabase;
@@ -72,6 +76,41 @@ public class AppointmentFetcher extends AsyncTask {
                         appointment.setDateTime(date);
 
                         appointment.setUserPic(user.getPhoto());
+
+                        //check if lapsed
+
+                        try {
+                            String dt = appointment.getDateTime().split(" ")[0];
+                            dt.replace("/","-");
+                            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+                            Calendar subjectDate = Calendar.getInstance();
+                            subjectDate.setTime(sdf.parse(dt));
+                            subjectDate.add(Calendar.DATE, 4);  // number of days to add
+
+                            Calendar today = Calendar.getInstance();
+
+                            Utility.log("AppointmentFetcher.dIB.oDC: " + subjectDate.getTime());
+                            Utility.log("AppointmentFetcher.dIB.oDC: " + today.getTime());
+
+                            if (today.getTime().after(subjectDate.getTime())){
+                                Utility.log("AppointmentFetcher.dIB.oDC: lapsed");
+
+                                //terminate appointment
+                                AppointmentTerminator appointmentTerminator = new AppointmentTerminator(user, appointment);
+                                appointmentTerminator.execute();
+
+                                continue;
+                            }
+                            else {
+                                Utility.log("AppointmentFetcher.dIB.oDC: not lapsed");
+                            }
+                        }
+                        catch (Exception e){
+                            Utility.log("AppointmentFetcher.dIB.oDC: " + e.getMessage());
+                        }
+
+
+                        //end of lapsed checking
 
                         if (AdminData.appointments.size() < 1){
                             AdminData.appointments.add(appointment);

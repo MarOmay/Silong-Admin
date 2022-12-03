@@ -40,6 +40,7 @@ public class EmailNotif {
     public static final int DECLINED = 7;
     public static final int APPOINTMENT_CHANGED = 8;
     public static final int ADMIN_CREATED = 9;
+    public static final int APPOINTMENT_TERMINATED = 10;
 
     private String EMAIL = "silong.sjdm@gmail.com";
     private String PASSWORD = "sfajljaebmquggxs";
@@ -108,6 +109,14 @@ public class EmailNotif {
                 BODY = "Your Silong-Admin account is ready to use.";
                 BODY += "\nThe account's default password is " + SUBMITTED_PASSWORD;
                 BODY += "\nWe recommend changing your password immediately.";
+                BODY += "\n\n- Your Silong Team";break;
+            case APPOINTMENT_TERMINATED:
+                SUBJECT = "Silong | Termination of Appointment";
+                BODY = "Dear client,";
+                BODY += "\nBased on your record, your appointment exceeded the allowable timeframe.";
+                BODY += "\nYour adoption appointment for PetID#" + ADOPTION.getPetID() + " on " + ADOPTION.getAppointmentDate() + " is hereby CANCELLED.";
+                BODY += "\n\nWe apologize for any inconvenience that this might have caused you.";
+                BODY += "\nTo know more, please reach out to the City Veterinary Office of San Jose del Monte City.";
                 BODY += "\n\n- Your Silong Team";break;
         }
     }
