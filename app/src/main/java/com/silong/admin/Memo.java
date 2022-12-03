@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +35,9 @@ public class Memo extends AppCompatActivity {
     private final int PICK_CERT = 12;
 
     EditText memoDetails, memoDate;
+
+    //newly added elements//
+    ImageView proofAdoptionPic;
 
     private FirebaseDatabase mDatabase;
 
