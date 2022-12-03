@@ -1,9 +1,12 @@
 package com.silong.admin;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -18,12 +21,17 @@ import com.silong.CustomView.RescuedDatePicker;
 import com.silong.Object.Adoption;
 import com.silong.Object.AppointmentRecords;
 import com.silong.Operation.EmailNotif;
+import com.silong.Operation.ImagePicker;
+import com.silong.Operation.ImageProcessor;
 import com.silong.Operation.Utility;
 
+import java.io.BufferedInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Memo extends AppCompatActivity {
+
+    private final int PICK_CERT = 12;
 
     EditText memoDetails, memoDate;
 
@@ -69,6 +77,10 @@ public class Memo extends AppCompatActivity {
     public void onPressedDate(View view){
         RescuedDatePicker rescuedDatePicker = new RescuedDatePicker(Memo.this, memoDate);
         rescuedDatePicker.show(getSupportFragmentManager(), null);
+    }
+
+    public void onPressedSelectCertificate(View view){
+        new ImagePicker(Memo.this, PICK_CERT);
     }
 
     public void onPressedComplete(View view){
@@ -121,6 +133,42 @@ public class Memo extends AppCompatActivity {
                         Utility.log("Memo.uTC: " + e.getMessage());
                     }
                 });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == PICK_CERT){
+            try {
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(getContentResolver().openInputStream(data.getData()));
+                Bitmap bitmap = BitmapFactory.decodeStream(bufferedInputStream);
+
+                if (!new ImageProcessor().checkFileSize(bitmap, true)) {
+                    Toast.makeText(getApplicationContext(), "Please select a picture less than 5MB.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                bitmap = new ImageProcessor().tempCompress(bitmap);
+
+                try {
+                    /*
+                    switch (requestCode){
+                        case PICK_IMAGE_1: addRecordPicIv1.setImageBitmap(bitmap); break;
+                        case PICK_IMAGE_2: addRecordPicIv2.setImageBitmap(bitmap); break;
+                        case PICK_IMAGE_3: addRecordPicIv3.setImageBitmap(bitmap); break;
+                    }*/
+
+                }
+                catch (Exception e){
+                    Toast.makeText(getApplicationContext(), "Please select a picture less than 5MB.", Toast.LENGTH_SHORT).show();
+                    Utility.log("Memo.oAR: " + e.getMessage());
+                }
+            }
+            catch (Exception e){
+                Toast.makeText(getApplicationContext(), "Unable to choose file", Toast.LENGTH_SHORT).show();
+                Utility.log("Memo.oAR: " + e.getMessage());
+            }
+        }
     }
 
     public void back(View view){
