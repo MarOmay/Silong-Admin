@@ -43,7 +43,7 @@ public class EmailNotif {
     public static final int APPOINTMENT_TERMINATED = 10;
 
     private String EMAIL = "silong.sjdm@gmail.com";
-    private String PASSWORD = "sfajljaebmquggxs";
+    private String PASSWORD = "rfrdegmcruizkkuu";
     private String SENDER = "Silong Support";
     private String HOST = "smtp.gmail.com";
     private String PORT = "465";
