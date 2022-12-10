@@ -79,6 +79,7 @@ public class AppointmentFetcher extends AsyncTask {
 
                         //check if lapsed
 
+                        /*
                         try {
                             String dt = appointment.getDateTime().split(" ")[0];
                             dt.replace("/","-");
@@ -107,7 +108,7 @@ public class AppointmentFetcher extends AsyncTask {
                         }
                         catch (Exception e){
                             Utility.log("AppointmentFetcher.dIB.oDC: " + e.getMessage());
-                        }
+                        }*/
 
 
                         //end of lapsed checking
